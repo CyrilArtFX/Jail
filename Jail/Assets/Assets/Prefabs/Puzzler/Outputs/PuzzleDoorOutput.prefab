@@ -1039,7 +1039,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputs:
   - {fileID: 0}
-  - {fileID: 0}
   statesAnim:
     anim: {fileID: 1991499612487343643}
     boolName: Open
