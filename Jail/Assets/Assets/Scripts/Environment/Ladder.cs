@@ -1,3 +1,4 @@
+using Jail.Utility;
 using UnityEngine;
 
 public class Ladder : MonoBehaviour
@@ -58,7 +59,7 @@ public class Ladder : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((playerMask & (1 << other.gameObject.layer)) != 0)
+        if (LayerMaskUtils.HasLayer(playerMask, other.gameObject.layer))
         {
             playerDetected = true;
         }
@@ -66,7 +67,7 @@ public class Ladder : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if ((playerMask & (1 << other.gameObject.layer)) != 0)
+        if (LayerMaskUtils.HasLayer(playerMask, other.gameObject.layer))
         {
             playerDetected = false;
         }

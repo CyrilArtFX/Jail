@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using Jail.Utility;
 
 public class TutorialZone : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class TutorialZone : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if ((detectedLayers & (1 << other.gameObject.layer)) != 0)
+        if (LayerMaskUtils.HasLayer(detectedLayers, other.gameObject.layer))
         {
             if (colliders.Count == 0)
             {
@@ -48,7 +49,7 @@ public class TutorialZone : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if ((detectedLayers & (1 << other.gameObject.layer)) != 0)
+        if (LayerMaskUtils.HasLayer(detectedLayers, other.gameObject.layer))
         {
             if (colliders.Remove(other) && colliders.Count == 0)
             {

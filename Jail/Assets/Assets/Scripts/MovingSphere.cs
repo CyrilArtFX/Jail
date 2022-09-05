@@ -1,3 +1,4 @@
+using Jail.Utility;
 using System.Collections;
 using UnityEngine;
 
@@ -468,12 +469,12 @@ public class MovingSphere : MonoBehaviour
                         connectedBody = collision.rigidbody;
                     }
                 }
-                if (desiresClimbing && upDot >= minClimbDotProduct && (climbMask & (1 << layer)) != 0)
+                if (desiresClimbing && upDot >= minClimbDotProduct && LayerMaskUtils.HasLayer(climbMask, layer))
                 {
                     climbContactCount += 1;
                     climbNormal += normal;
                     lastClimbNormal = normal;
-                    if ((ladderMask & (1 << collision.gameObject.layer)) != 0)
+                    if (LayerMaskUtils.HasLayer(climbMask, layer))
                     {
                         currentLadder = collision.gameObject.transform.parent.gameObject.GetComponent<Ladder>();
                     }
@@ -499,9 +500,9 @@ public class MovingSphere : MonoBehaviour
         return (direction - normal * Vector3.Dot(direction, normal)).normalized;
     }
 
-    float GetMinDot (int layer)
+    float GetMinDot(int layer)
     {
-        return (stairsMask & (1 << layer)) == 0 ? minGroundDotProduct : minStairsDotProduct;
+        return LayerMaskUtils.HasLayer(stairsMask, layer) ? minStairsDotProduct : minGroundDotProduct;
     }
 
     public void PreventSnapToGround()
