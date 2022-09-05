@@ -11,6 +11,7 @@ namespace Jail.Puzzler.Inputs
         [SerializeField]
         LayerMask detectionMask;
 
+        [SerializeField]
         TwoStatesAnim statesAnim;
 
         int activeCollidersCount = 0;
