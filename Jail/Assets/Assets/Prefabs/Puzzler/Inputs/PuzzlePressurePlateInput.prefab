@@ -353,7 +353,6 @@ GameObject:
   - component: {fileID: 5396029424104458004}
   - component: {fileID: 1502537579541234562}
   - component: {fileID: 5665586101354004239}
-  - component: {fileID: 1052308096852993321}
   m_Layer: 0
   m_Name: PuzzlePressurePlateInput
   m_TagString: Untagged
@@ -392,6 +391,9 @@ MonoBehaviour:
   detectionMask:
     serializedVersion: 2
     m_Bits: 65792
+  statesAnim:
+    anim: {fileID: 5206970378596477061}
+    boolName: Down
 --- !u!65 &5665586101354004239
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -405,17 +407,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.5, z: 3}
   m_Center: {x: 0, y: 0.15, z: 0}
---- !u!114 &1052308096852993321
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7156639946733473989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19b6b30097af3fa46b98e9fcfabb2957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 5206970378596477061}
-  boolName: Down

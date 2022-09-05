@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5151315468756938485}
   - component: {fileID: 1143138080197593505}
   - component: {fileID: 1406054826757940013}
-  - component: {fileID: 4184916020722274396}
   m_Layer: 0
   m_Name: PuzzleLever
   m_TagString: Untagged
@@ -49,6 +48,9 @@ MonoBehaviour:
   detectionMask:
     serializedVersion: 2
     m_Bits: 256
+  statesAnim:
+    anim: {fileID: 6698850850020655399}
+    boolName: Down
 --- !u!65 &1406054826757940013
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -62,20 +64,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 2}
   m_Center: {x: -0.75, y: 0, z: 0}
---- !u!114 &4184916020722274396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2125131495787036169}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19b6b30097af3fa46b98e9fcfabb2957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 6698850850020655399}
-  boolName: Down
 --- !u!1 &2296020585320593087
 GameObject:
   m_ObjectHideFlags: 0

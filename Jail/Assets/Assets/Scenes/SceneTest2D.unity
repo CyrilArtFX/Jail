@@ -4675,17 +4675,9 @@ MonoBehaviour:
   assetGuid: 
   m_Mesh: {fileID: 1359891954}
   m_IsSelectable: 1
-  m_SelectedFaces: 03000000
-  m_SelectedEdges:
-  - a: 12
-    b: 13
-  - a: 14
-    b: 12
-  - a: 13
-    b: 15
-  - a: 15
-    b: 14
-  m_SelectedVertices: 0c0000000d0000000e0000000f000000
+  m_SelectedFaces: 
+  m_SelectedEdges: []
+  m_SelectedVertices: 
 --- !u!4 &461999534
 Transform:
   m_ObjectHideFlags: 0
@@ -5357,11 +5349,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!95 &519060815 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5206970378596477061, guid: 05978325b38937146bfbac3f5379be16, type: 3}
-  m_PrefabInstance: {fileID: 1293464245}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &533464426
 Mesh:
   m_ObjectHideFlags: 0
@@ -10321,14 +10308,6 @@ PrefabInstance:
       propertyPath: exitTriggerTime
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1502537579541234562, guid: 05978325b38937146bfbac3f5379be16, type: 3}
-      propertyPath: statesAnim.anim
-      value: 
-      objectReference: {fileID: 519060815}
-    - target: {fileID: 1502537579541234562, guid: 05978325b38937146bfbac3f5379be16, type: 3}
-      propertyPath: statesAnim.boolName
-      value: Down
-      objectReference: {fileID: 0}
     - target: {fileID: 5396029424104458004, guid: 05978325b38937146bfbac3f5379be16, type: 3}
       propertyPath: m_RootOrder
       value: 16
@@ -10485,11 +10464,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!95 &1337727288 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 6698850850020655399, guid: 01d66b15a2e9be746b7c0f9e5777e883, type: 3}
-  m_PrefabInstance: {fileID: 2142585226}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1359891954
 Mesh:
   m_ObjectHideFlags: 0
@@ -15546,14 +15520,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 248992983}
     m_Modifications:
-    - target: {fileID: 1143138080197593505, guid: 01d66b15a2e9be746b7c0f9e5777e883, type: 3}
-      propertyPath: statesAnim.anim
-      value: 
-      objectReference: {fileID: 1337727288}
-    - target: {fileID: 1143138080197593505, guid: 01d66b15a2e9be746b7c0f9e5777e883, type: 3}
-      propertyPath: statesAnim.boolName
-      value: Down
-      objectReference: {fileID: 0}
     - target: {fileID: 2125131495787036169, guid: 01d66b15a2e9be746b7c0f9e5777e883, type: 3}
       propertyPath: m_Name
       value: PuzzleLeverInput
