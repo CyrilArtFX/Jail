@@ -7,17 +7,8 @@ namespace Jail.Puzzler.Inputs
 	public class PuzzleBaseInput : MonoBehaviour
 	{
 		protected TwoStatesAnim twoStatesAnim;
+		protected readonly List<PuzzleBaseOutput> outputs = new List<PuzzleBaseOutput>();
 
-		protected virtual void Awake()
-		{
-			TryGetComponent( out twoStatesAnim );
-		}
-
-		//  output linking
-		List<PuzzleBaseOutput> outputs = new List<PuzzleBaseOutput>();
-		public void LinkOutput( PuzzleBaseOutput output ) { outputs.Add( output ); }
-
-		//  trigger state
 		bool isTriggered = false;
 		public bool IsTriggered { 
 			get => isTriggered;
@@ -25,6 +16,16 @@ namespace Jail.Puzzler.Inputs
 				isTriggered = value;
 				OnTrigger( value );
 			}
+		}
+
+		protected virtual void Awake()
+		{
+			TryGetComponent( out twoStatesAnim );
+		}
+
+		public void LinkOutput( PuzzleBaseOutput output ) 
+		{ 
+			outputs.Add( output ); 
 		}
 
 		protected virtual void OnTrigger( bool state )
@@ -37,9 +38,11 @@ namespace Jail.Puzzler.Inputs
 				output.AlertInputStateChange( this, IsTriggered );
 			}
 
-			//  trigger anim
-			if ( twoStatesAnim )
+			//  trigger anim if exists
+			if ( twoStatesAnim != null )
+            {
 				twoStatesAnim.ChangeBool( state );
+            }
 		} 
 	}
 }

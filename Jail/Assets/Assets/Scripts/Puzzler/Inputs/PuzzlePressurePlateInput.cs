@@ -14,8 +14,11 @@ namespace Jail.Puzzler.Inputs
 		{
 			IsTriggered = true;
 
+			//  remove old coroutine (prevent disabling itself when going out-&-in of the plate)
 			if ( !( oldExitCoroutine == null ) )
+            {
 				StopCoroutine( oldExitCoroutine );
+            }
 		}
 
 		void OnTriggerExit( Collider other )

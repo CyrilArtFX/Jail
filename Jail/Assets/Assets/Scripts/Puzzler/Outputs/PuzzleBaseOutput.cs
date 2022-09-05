@@ -7,7 +7,7 @@ namespace Jail.Puzzler.Outputs
 	public class PuzzleBaseOutput : MonoBehaviour
 	{
 		[Header( "Base" ), Tooltip( "List of inputs that need to be turned on in order to trigger this object" ), SerializeField]
-		List<PuzzleBaseInput> inputs;
+		protected List<PuzzleBaseInput> inputs;
 
 		public bool IsTriggered { get; protected set; }
 

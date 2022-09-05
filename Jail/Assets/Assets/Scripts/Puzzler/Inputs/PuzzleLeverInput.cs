@@ -12,7 +12,9 @@ namespace Jail.Puzzler.Inputs
 			if ( !isPlayerInFront ) return;
 
 			if ( Input.GetButtonDown( "Interact" ) )
+            {
 				IsTriggered = !IsTriggered;
+            }
 		}
 
 		void OnTriggerEnter( Collider other )
