@@ -389,6 +389,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exitTriggerTime: 0
+  detectionMask:
+    serializedVersion: 2
+    m_Bits: 65792
 --- !u!65 &5665586101354004239
 BoxCollider:
   m_ObjectHideFlags: 0

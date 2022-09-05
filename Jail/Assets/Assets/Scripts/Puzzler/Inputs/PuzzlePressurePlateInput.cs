@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Jail.Utility;
 
 namespace Jail.Puzzler.Inputs
 {
@@ -7,12 +8,17 @@ namespace Jail.Puzzler.Inputs
     {
         [Header("Pressure Plate"), Tooltip("How much time should it wait before turning the trigger off after exit?"), SerializeField]
         float exitTriggerTime = 0.0f;
+        [SerializeField]
+        LayerMask detectionMask;
 
+        int activeCollidersCount = 0;
         Coroutine oldExitCoroutine;
 
         void OnTriggerEnter(Collider other)
         {
-            IsTriggered = true;
+            if (!LayerMaskUtils.HasLayer(detectionMask, other.gameObject.layer))
+                return;
+
 
             //  remove old coroutine (prevent disabling itself when going out-&-in of the plate)
             if (oldExitCoroutine != null)
@@ -23,7 +29,9 @@ namespace Jail.Puzzler.Inputs
 
         void OnTriggerExit(Collider other)
         {
-            oldExitCoroutine = StartCoroutine(CoroutineExitTrigger());
+            if (!LayerMaskUtils.HasLayer(detectionMask, other.gameObject.layer))
+                return;
+
         }
 
         IEnumerator CoroutineExitTrigger()
