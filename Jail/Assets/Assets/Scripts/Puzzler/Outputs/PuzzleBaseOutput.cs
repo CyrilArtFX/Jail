@@ -61,9 +61,7 @@ namespace Jail.Puzzler.Outputs
             foreach (PuzzleBaseInput input in inputs)
             {
                 if (!input.IsTriggered)
-                {
                     return false;
-                }
             }
 
             return true;
