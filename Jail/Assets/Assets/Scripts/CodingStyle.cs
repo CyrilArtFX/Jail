@@ -21,8 +21,7 @@ namespace Jail
             }
             else
             {
-                //Make a spirit
-                //  make a spirit
+                //  comment
             }
         }
 
