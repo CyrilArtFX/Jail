@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class TwoStatesAnim : MonoBehaviour
+[System.Serializable]
+public struct TwoStatesAnim
 {
-    [SerializeField] Animator anim = default;
-    [SerializeField] string boolName = default;
+    [SerializeField] Animator anim;
+    [SerializeField] string boolName;
 
     public void ChangeBool(bool value)
     {

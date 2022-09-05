@@ -11,6 +11,8 @@ namespace Jail.Puzzler.Inputs
         [SerializeField]
         LayerMask detectionMask;
 
+        TwoStatesAnim statesAnim;
+
         int activeCollidersCount = 0;
         Coroutine oldExitCoroutine;
 
@@ -30,6 +32,12 @@ namespace Jail.Puzzler.Inputs
             {
                 StopCoroutine(oldExitCoroutine);
             }
+        }
+
+        protected override void OnTrigger(bool state)
+        {
+            base.OnTrigger(state);
+            statesAnim.ChangeBool(state);
         }
 
         void OnTriggerExit(Collider other)
