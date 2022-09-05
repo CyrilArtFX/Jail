@@ -2,13 +2,17 @@ using UnityEngine;
 
 public class Ladder : MonoBehaviour
 {
-    [SerializeField] LayerMask playerMask = 0;
+    [SerializeField] 
+    LayerMask playerMask = 0;
 
     private bool playerDetected = false;
 
-    [SerializeField] GameObject backCollision = default;
-    [SerializeField] GameObject topCollision = default;
-    [SerializeField] BoxCollider topDetection = default;
+    [SerializeField] 
+    GameObject backCollision = default;
+    [SerializeField] 
+    GameObject topCollision = default;
+    [SerializeField] 
+    BoxCollider topDetection = default;
 
     private void Awake()
     {
@@ -18,13 +22,13 @@ public class Ladder : MonoBehaviour
 
     private void Update()
     {
-        if(playerDetected)
+        if (playerDetected)
         {
             if (Mathf.Abs(Input.GetAxis("UpDown")) > 0.2f)
             {
-                if(Input.GetAxis("UpDown") > 0.2f)
+                if (Input.GetAxis("UpDown") > 0.2f)
                 {
-                    if(IsPlayerOnTop()) return;
+                    if (IsPlayerOnTop()) return;
                     ActiveClimbable();
                 }
                 else
@@ -70,7 +74,12 @@ public class Ladder : MonoBehaviour
 
     private bool IsPlayerOnTop()
     {
-        Collider[] cols = Physics.OverlapBox(topDetection.transform.position + topDetection.center, topDetection.size / 2, topDetection.transform.rotation, playerMask);
+        Collider[] cols = Physics.OverlapBox(
+            topDetection.transform.position + topDetection.center, 
+            topDetection.size / 2, 
+            topDetection.transform.rotation, 
+            playerMask
+        );
         return cols.Length != 0;
     }
 }

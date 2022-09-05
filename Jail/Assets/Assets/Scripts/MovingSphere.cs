@@ -4,47 +4,67 @@ using UnityEngine;
 public class MovingSphere : MonoBehaviour
 {
     [Header("Solid Body")]
-    [SerializeField] Transform modelFlip = default;
+    [SerializeField] 
+    Transform modelFlip = default;
 
     [Header("Spirit")]
-    [SerializeField] GameObject spiritObject = default;
-    [SerializeField] Transform spiritModelFlip = default;
+    [SerializeField] 
+    GameObject spiritObject = default;
+    [SerializeField] 
+    Transform spiritModelFlip = default;
 
     [Header("Parameters")]
-    [SerializeField, Range(0f, 100f)] float maxSpeed = 13f, maxClimbSpeed = 2f, maxSpiritSpeed = 8f, maxSlowSpeed = 1f;
-    [SerializeField, Range(0f, 100f)] float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 20f, maxSpiritAcceleration = 15f;
-    [SerializeField, Range(0f, 10f)] float jumpHeight = 2f;
-    [SerializeField, Range(0f, 90f)] float maxGroundAngle = 25f, maxStairsAngle = 50f;
-    [SerializeField, Range(0f, 100f)] float maxSnapSpeed = 100f;
-    [SerializeField, Min(0f)] float probeDistance = 1f;
-    [SerializeField, Range(90f, 170f)] float maxClimbAngle = 140f;
-    [SerializeField] LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, ladderMask = 0;
-    [SerializeField, Min(0f)] float modelAlignSpeed = 180f;
+    [SerializeField, Range(0f, 100f)] 
+    float maxSpeed = 13f, maxClimbSpeed = 2f, maxSpiritSpeed = 8f, maxSlowSpeed = 1f;
+    [SerializeField, Range(0f, 100f)] 
+    float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 20f, maxSpiritAcceleration = 15f;
+    [SerializeField, Range(0f, 10f)] 
+    float jumpHeight = 2f;
+    [SerializeField, Range(0f, 90f)] 
+    float maxGroundAngle = 25f, maxStairsAngle = 50f;
+    [SerializeField, Range(0f, 100f)] 
+    float maxSnapSpeed = 100f;
+    [SerializeField, Min(0f)] 
+    float probeDistance = 1f;
+    [SerializeField, Range(90f, 170f)] 
+    float maxClimbAngle = 140f;
+    [SerializeField] 
+    LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, ladderMask = 0;
+    [SerializeField, Min(0f)] 
+    float modelAlignSpeed = 180f;
 
     [Header("Others")]
-    [SerializeField] bool maintainButtonForClimb = false;
-    [SerializeField] Transform camFocus = default;
+    [SerializeField] 
+    bool maintainButtonForClimb = false;
+    [SerializeField] 
+    Transform camFocus = default;
 
     [Header("UI")]
-    [SerializeField] GameObject deathText = default;
+    [SerializeField] 
+    GameObject deathText = default;
 
     Rigidbody body, connectedBody, previousConnectedBody;
     Animator animator;
 
     Vector2 playerInput;
+    bool desiredJump, desiresClimbing, requestClimbing;
+
     Vector3 velocity, connectionVelocity;
     Vector3 groundNormal, contactNormal, steepNormal, climbNormal, lastClimbNormal;
     Vector3 lastContactNormal, lastSteepNormal, lastConnectionVelocity;
+
     int groundContactCount, steepContactCount, climbContactCount;
     Ladder currentLadder;
+
     bool OnGround => groundContactCount > 0;
     bool OnSteep => steepContactCount > 0;
     bool Climbing => climbContactCount > 0 && stepsSinceLastJump > 2;
-    bool desiredJump, desiresClimbing, requestClimbing;
+
     bool spirit = false, spiritReturning = false;
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
     int stepsSinceLastGrounded, stepsSinceLastJump, stepsSinceLastClimbRequest;
     Vector3 connectionWorldPosition, connectionLocalPosition;
+
     Vector3 startPosition;
     Quaternion startRotationModelFlip;
 
@@ -75,7 +95,10 @@ public class MovingSphere : MonoBehaviour
         playerInput.y = Climbing || spirit ? Input.GetAxis("UpDown") : 0f;
         playerInput = Vector3.ClampMagnitude(playerInput, 1f);
 
-        if (maintainButtonForClimb) desiresClimbing = Mathf.Abs(Input.GetAxis("UpDown")) > 0.2f;
+        if (maintainButtonForClimb)
+        {
+            desiresClimbing = Mathf.Abs(Input.GetAxis("UpDown")) > 0.2f;
+        }
         else
         {
             desiresClimbing |= Mathf.Abs(Input.GetAxis("UpDown")) > 0.2f;
@@ -91,7 +114,10 @@ public class MovingSphere : MonoBehaviour
             desiredJump = false;
             camFocus.localPosition = spiritObject.transform.localPosition;
         }
-        else camFocus.localPosition = Vector3.zero;
+        else
+        {
+            camFocus.localPosition = Vector3.zero;
+        }
 
         UpdateRotations();
 
@@ -100,57 +126,73 @@ public class MovingSphere : MonoBehaviour
 
     void UpdateRotations()
     {
-        if (spirit) //Make the spirit head towards where he goes
+        //  make the spirit head towards where he goes
+        if (spirit)
         {
-            Vector3 spiritRotationPlaneNormal;
-            if (spiritObject.GetComponent<Rigidbody>().velocity == Vector3.zero || playerInput == Vector2.zero && !spiritReturning) spiritRotationPlaneNormal = spiritObject.transform.up;
-            else spiritRotationPlaneNormal = spiritObject.GetComponent<Rigidbody>().velocity.normalized;
+            Vector3 spirit_rotation_plane_normal;
+            if (spiritObject.GetComponent<Rigidbody>().velocity == Vector3.zero || playerInput == Vector2.zero && !spiritReturning)
+            {
+                spirit_rotation_plane_normal = spiritObject.transform.up;
+            }
+            else
+            {
+                spirit_rotation_plane_normal = spiritObject.GetComponent<Rigidbody>().velocity.normalized;
+            }
 
-            Quaternion spiritRotation = spiritObject.transform.localRotation;
+            Quaternion spirit_rotation = spiritObject.transform.localRotation;
             if (modelAlignSpeed > 0f)
             {
-                spiritRotation = AlignModelRotation(spiritRotationPlaneNormal, spiritRotation);
+                spirit_rotation = AlignModelRotation(spirit_rotation_plane_normal, spirit_rotation);
             }
-            spiritObject.transform.localRotation = spiritRotation;
+            spiritObject.transform.localRotation = spirit_rotation;
         }
 
 
-        Quaternion flipRotation = modelFlip.localRotation; //Make the spirit or the player face toward where he goes
-        if(playerInput.x != 0 && !Climbing)
+        //  make the spirit or the player face toward where he goes
+        Quaternion flip_rotation = modelFlip.localRotation; 
+        if (playerInput.x != 0 && !Climbing)
         {
-            int rotationFactor = 500;
+            int rotation_factor = 500;
 
-            float secondRotationY = flipRotation.eulerAngles.y;
-            secondRotationY = Mathf.Clamp(secondRotationY - playerInput.x * rotationFactor * Time.deltaTime, 0, 180);
-            flipRotation = Quaternion.Euler(0, secondRotationY, 0);
+            float second_rotation_y = flip_rotation.eulerAngles.y;
+            second_rotation_y = Mathf.Clamp(second_rotation_y - playerInput.x * rotation_factor * Time.deltaTime, 0, 180);
+            flip_rotation = Quaternion.Euler(0, second_rotation_y, 0);
         }
         else
         {
-            if(Climbing)
+            if (Climbing)
             {
-                if (currentLadder != null) flipRotation = Quaternion.Euler(0, 270, 0);
+                if (currentLadder != null)
+                {
+                    flip_rotation = Quaternion.Euler(0, 270, 0);
+                }
             }
         }
-        if(Time.timeScale != 0)
+        if (Time.timeScale != 0)
         {
-            if (spirit) spiritModelFlip.localRotation = flipRotation;
-            else modelFlip.localRotation = flipRotation;
+            if (spirit)
+            {
+                spiritModelFlip.localRotation = flip_rotation;
+            }
+            else
+            {
+                modelFlip.localRotation = flip_rotation;
+            }
         }
     }
 
-    Quaternion AlignModelRotation(Vector3 rotationAxis, Quaternion rotation)
+    Quaternion AlignModelRotation(Vector3 rotation_axis, Quaternion rotation)
     {
-        Vector3 modelAxis = spiritObject.transform.up;
-        float dot = Mathf.Clamp(Vector3.Dot(modelAxis, rotationAxis), -1f, 1f);
+        Vector3 model_axis = spiritObject.transform.up;
+        float dot = Mathf.Clamp(Vector3.Dot(model_axis, rotation_axis), -1f, 1f);
         float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
-        float maxAngle = modelAlignSpeed * Time.deltaTime;
+        float max_angle = modelAlignSpeed * Time.deltaTime;
 
-        Quaternion newAlignment = Quaternion.FromToRotation(modelAxis, rotationAxis) * rotation;
-        if (angle <= maxAngle || Climbing) return newAlignment;
-        else
-        {
-            return Quaternion.SlerpUnclamped(rotation, newAlignment, maxAngle / angle);
-        }
+        Quaternion new_alignment = Quaternion.FromToRotation(model_axis, rotation_axis) * rotation;
+        if (angle <= max_angle || Climbing) 
+            return new_alignment;
+        else 
+            return Quaternion.SlerpUnclamped(rotation, new_alignment, max_angle / angle);
     }
 
     void FixedUpdate()
@@ -165,33 +207,33 @@ public class MovingSphere : MonoBehaviour
             Jump();
         }
 
-        Vector3 bodyVelocity = velocity;
+        Vector3 body_velocity = velocity;
         
-        if(spirit)
+        if (spirit)
         {
             spiritObject.GetComponent<Rigidbody>().velocity = velocity;
-            bodyVelocity = Vector3.zero;
+            body_velocity = Vector3.zero;
         }
 
 
         if (Climbing)
         {
-            bodyVelocity -= contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
+            body_velocity -= contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
         }
-        else if(OnGround && velocity.sqrMagnitude < 0.01f)
+        else if (OnGround && velocity.sqrMagnitude < 0.01f)
         {
-            bodyVelocity += contactNormal * (Vector3.Dot(Physics.gravity, contactNormal) * Time.deltaTime);
+            body_velocity += contactNormal * (Vector3.Dot(Physics.gravity, contactNormal) * Time.deltaTime);
         }
-        else if(desiresClimbing && OnGround)
+        else if (desiresClimbing && OnGround)
         {
-            bodyVelocity += (Physics.gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
+            body_velocity += (Physics.gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
         }
         else
         {
-            bodyVelocity += Physics.gravity * Time.deltaTime;
+            body_velocity += Physics.gravity * Time.deltaTime;
         }
 
-        body.velocity = bodyVelocity;
+        body.velocity = body_velocity;
 
         ClearState();
     }
@@ -201,8 +243,10 @@ public class MovingSphere : MonoBehaviour
         lastContactNormal = contactNormal;
         lastSteepNormal = steepNormal;
         lastConnectionVelocity = connectionVelocity;
+
         groundContactCount = steepContactCount = climbContactCount = 0;
         groundNormal = contactNormal = steepNormal = connectionVelocity = climbNormal = Vector3.zero;
+
         previousConnectedBody = connectedBody;
         connectedBody = null;
     }
@@ -212,7 +256,9 @@ public class MovingSphere : MonoBehaviour
         stepsSinceLastGrounded++;
         stepsSinceLastJump++;
         stepsSinceLastClimbRequest = requestClimbing ? 0 : stepsSinceLastClimbRequest + 1;
+
         velocity = spirit ? spiritObject.GetComponent<Rigidbody>().velocity : body.velocity;
+
         if (CheckClimbing() || OnGround || SnapToGround() || CheckSteepContact())
         {
             stepsSinceLastGrounded = 0;
@@ -228,48 +274,51 @@ public class MovingSphere : MonoBehaviour
 
         if (connectedBody)
         {
-            if (connectedBody.isKinematic || connectedBody.mass >= body.mass) UpdateConnectionState();
+            if (connectedBody.isKinematic || connectedBody.mass >= body.mass)
+            {
+                UpdateConnectionState();
+            }
         }
     }
 
     void AdjustVelocity()
     {
         float acceleration, speed;
-        Vector3 xAxis;
-        if(spirit)
+        Vector3 x_axis;
+        if (spirit)
         {
             acceleration = maxSpiritAcceleration;
             speed = maxSpiritSpeed;
-            xAxis = Vector3.back;
+            x_axis = Vector3.back;
         }
-        else if(Climbing)
+        else if (Climbing)
         {
             acceleration = maxClimbAcceleration;
             speed = maxClimbSpeed;
-            xAxis = currentLadder != null ? Vector3.back : Vector3.zero;
+            x_axis = currentLadder != null ? Vector3.back : Vector3.zero;
         }
         else
         {
             acceleration = OnGround ? maxAcceleration : maxAirAcceleration;
             speed = desiresClimbing ? maxSlowSpeed : maxSpeed;
-            xAxis = Vector3.back;
+            x_axis = Vector3.back;
         }
-        xAxis = ProjectDirectionOnPlane(xAxis, contactNormal);
+        x_axis = ProjectDirectionOnPlane(x_axis, contactNormal);
 
-        Vector3 relativeVelocity = velocity - connectionVelocity;
+        Vector3 relative_velocity = velocity - connectionVelocity;
 
         Vector2 adjustment;
-        adjustment.x = playerInput.x * speed - Vector3.Dot(relativeVelocity, xAxis);
-        adjustment.y = Climbing || spirit ? playerInput.y * speed - Vector3.Dot(relativeVelocity, Vector3.up) : 0f;
+        adjustment.x = playerInput.x * speed - Vector3.Dot(relative_velocity, x_axis);
+        adjustment.y = Climbing || spirit ? playerInput.y * speed - Vector3.Dot(relative_velocity, Vector3.up) : 0f;
         adjustment = Vector3.ClampMagnitude(adjustment, acceleration * Time.deltaTime);
 
-        velocity += xAxis * adjustment.x;
+        velocity += x_axis * adjustment.x;
 
-        if(Climbing || spirit)
+        if (Climbing || spirit)
         {
             velocity += Vector3.up * adjustment.y;
         }
-        if(spiritReturning)
+        if (spiritReturning)
         {
             velocity = Vector3.zero;
         }
@@ -290,8 +339,8 @@ public class MovingSphere : MonoBehaviour
         {
             return false;
         }
-        float upDot = Vector3.Dot(Vector3.up, hit.normal);
-        if (upDot < GetMinDot(hit.collider.gameObject.layer))
+        float up_dot = Vector3.Dot(Vector3.up, hit.normal);
+        if (up_dot < GetMinDot(hit.collider.gameObject.layer))
         {
             return false;
         }
@@ -309,41 +358,43 @@ public class MovingSphere : MonoBehaviour
 
     void Jump()
     {
-        Vector3 jumpDirection;
+        Vector3 jump_direction;
         if (OnGround)
         {
-            jumpDirection = contactNormal;
-            if(Climbing && currentLadder != null)
+            jump_direction = contactNormal;
+            if (Climbing && currentLadder != null)
             {
-                jumpDirection = Vector3.zero;
+                jump_direction = Vector3.zero;
                 currentLadder.DesactiveClimbable();
                 currentLadder = null;
             }
         }
         else if (OnSteep)
         {
-            jumpDirection = steepNormal;
+            jump_direction = steepNormal;
         }
         else return;
 
         stepsSinceLastJump = 0;
         float jumpSpeed = Mathf.Sqrt(2f * Physics.gravity.magnitude * jumpHeight);
-        jumpDirection = (jumpDirection + Vector3.up).normalized;
-        float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
+        jump_direction = (jump_direction + Vector3.up).normalized;
+
+        float alignedSpeed = Vector3.Dot(velocity, jump_direction);
         if (alignedSpeed > 0f)
         {
             jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
         }
-        velocity += jumpDirection * jumpSpeed;
+
+        velocity += jump_direction * jumpSpeed;
     }
 
     bool CheckSteepContact()
     {
-        if(steepContactCount > 1)
+        if (steepContactCount > 1)
         {
             steepNormal.Normalize();
-            float upDot = Vector3.Dot(Vector3.up, steepNormal);
-            if(upDot >= minGroundDotProduct)
+            float up_dot = Vector3.Dot(Vector3.up, steepNormal);
+            if (up_dot >= minGroundDotProduct)
             {
                 groundContactCount = 1;
                 contactNormal = steepNormal;
@@ -355,14 +406,17 @@ public class MovingSphere : MonoBehaviour
 
     bool CheckClimbing()
     {
-        if(Climbing)
+        if (Climbing)
         {
             if (stepsSinceLastClimbRequest > 10 && groundNormal != Vector3.zero) desiresClimbing = false;
             if (climbContactCount > 1)
             {
                 climbNormal.Normalize();
-                float upDot = Vector3.Dot(Vector3.up, climbNormal);
-                if (upDot >= minGroundDotProduct) climbNormal = lastClimbNormal;
+                float up_dot = Vector3.Dot(Vector3.up, climbNormal);
+                if (up_dot >= minGroundDotProduct)
+                {
+                    climbNormal = lastClimbNormal;
+                }
             }
             groundContactCount = 1;
             contactNormal = climbNormal;
@@ -370,7 +424,10 @@ public class MovingSphere : MonoBehaviour
         }
         else
         {
-            if (!maintainButtonForClimb && !requestClimbing && stepsSinceLastClimbRequest > 2 && climbNormal == Vector3.zero) desiresClimbing = false;
+            if (!maintainButtonForClimb && !requestClimbing && stepsSinceLastClimbRequest > 2 && climbNormal == Vector3.zero)
+            {
+                desiresClimbing = false;
+            }
         }
         return false;
     }
@@ -388,12 +445,12 @@ public class MovingSphere : MonoBehaviour
     void EvaluateCollision(Collision collision)
     {
         int layer = collision.gameObject.layer;
-        float minDot = GetMinDot(layer);
+        float min_dot = GetMinDot(layer);
         for (int i = 0; i < collision.contactCount; i++)
         {
             Vector3 normal = collision.GetContact(i).normal;
             float upDot = Vector3.Dot(Vector3.up, normal);
-            if (upDot >= minDot)
+            if (upDot >= min_dot)
             {
                 groundContactCount += 1;
                 contactNormal += normal;
@@ -402,18 +459,24 @@ public class MovingSphere : MonoBehaviour
             }
             else
             {
-                if(upDot > -0.01f)
+                if (upDot > -0.01f)
                 {
                     steepContactCount += 1;
                     steepNormal += normal;
-                    if (groundContactCount == 0) connectedBody = collision.rigidbody;
+                    if (groundContactCount == 0)
+                    {
+                        connectedBody = collision.rigidbody;
+                    }
                 }
-                if(desiresClimbing && upDot >= minClimbDotProduct && (climbMask & (1 << layer)) != 0)
+                if (desiresClimbing && upDot >= minClimbDotProduct && (climbMask & (1 << layer)) != 0)
                 {
                     climbContactCount += 1;
                     climbNormal += normal;
                     lastClimbNormal = normal;
-                    if ((ladderMask & (1 << collision.gameObject.layer)) != 0) currentLadder = collision.gameObject.transform.parent.gameObject.GetComponent<Ladder>();
+                    if ((ladderMask & (1 << collision.gameObject.layer)) != 0)
+                    {
+                        currentLadder = collision.gameObject.transform.parent.gameObject.GetComponent<Ladder>();
+                    }
                     connectedBody = collision.rigidbody;
                 }
             }
@@ -422,10 +485,10 @@ public class MovingSphere : MonoBehaviour
 
     void UpdateConnectionState()
     {
-        if(connectedBody == previousConnectedBody)
+        if (connectedBody == previousConnectedBody)
         {
-            Vector3 connectionMovement = connectedBody.transform.TransformPoint(connectionLocalPosition) - connectionWorldPosition;
-            connectionVelocity = connectionMovement / Time.deltaTime;
+            Vector3 connection_movement = connectedBody.transform.TransformPoint(connectionLocalPosition) - connectionWorldPosition;
+            connectionVelocity = connection_movement / Time.deltaTime;
         }
         connectionWorldPosition = body.position;
         connectionLocalPosition = connectedBody.transform.InverseTransformPoint(connectionWorldPosition);
@@ -463,11 +526,13 @@ public class MovingSphere : MonoBehaviour
     {
         spiritReturning = true;
         spiritObject.GetComponent<CapsuleCollider>().isTrigger = true;
+
         while (Vector3.Distance(spiritObject.transform.localPosition, Vector3.zero) > 0.1f)
         {
             spiritObject.GetComponent<Rigidbody>().AddForce(-spiritObject.transform.localPosition.normalized * Time.deltaTime * 100000f);
             yield return new WaitForSeconds(Time.deltaTime);
         }
+
         spiritObject.GetComponent<CapsuleCollider>().isTrigger = false;
         spiritReturning = false;
         spiritObject.SetActive(false);
@@ -486,8 +551,6 @@ public class MovingSphere : MonoBehaviour
 
     private IEnumerator DeathMessage()
     {
-        animator.SetBool("Slide", false);
-        animator.SetBool("Crouch", false);
         animator.SetBool("Climb", false);
         spirit = false;
         spiritObject.SetActive(false);
