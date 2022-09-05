@@ -523,7 +523,7 @@ public class MovingSphere : MonoBehaviour
         StartCoroutine(ReturnToBody());
     }
 
-    private IEnumerator ReturnToBody()
+    IEnumerator ReturnToBody()
     {
         spiritReturning = true;
         spiritObject.GetComponent<CapsuleCollider>().isTrigger = true;
@@ -550,7 +550,7 @@ public class MovingSphere : MonoBehaviour
         StartCoroutine(DeathMessage());
     }
 
-    private IEnumerator DeathMessage()
+    IEnumerator DeathMessage()
     {
         animator.SetBool("Climb", false);
         spirit = false;

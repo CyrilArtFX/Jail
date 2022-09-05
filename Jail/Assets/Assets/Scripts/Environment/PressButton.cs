@@ -3,19 +3,23 @@ using UnityEngine.Events;
 
 public class PressButton : MonoBehaviour
 {
-    [SerializeField] UnityEvent onButtonPress = default;
+    [SerializeField] 
+    UnityEvent onButtonPress = default;
 
-    private void Awake()
+    void Awake()
     {
         enabled = false;
     }
 
-    private void Update()
+    void Update()
     {
-        if (Input.GetButtonDown("Interact")) Press();
+        if (Input.GetButtonDown("Interact"))
+        {
+            Press();
+        }
     }
 
-    private void Press()
+    void Press()
     {
         onButtonPress.Invoke();
         enabled = false;

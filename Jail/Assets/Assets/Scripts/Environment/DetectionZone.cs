@@ -5,11 +5,14 @@ using System.Collections.Generic;
 
 public class DetectionZone : MonoBehaviour
 {
-    [SerializeField] LayerMask detectedLayers = -1;
-    [SerializeField] UnityEvent onFirstEnter = default, onLastExit = default;
+    [SerializeField] 
+    LayerMask detectedLayers = -1;
+    [SerializeField] 
+    UnityEvent onFirstEnter = default, onLastExit = default;
     List<Collider> colliders = new List<Collider>();
 
-    [SerializeField] float timeToReset = 0f;
+    [SerializeField] 
+    float timeToReset = 0f;
 
      bool block = false;
 
