@@ -1,32 +1,32 @@
 ﻿
 namespace Jail.Puzzler.Outputs
 {
-	public class PuzzleDoorOutput : PuzzleBaseOutput
-	{
-		AutomaticSlider slider;
+    public class PuzzleDoorOutput : PuzzleBaseOutput
+    {
+        AutomaticSlider slider;
 
-		protected override void Awake()
-		{
-			base.Awake();
+        protected override void Awake()
+        {
+            base.Awake();
 
-			slider = GetComponent<AutomaticSlider>();
-			slider.enabled = false;
-		}
+            slider = GetComponent<AutomaticSlider>();
+            slider.enabled = false;
+        }
 
-		public override void OnInputsTriggered()
-		{
-			print( "Opening door!" );
+        public override void OnInputsTriggered()
+        {
+            print("Opening door!");
 
-			slider.enabled = true;
-			slider.Reversed = false;
-		}
+            slider.enabled = true;
+            slider.Reversed = false;
+        }
 
-		public override void OnInputsUnTriggered()
-		{
-			print( "Closing door!" );
+        public override void OnInputsUnTriggered()
+        {
+            print("Closing door!");
 
-			slider.enabled = true;
-			slider.Reversed = true;
-		}
-	}
+            slider.enabled = true;
+            slider.Reversed = true;
+        }
+    }
 }

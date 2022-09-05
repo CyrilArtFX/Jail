@@ -3,28 +3,28 @@ using System.Collections;
 
 namespace Jail.Puzzler.Inputs
 {
-	public class PuzzleLeverInput : PuzzleBaseInput
-	{
-		bool isPlayerInFront = false;
+    public class PuzzleLeverInput : PuzzleBaseInput
+    {
+        bool isPlayerInFront = false;
 
-		void Update()
-		{
-			if ( !isPlayerInFront ) return;
+        void Update()
+        {
+            if (!isPlayerInFront) return;
 
-			if ( Input.GetButtonDown( "Interact" ) )
+            if (Input.GetButtonDown("Interact"))
             {
-				IsTriggered = !IsTriggered;
+                IsTriggered = !IsTriggered;
             }
-		}
+        }
 
-		void OnTriggerEnter( Collider other )
-		{
-			isPlayerInFront = true;
-		}
+        void OnTriggerEnter(Collider other)
+        {
+            isPlayerInFront = true;
+        }
 
-		void OnTriggerExit( Collider other )
-		{
-			isPlayerInFront = false;
-		}
-	}
+        void OnTriggerExit(Collider other)
+        {
+            isPlayerInFront = false;
+        }
+    }
 }
