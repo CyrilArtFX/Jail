@@ -8,7 +8,7 @@ namespace Jail.Puzzler.Outputs
     {
         [Header("Base"), Tooltip("List of inputs that need to be turned on in order to trigger this object"), SerializeField]
         protected List<PuzzleBaseInput> inputs;
-
+        
         public bool IsTriggered { get; protected set; }
 
         protected virtual void Awake()

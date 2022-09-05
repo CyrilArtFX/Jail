@@ -6,6 +6,8 @@ namespace Jail.Puzzler.Inputs
     public class PuzzleLeverInput : PuzzleBaseInput
     {
         bool isPlayerInFront = false;
+        [SerializeField]
+        TwoStatesAnim statesAnim;
 
         void Update()
         {
@@ -15,6 +17,12 @@ namespace Jail.Puzzler.Inputs
             {
                 IsTriggered = !IsTriggered;
             }
+        }
+
+        protected override void OnTrigger(bool state)
+        {
+            base.OnTrigger(state);
+            statesAnim.ChangeBool(state);
         }
 
         void OnTriggerEnter(Collider other)

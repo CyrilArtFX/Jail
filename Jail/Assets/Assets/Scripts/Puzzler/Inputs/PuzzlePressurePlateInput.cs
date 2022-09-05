@@ -7,6 +7,8 @@ namespace Jail.Puzzler.Inputs
     {
         [Header("Pressure Plate"), Tooltip("How much time should it wait before turning the trigger off after exit?"), SerializeField]
         float exitTriggerTime = 0.0f;
+        [SerializeField]
+        TwoStatesAnim statesAnim;
 
         Coroutine oldExitCoroutine;
 
@@ -19,6 +21,12 @@ namespace Jail.Puzzler.Inputs
             {
                 StopCoroutine(oldExitCoroutine);
             }
+        }
+
+        protected override void OnTrigger(bool state)
+        {
+            base.OnTrigger(state);
+            statesAnim.ChangeBool(state);
         }
 
         void OnTriggerExit(Collider other)
