@@ -19,6 +19,11 @@ namespace Jail.Puzzler.Inputs
             if (!LayerMaskUtils.HasLayer(detectionMask, other.gameObject.layer))
                 return;
 
+            //  trigger if it is the first collider
+            if ((activeCollidersCount++) == 0)
+            {
+                IsTriggered = true;
+            }
 
             //  remove old coroutine (prevent disabling itself when going out-&-in of the plate)
             if (oldExitCoroutine != null)
@@ -32,6 +37,11 @@ namespace Jail.Puzzler.Inputs
             if (!LayerMaskUtils.HasLayer(detectionMask, other.gameObject.layer))
                 return;
 
+            //  untrigger if it is the last collider
+            if ((--activeCollidersCount) == 0)
+            {
+                oldExitCoroutine = StartCoroutine(CoroutineExitTrigger());
+            }
         }
 
         IEnumerator CoroutineExitTrigger()
