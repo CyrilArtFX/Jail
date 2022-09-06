@@ -5238,7 +5238,7 @@ GameObject:
   - component: {fileID: 2037106293}
   - component: {fileID: 2037106294}
   m_Layer: 0
-  m_Name: Turret
+  m_Name: ZapTurret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5273,6 +5273,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 20
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 311297
+  projectilePrefab: {fileID: 1034887875336051491, guid: 6a6b54126a2380741a25b83e39f9eb66, type: 3}
+  projectileSpawnPoint: {fileID: 1923060527}
 --- !u!1 &2060664822
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,8 @@ namespace Jail
 {
     public class Player : MonoBehaviour
     {
-        public GameObject SpiritObject { get => spiritObject; }
+        public GameObject Spirit => spiritObject;
+        public bool IsSpiritReturning => spiritReturning;
 
         [Header("Solid Body")]
         [SerializeField] 
