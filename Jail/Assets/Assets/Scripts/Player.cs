@@ -1,6 +1,7 @@
 using Jail.Utility;
 using System.Collections;
 using UnityEngine;
+using Jail;
 
 namespace Jail
 {
@@ -540,6 +541,7 @@ namespace Jail
 
         public void TransformToSpirit()
         {
+            if (PlayerTrigger.instance.ObstacleDetected) return;
             spirit = true;
             spiritObject.SetActive(true);
             spiritObject.transform.localPosition = Vector3.zero;
