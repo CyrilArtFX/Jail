@@ -10,6 +10,8 @@ namespace Jail.Puzzler.Inputs
         float unTriggerTime = 20.0f;
         [SerializeField]
         LayerMask detectionMask;
+        [SerializeField]
+        ParticleSystem particles;
 
         //  TODO: replace w/ final assets
         [Header("PREVIEW PLACEHOLDER"), SerializeField]
@@ -31,6 +33,7 @@ namespace Jail.Puzzler.Inputs
 
             //  trigger
             IsTriggered = true;
+            particles.Play();
 
             //  untrigger after time
             StartCoroutine(CoroutineExitTrigger());
