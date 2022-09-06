@@ -63,13 +63,15 @@ namespace Jail
         bool OnSteep => steepContactCount > 0;
         bool Climbing => climbContactCount > 0 && stepsSinceLastJump > 2;
 
-        bool spirit = false, spiritReturning = false;
+        public bool spirit = false, spiritReturning = false;
         float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
         int stepsSinceLastGrounded, stepsSinceLastJump, stepsSinceLastClimbRequest;
         Vector3 connectionWorldPosition, connectionLocalPosition;
 
         Vector3 startPosition;
         Quaternion startRotationModelFlip;
+
+        public static Player instance;
 
         void OnValidate()
         {
@@ -80,6 +82,8 @@ namespace Jail
 
         void Awake()
         {
+            instance = this;
+
             deathText.SetActive(false);
             startPosition = transform.position;
             startRotationModelFlip = modelFlip.localRotation;

@@ -9078,6 +9078,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2336433481901585766, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2504873753576911163, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
       propertyPath: camFocus
       value: 
@@ -9140,6 +9144,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7847598430729187404, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7847598430729187404, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
+      propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7946750689201620291, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
