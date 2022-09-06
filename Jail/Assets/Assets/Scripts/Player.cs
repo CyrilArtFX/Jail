@@ -63,7 +63,9 @@ namespace Jail
         bool OnSteep => steepContactCount > 0;
         bool Climbing => climbContactCount > 0 && stepsSinceLastJump > 2;
 
-        public bool spirit = false, spiritReturning = false;
+        public bool IsSpirit => spirit;
+
+        bool spirit = false, spiritReturning = false;
         float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
         int stepsSinceLastGrounded, stepsSinceLastJump, stepsSinceLastClimbRequest;
         Vector3 connectionWorldPosition, connectionLocalPosition;
