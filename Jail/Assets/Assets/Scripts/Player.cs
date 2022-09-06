@@ -1,6 +1,7 @@
 using Jail.Utility;
 using System.Collections;
 using UnityEngine;
+using Jail;
 
 namespace Jail
 {
@@ -63,7 +64,9 @@ namespace Jail
         bool OnSteep => steepContactCount > 0;
         bool Climbing => climbContactCount > 0 && stepsSinceLastJump > 2;
 
-        public bool spirit = false, spiritReturning = false;
+        public bool IsSpirit => spirit;
+
+        bool spirit = false, spiritReturning = false;
         float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
         int stepsSinceLastGrounded, stepsSinceLastJump, stepsSinceLastClimbRequest;
         Vector3 connectionWorldPosition, connectionLocalPosition;
@@ -538,6 +541,7 @@ namespace Jail
 
         public void TransformToSpirit()
         {
+            if (PlayerTrigger.instance.ObstacleDetected) return;
             spirit = true;
             spiritObject.SetActive(true);
             spiritObject.transform.localPosition = Vector3.zero;

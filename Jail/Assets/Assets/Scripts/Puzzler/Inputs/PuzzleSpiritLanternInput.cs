@@ -27,7 +27,7 @@ namespace Jail.Puzzler.Inputs
         {
             if (IsTriggered) return;
 
-            if (!Player.instance.spirit || Player.instance.spiritReturning) return;
+            if (!Player.instance.IsSpirit) return;
 
             //  trigger
             IsTriggered = true;
