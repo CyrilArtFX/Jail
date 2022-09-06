@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Jail.Interactables
+namespace Jail.Interactables.ZapTurret
 {
     public class ZapTurret : MonoBehaviour
     {
@@ -24,6 +24,9 @@ namespace Jail.Interactables
         Transform projectileSpawnPoint;
 
         GameObject currentProjectile;
+
+		/*[Header("Chainer"), SerializeField]
+        ZapTurretChainer chainer;*/
 
         void Start()
         {
@@ -89,7 +92,7 @@ namespace Jail.Interactables
             if (direction.sqrMagnitude > distToSqr)
                 return false;
 
-            //  check for direct eye-contact
+            //  check for direct eye-contact w/ Spirit
             bool is_hit = Physics.Raycast(raycastStart, direction, out RaycastHit hit_infos, distance, obstacleMask);
             raycastHit = hit_infos.point;
             wasRaycastPerformed = true;
@@ -107,9 +110,13 @@ namespace Jail.Interactables
             //  setup projectile script 
             if (currentProjectile.TryGetComponent(out ZapTurretProjectile script))
             {
-                script.TargetTransform = target_transform;
-                script.TurretTransform = transform;
+                script.targetTransform = target_transform;
+                script.turretTransform = transform;
             }
+
+            //  order chainer to follow projectile
+            ZapTurretChainer chainer = currentProjectile.GetComponent<ZapTurretChainer>();
+            chainer.projectileTarget = gameObject;
         }
     }
 }

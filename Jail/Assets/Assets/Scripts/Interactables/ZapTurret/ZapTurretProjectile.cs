@@ -1,19 +1,20 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Jail.Interactables
+namespace Jail.Interactables.ZapTurret
 {
     public class ZapTurretProjectile : MonoBehaviour
     {
-        public Transform TurretTransform { get; set; }
-        public Transform TargetTransform { get; set; }
+        public Transform turretTransform;
+        public Transform targetTransform;
 
         [SerializeField]
         float moveSpeed = 50.0f;
         
         void FixedUpdate()
         {
-            transform.position = Vector3.MoveTowards(transform.position, TargetTransform.position, Time.fixedDeltaTime * moveSpeed);
+            transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.fixedDeltaTime * moveSpeed);
+            transform.LookAt(targetTransform);
         }
 
         void OnTriggerEnter(Collider other)
@@ -21,6 +22,7 @@ namespace Jail.Interactables
             if (other.gameObject != Player.instance.Spirit) return;
 
             Player.instance.GoBackToNormalForm();
+            Destroy(gameObject);
         }
     }
 }
