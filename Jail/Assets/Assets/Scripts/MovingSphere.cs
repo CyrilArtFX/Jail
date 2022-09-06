@@ -48,7 +48,7 @@ public class MovingSphere : MonoBehaviour
     Animator animator;
 
     Vector2 playerInput;
-    bool desiredJump, desiresClimbing, requestClimbing;
+    bool desiredJump, desiresClimbing, requestClimbing, desireSpirit, desireNormal;
 
     Vector3 velocity, connectionVelocity;
     Vector3 groundNormal, contactNormal, steepNormal, climbNormal, lastClimbNormal;
@@ -108,11 +108,16 @@ public class MovingSphere : MonoBehaviour
             
         desiredJump |= Input.GetButtonDown("Jump");
 
+        desireSpirit |= Input.GetButtonDown("Spirit");
+
         if (spirit)
         {
             desiresClimbing = false;
             requestClimbing = false;
             desiredJump = false;
+
+            desireNormal |= Input.GetButtonDown("Spirit");
+
             camFocus.localPosition = spiritObject.transform.localPosition;
         }
         else
@@ -202,6 +207,15 @@ public class MovingSphere : MonoBehaviour
 
         AdjustVelocity();
 
+        if(desireSpirit)
+        {
+            desireSpirit = false;
+            if(!desiredJump && !Climbing && OnGround && !spirit)
+            {
+                TransformToSpirit();
+            }
+        }
+
         if (desiredJump)
         {
             desiredJump = false;
@@ -214,6 +228,12 @@ public class MovingSphere : MonoBehaviour
         {
             spiritObject.GetComponent<Rigidbody>().velocity = velocity;
             body_velocity = Vector3.zero;
+
+            if(desireNormal)
+            {
+                desireNormal = false;
+                GoBackToNormalForm();
+            }
         }
 
 
@@ -229,7 +249,7 @@ public class MovingSphere : MonoBehaviour
         {
             body_velocity += (Physics.gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
         }
-        else
+        else if(!spirit)
         {
             body_velocity += Physics.gravity * Time.deltaTime;
         }
@@ -528,7 +548,7 @@ public class MovingSphere : MonoBehaviour
         spiritReturning = true;
         spiritObject.GetComponent<CapsuleCollider>().isTrigger = true;
 
-        while (Vector3.Distance(spiritObject.transform.localPosition, Vector3.zero) > 0.1f)
+        while (Vector3.Distance(spiritObject.transform.localPosition, Vector3.zero) > 0.5f)
         {
             spiritObject.GetComponent<Rigidbody>().AddForce(-spiritObject.transform.localPosition.normalized * Time.deltaTime * 100000f);
             yield return new WaitForSeconds(Time.deltaTime);
