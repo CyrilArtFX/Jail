@@ -7,6 +7,8 @@ namespace Jail
 {
     public class Player : MonoBehaviour
     {
+        public GameObject SpiritObject { get => spiritObject; }
+
         [Header("Solid Body")]
         [SerializeField] 
         Transform modelFlip = default;
