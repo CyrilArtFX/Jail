@@ -82,7 +82,7 @@ namespace Jail.Interactables
             GameObject target = Player.instance.Spirit;
 
             //  get raycast start & direction
-            raycastStart = transform.position;
+            raycastStart = projectileSpawnPoint.position;
             Vector3 direction = target.transform.position - raycastStart;
 
             //  check for distance
