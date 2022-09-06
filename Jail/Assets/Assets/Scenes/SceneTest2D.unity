@@ -9138,6 +9138,10 @@ PrefabInstance:
       propertyPath: m_UpdateMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7847598430729187404, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7946750689201620291, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
       propertyPath: m_Name
       value: Player
@@ -9160,11 +9164,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7946750689201620303, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 62.9
+      value: 74
       objectReference: {fileID: 0}
     - target: {fileID: 7946750689201620303, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 86
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 7946750689201620303, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
       propertyPath: m_LocalRotation.w
