@@ -16,7 +16,7 @@ namespace Jail.Puzzler.Inputs
         Material triggerMaterial;
         Material defaultMaterial;
         [SerializeField]
-        Renderer renderer;
+        new Renderer renderer;
 
         void Awake()
         {
