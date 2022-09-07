@@ -10,7 +10,11 @@ public class DissolveObject : MonoBehaviour
     float dissolveTime;
 
     bool dissolveStarted = false;
+    bool inverseDissolveStarted = false;
     float dissolveValue = 0f;
+
+    public bool IsDissolve => dissolveValue >= 0.85f;
+    public bool Dissolving => dissolveStarted || inverseDissolveStarted;
 
     void Awake()
     {
@@ -29,9 +33,25 @@ public class DissolveObject : MonoBehaviour
                 renderer.material.SetFloat("Vector1_7d1cd5e28bfe440ea3a8058edcc3457f", dissolveValue);
             }
 
-            if(dissolveValue >= 1)
+            if(dissolveValue >= 1f)
             {
+                dissolveValue = 1f;
                 dissolveStarted = false;
+            }
+        }
+
+        if (inverseDissolveStarted)
+        {
+            dissolveValue -= Time.deltaTime / dissolveTime;
+            foreach (Renderer renderer in renderers)
+            {
+                renderer.material.SetFloat("Vector1_7d1cd5e28bfe440ea3a8058edcc3457f", dissolveValue);
+            }
+
+            if (dissolveValue <= 0f)
+            {
+                dissolveValue = 0f;
+                inverseDissolveStarted = false;
             }
         }
     }
@@ -39,6 +59,24 @@ public class DissolveObject : MonoBehaviour
     public void Dissolve()
     {
         dissolveStarted = true;
+        inverseDissolveStarted = false;
+    }
+
+    public void InverseDissolve()
+    {
+        inverseDissolveStarted = true;
+        dissolveStarted = false;
+    }
+
+    public void ForceNoDissolve()
+    {
+        dissolveStarted = false;
+        inverseDissolveStarted = false;
+        dissolveValue = 0f;
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.material.SetFloat("Vector1_7d1cd5e28bfe440ea3a8058edcc3457f", dissolveValue);
+        }
     }
 
     private void GetAllRenderersOfChilds(Transform objectToCheck)
