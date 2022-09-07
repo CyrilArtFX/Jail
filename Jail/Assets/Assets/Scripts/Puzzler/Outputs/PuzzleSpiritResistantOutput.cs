@@ -8,6 +8,14 @@ namespace Jail.Puzzler.Outputs
         [SerializeField]
         DissolveObject dissolve;
 
+        BoxCollider boxCollider = default;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            boxCollider = GetComponent<BoxCollider>();
+        }
+
         public override void OnInputsTriggered()
         {
             print("Breaking wall!");
@@ -22,7 +30,7 @@ namespace Jail.Puzzler.Outputs
 
         public void ChangeBoxTrigger(bool trigger)
         {
-            GetComponent<BoxCollider>().isTrigger = trigger;
+            boxCollider.isTrigger = trigger;
         }
     }
 }

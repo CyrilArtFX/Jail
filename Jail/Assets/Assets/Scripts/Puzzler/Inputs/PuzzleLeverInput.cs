@@ -16,7 +16,6 @@ namespace Jail.Puzzler.Inputs
         {
             if (!isPlayerInFront) return;
             if (Player.instance.IsSpirit) return;
-            if (disabled) return;
 
             if (Input.GetButtonDown("Interact"))
             {

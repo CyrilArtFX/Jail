@@ -10,9 +10,6 @@ namespace Jail.Puzzler.Inputs
 
         bool isTriggered = false;
 
-        [SerializeField]
-        protected bool disabled = false;
-
         public bool IsTriggered
         {
             get => isTriggered;
@@ -22,6 +19,8 @@ namespace Jail.Puzzler.Inputs
                 OnTrigger(value);
             }
         }
+
+        new Collider collider = default;
 
         [SerializeField]
         protected new Renderer renderer;
@@ -34,8 +33,7 @@ namespace Jail.Puzzler.Inputs
 
         void Awake()
         {
-            //  change material depending on disable state
-            renderer.material = disabled ? disabledMaterial : defaultMaterial;
+            collider = GetComponent<Collider>();
         }
 
         public void LinkOutput(PuzzleBaseOutput output)
@@ -45,8 +43,6 @@ namespace Jail.Puzzler.Inputs
 
         protected virtual void OnTrigger(bool state)
         {
-            if (disabled) return;
-
             print("input: " + this + " state is " + isTriggered);
 
             //  alert output from change
@@ -56,11 +52,12 @@ namespace Jail.Puzzler.Inputs
             }
         }
 
-        public void DisableInput(bool disable)
+        public virtual void DisableInput(bool disable)
         {
-            disabled = disable;
             //  change material depending on disable state
             renderer.material = disable ? disabledMaterial : defaultMaterial;
+            collider.enabled = !disable;
+            this.enabled = !disable;
         }
     }
 }

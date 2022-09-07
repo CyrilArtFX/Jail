@@ -17,13 +17,14 @@ namespace Jail.Puzzler.Inputs
 
         void OnTriggerEnter(Collider other)
         {
-            if (disabled) return;
-
             if (!Player.instance.IsSpirit) return;
 
             //  trigger
             IsTriggered = !IsTriggered;
-            if(IsTriggered) particles.Play();
+            if (IsTriggered)
+            {
+                particles.Play();
+            }
         }
 
         protected override void OnTrigger(bool state)
@@ -32,6 +33,15 @@ namespace Jail.Puzzler.Inputs
 
             //  change material depending on state
             renderer.material = state ? triggerMaterial : defaultMaterial;
+        }
+
+        public override void DisableInput(bool disable)
+        {
+            if (disable)
+            {
+                IsTriggered = false;
+            }
+            base.DisableInput(disable);
         }
     }
 }

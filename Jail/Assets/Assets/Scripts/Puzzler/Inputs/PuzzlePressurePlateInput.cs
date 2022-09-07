@@ -22,8 +22,6 @@ namespace Jail.Puzzler.Inputs
             if (!LayerMaskUtils.HasLayer(detectionMask, other.gameObject.layer))
                 return;
 
-            if (disabled) return;
-
             //  trigger if it is the first collider
             if ((activeCollidersCount++) == 0)
             {

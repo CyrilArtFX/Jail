@@ -80,6 +80,9 @@ namespace Jail
 
         public static Player instance;
 
+        CapsuleCollider spiritCollider = default;
+        Rigidbody spiritBody = default;
+
 
         [Header("Spirit Returning Parameters")]
         [SerializeField, Tooltip("The average speed of the spirit while returning, in meter per seconds")]
@@ -111,7 +114,10 @@ namespace Jail
             body = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
             body.useGravity = false;
-            spiritObject.GetComponent<Rigidbody>().useGravity = false;
+
+            spiritBody = spiritObject.GetComponent<Rigidbody>();
+            spiritCollider = spiritObject.GetComponent<CapsuleCollider>();
+            spiritBody.useGravity = false;
             spiritObject.SetActive(false);
             OnValidate();
         }
@@ -162,7 +168,7 @@ namespace Jail
 
                 if (timeSinceSpiritReturningStart >= timeForSpiritToReturn)
                 {
-                    spiritObject.GetComponent<CapsuleCollider>().isTrigger = false;
+                    spiritCollider.isTrigger = false;
                     spiritReturning = false;
 
                     spiritDissolve.ForceNoDissolve();
@@ -197,13 +203,13 @@ namespace Jail
                 }
                 else
                 {
-                    if (spiritObject.GetComponent<Rigidbody>().velocity == Vector3.zero || playerInput == Vector2.zero)
+                    if (spiritBody.velocity == Vector3.zero || playerInput == Vector2.zero)
                     {
                         spirit_rotation_plane_normal = spiritObject.transform.up;
                     }
                     else
                     {
-                        spirit_rotation_plane_normal = spiritObject.GetComponent<Rigidbody>().velocity.normalized;
+                        spirit_rotation_plane_normal = spiritBody.velocity.normalized;
                     }
                 }
                 
@@ -288,7 +294,7 @@ namespace Jail
         
             if (spirit)
             {
-                spiritObject.GetComponent<Rigidbody>().velocity = velocity;
+                spiritBody.velocity = velocity;
                 body_velocity = Vector3.zero;
 
                 if(desireNormal)
@@ -340,7 +346,7 @@ namespace Jail
             stepsSinceLastJump++;
             stepsSinceLastClimbRequest = requestClimbing ? 0 : stepsSinceLastClimbRequest + 1;
 
-            velocity = spirit ? spiritObject.GetComponent<Rigidbody>().velocity : body.velocity;
+            velocity = spirit ? spiritBody.velocity : body.velocity;
 
             if (CheckClimbing() || OnGround || SnapToGround() || CheckSteepContact())
             {
@@ -618,6 +624,8 @@ namespace Jail
 
         public void ReturnToBody()
         {
+            spiritCollider.isTrigger = true;
+
             spiritPosAtStartReturning = spiritObject.transform.localPosition;
             float distanceSpiritBody = Vector3.Distance(spiritPosAtStartReturning, Vector3.zero);
             timeForSpiritToReturn = distanceSpiritBody / spiritReturningAverageSpeed;

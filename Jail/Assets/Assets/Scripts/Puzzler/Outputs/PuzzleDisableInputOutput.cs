@@ -6,7 +6,19 @@ namespace Jail.Puzzler.Outputs
     public class PuzzleDisableInputOutput : PuzzleBaseOutput
     {
         [SerializeField]
-        PuzzleBaseInput inputToDisable;
+        PuzzleBaseInput inputToDisable = default;
+
+        [SerializeField]
+        bool startDisable = false;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            if (startDisable)
+            {
+                inputToDisable.DisableInput(true);
+            }
+        }
 
         public override void OnInputsTriggered()
         {
