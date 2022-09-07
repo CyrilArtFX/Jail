@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 65662980f228dfe47a63232882b79d5e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -126,12 +126,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0cdd53b58ad944190c6a79e686e17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  renderer: {fileID: 3921455373304798931}
+  defaultMaterial: {fileID: 2100000, guid: 65662980f228dfe47a63232882b79d5e, type: 2}
+  disabledMaterial: {fileID: 2100000, guid: a9f6f965901ae5c4c8c2dfa65def4f7a, type: 2}
   unTriggerTime: 20
   detectionMask:
     serializedVersion: 2
     m_Bits: 16384
-  triggerMaterial: {fileID: 2100000, guid: 4d1c6f1e922219449beb335be5fac060, type: 2}
-  renderer: {fileID: 3921455373304798931}
+  particles: {fileID: 0}
+  triggerMaterial: {fileID: 2100000, guid: 86ce2ae9861253142be6d42458d0c24c, type: 2}
 --- !u!65 &3921455374443962403
 BoxCollider:
   m_ObjectHideFlags: 0

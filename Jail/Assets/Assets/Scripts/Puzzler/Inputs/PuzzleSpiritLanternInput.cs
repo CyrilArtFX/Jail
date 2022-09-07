@@ -16,17 +16,11 @@ namespace Jail.Puzzler.Inputs
         //  TODO: replace w/ final assets
         [Header("PREVIEW PLACEHOLDER"), SerializeField]
         Material triggerMaterial;
-        Material defaultMaterial;
-        [SerializeField]
-        new Renderer renderer;
-
-        void Awake()
-        {
-            defaultMaterial = renderer.material;
-        }
 
         void OnTriggerEnter(Collider other)
         {
+            if (disabled) return;
+
             if (IsTriggered) return;
 
             if (!Player.instance.IsSpirit) return;
