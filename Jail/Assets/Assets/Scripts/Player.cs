@@ -16,6 +16,10 @@ namespace Jail
         GameObject spiritObject = default;
         [SerializeField] 
         Transform spiritModelFlip = default;
+        [SerializeField]
+        DissolveObject spiritDissolve = default;
+        [SerializeField]
+        GameObject spiritParticles = default;
 
         [Header("Parameters")]
         [SerializeField, Range(0f, 100f)] 
@@ -241,7 +245,7 @@ namespace Jail
                 if(desireNormal)
                 {
                     desireNormal = false;
-                    GoBackToNormalForm();
+                    GoBackToNormalForm(true);
                 }
             }
 
@@ -546,17 +550,25 @@ namespace Jail
             spiritObject.SetActive(true);
             spiritObject.transform.localPosition = Vector3.zero;
             spiritObject.transform.localRotation = transform.rotation;
+            spiritParticles.SetActive(true);
         }
 
-        public void GoBackToNormalForm()
+        public void GoBackToNormalForm(bool spiritDead)
         {
-            StartCoroutine(ReturnToBody());
+            StartCoroutine(ReturnToBody(spiritDead));
         }
 
-        IEnumerator ReturnToBody()
+        IEnumerator ReturnToBody(bool dissolve)
         {
             spiritReturning = true;
             spiritObject.GetComponent<CapsuleCollider>().isTrigger = true;
+            spiritParticles.SetActive(false);
+
+            if(dissolve)
+            {
+                spiritDissolve.Dissolve();
+                yield return new WaitUntil(() => spiritDissolve.IsDissolve);
+            }
 
             while (Vector3.Distance(spiritObject.transform.localPosition, Vector3.zero) > 0.5f)
             {
@@ -566,6 +578,12 @@ namespace Jail
 
             spiritObject.GetComponent<CapsuleCollider>().isTrigger = false;
             spiritReturning = false;
+
+            if(dissolve)
+            {
+                spiritDissolve.ForceNoDissolve();
+            }
+
             spiritObject.SetActive(false);
             spirit = false;
         }

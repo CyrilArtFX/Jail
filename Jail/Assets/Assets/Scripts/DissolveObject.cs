@@ -13,7 +13,7 @@ public class DissolveObject : MonoBehaviour
     bool inverseDissolveStarted = false;
     float dissolveValue = 0f;
 
-    public bool IsDissolve => dissolveValue >= 0.7f;
+    public bool IsDissolve => dissolveValue >= 0.85f;
     public bool Dissolving => dissolveStarted || inverseDissolveStarted;
 
     void Awake()
@@ -66,6 +66,17 @@ public class DissolveObject : MonoBehaviour
     {
         inverseDissolveStarted = true;
         dissolveStarted = false;
+    }
+
+    public void ForceNoDissolve()
+    {
+        dissolveStarted = false;
+        inverseDissolveStarted = false;
+        dissolveValue = 0f;
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.material.SetFloat("Vector1_7d1cd5e28bfe440ea3a8058edcc3457f", dissolveValue);
+        }
     }
 
     private void GetAllRenderersOfChilds(Transform objectToCheck)
