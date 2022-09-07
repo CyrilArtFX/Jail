@@ -54,10 +54,16 @@ namespace Jail.Puzzler.Inputs
 
         public virtual void DisableInput(bool disable)
         {
+            collider.enabled = !disable;
+            enabled = !disable;
+
+            if (disable)
+            {
+                IsTriggered = false;
+            }
+
             //  change material depending on disable state
             renderer.material = disable ? disabledMaterial : defaultMaterial;
-            collider.enabled = !disable;
-            this.enabled = !disable;
         }
     }
 }

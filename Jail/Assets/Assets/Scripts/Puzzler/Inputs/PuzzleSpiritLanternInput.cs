@@ -34,14 +34,5 @@ namespace Jail.Puzzler.Inputs
             //  change material depending on state
             renderer.material = state ? triggerMaterial : defaultMaterial;
         }
-
-        public override void DisableInput(bool disable)
-        {
-            if (disable)
-            {
-                IsTriggered = false;
-            }
-            base.DisableInput(disable);
-        }
     }
 }
