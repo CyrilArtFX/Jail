@@ -1,13 +1,118 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+using Jail.Environment;
+using SplineMesh;
+
 namespace Jail.Interactables.ZapTurret
 {
+	[ExecuteInEditMode]
 	public class ZapTurretChainer : MonoBehaviour
 	{
-		public GameObject projectileTarget;
+		public ZapTurretProjectile Projectile { get; set; }
+		public Transform TurretAnchor { get; set; }
+		public Spline Spline => splineChain.Spline;
+		public SplineChain SplineChain => splineChain;
+		public List<SplineNode> Nodes => Spline.nodes;
 
-		[Header("Chainer"), SerializeField]
+		[SerializeField]
+		SplineChain splineChain;
+		[SerializeField]
+		float nodeSpawnTime = .2f;
+
+		float currentNodeSpawnTime;
+		Dictionary<SplineNode, Vector3> worldNodesPositions = new Dictionary<SplineNode, Vector3>();
+		
+		/// <summary>
+		/// Get farest node from the chainer considering Node 0 is the closest.
+		/// </summary>
+		/// <returns>Node ID</returns>
+		public int RetrieveFarestNode(out SplineNode node) //  TODO: change name
+        {
+			int id = Nodes.Count - 2;
+			node = Nodes[id];
+			return id;
+        }
+
+		public void RemoveNodeAt(int id)
+        {
+			SplineNode node = Nodes[id];
+			Nodes.Remove(node);
+			worldNodesPositions.Remove(node);
+
+			Spline.RefreshCurves();
+		}
+
+		void Start()
+        {
+			//worldNodesPositions.Add(Nodes[1], TurretAnchor.position);  //  pos of last node
+			currentNodeSpawnTime = nodeSpawnTime;    
+        }
+
+        void FixedUpdate()
+		{
+			//  check for at least 2 nodes
+			int count = Nodes.Count;
+			if (count < 2)
+			{
+				enabled = false;
+				Debug.LogError("ZapTurretChainer: There must be only 2 nodes in the Spline!");
+				return;
+			}
+
+			//  get two first nodes
+			SplineNode first_node = Nodes[0], last_node = Nodes[count - 1];
+
+			//  set nodes position
+			last_node.Position = transform.InverseTransformPoint(TurretAnchor.position);
+			first_node.Position = Vector3.zero;
+
+			//  set nodes direction
+			first_node.Direction = (last_node.Position - first_node.Position).normalized;
+			last_node.Direction = -first_node.Direction;
+
+			//  update in-between nodes local positions to world positions
+			SplineNode previous_node = Nodes[0];
+			for (int i = 1; i < count - 1; i++)
+            {
+				SplineNode node = Nodes[i];
+				
+				//  update node
+				Vector3 world_pos = worldNodesPositions[node];
+				node.Position = transform.InverseTransformPoint(world_pos);
+				node.Direction = Vector3.zero;// -(previous_node.Position - node.Position).normalized;
+				
+				previous_node = node;
+				//print("update node " + i);
+            }
+
+			if (!Projectile.IsReturning)
+            {
+				//  spawn new node
+				if ((currentNodeSpawnTime -= Time.fixedDeltaTime) <= 0.0f)
+				{
+					//  insert new node
+					SplineNode node = new SplineNode(Vector3.zero, Vector3.zero);
+					Spline.AddNode(node);
+					worldNodesPositions.Add(node, transform.position);
+
+					//for (int i = 0; i < Nodes.Count; i++) { print("before " + i + " " + (Nodes[i] == last_node)); }
+
+					//  sorting last node
+					Spline.RemoveNode(last_node);
+					Spline.AddNode(last_node);
+
+					Spline.RefreshCurves();
+					//for (int i = 0; i < Nodes.Count; i++) { print("after " + i + " " + (Nodes[i] == last_node)); }
+					//print(Nodes.IndexOf(last_node) + "  " + (last_node == Nodes[Nodes.Count - 1]));
+
+					//  reset timer
+					currentNodeSpawnTime = nodeSpawnTime;
+				}
+            }
+        }
+
+        /*[Header("Chainer"), SerializeField]
 		GameObject chainPrefab;
 		[SerializeField]
 		Transform anchor;
@@ -99,6 +204,6 @@ namespace Jail.Interactables.ZapTurret
 				chain.Joint.connectedBody = last_anchor;
 				last_anchor = chain.Rigidbody;
 			}
-		}
-	}
+		}*/
+    }
 }
