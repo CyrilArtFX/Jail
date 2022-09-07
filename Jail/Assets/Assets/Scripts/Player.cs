@@ -80,6 +80,17 @@ namespace Jail
 
         public static Player instance;
 
+
+        [Header("Spirit Returning Parameters")]
+        [SerializeField, Tooltip("The average speed of the spirit while returning, in meter per seconds")]
+        float spiritReturningAverageSpeed = 5f;
+        [SerializeField, Tooltip("The distance between spirit and body by the time")]
+        AnimationCurve spiritReturningCurve = default;
+
+        Vector3 spiritPosAtStartReturning;
+        float timeForSpiritToReturn;
+        float timeSinceSpiritReturningStart;
+
         void OnValidate()
         {
             minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
@@ -141,6 +152,30 @@ namespace Jail
             UpdateRotations();
 
             animator.SetBool("Climb", Climbing);
+
+
+            if(spiritReturning)
+            {
+                timeSinceSpiritReturningStart += Time.deltaTime;
+
+                if (timeSinceSpiritReturningStart >= timeForSpiritToReturn)
+                {
+                    spiritObject.GetComponent<CapsuleCollider>().isTrigger = false;
+                    spiritReturning = false;
+
+                    spiritDissolve.ForceNoDissolve();
+
+                    spiritObject.SetActive(false);
+                    spirit = false;
+                }
+                else
+                {
+                    float time_scaled = timeSinceSpiritReturningStart * (1 / timeForSpiritToReturn);
+                    float return_fraction = spiritReturningCurve.Evaluate(time_scaled);
+
+                    spiritObject.transform.localPosition = spiritPosAtStartReturning * (1 - return_fraction);
+                }
+            }
         }
 
         void UpdateRotations()
@@ -245,7 +280,7 @@ namespace Jail
                 if(desireNormal)
                 {
                     desireNormal = false;
-                    GoBackToNormalForm(true);
+                    GoBackToNormalForm(false);
                 }
             }
 
@@ -555,37 +590,26 @@ namespace Jail
 
         public void GoBackToNormalForm(bool spiritDead)
         {
-            StartCoroutine(ReturnToBody(spiritDead));
-        }
-
-        IEnumerator ReturnToBody(bool dissolve)
-        {
-            spiritReturning = true;
-            spiritObject.GetComponent<CapsuleCollider>().isTrigger = true;
             spiritParticles.SetActive(false);
 
-            if(dissolve)
+            if(spiritDead)
             {
                 spiritDissolve.Dissolve();
-                yield return new WaitUntil(() => spiritDissolve.IsDissolve);
             }
-
-            while (Vector3.Distance(spiritObject.transform.localPosition, Vector3.zero) > 0.5f)
+            else
             {
-                spiritObject.GetComponent<Rigidbody>().AddForce(-spiritObject.transform.localPosition.normalized * Time.deltaTime * 100000f);
-                yield return new WaitForSeconds(Time.deltaTime);
+                ReturnToBody();
             }
+        }
 
-            spiritObject.GetComponent<CapsuleCollider>().isTrigger = false;
-            spiritReturning = false;
+        public void ReturnToBody()
+        {
+            spiritPosAtStartReturning = spiritObject.transform.localPosition;
+            float distanceSpiritBody = Vector3.Distance(spiritPosAtStartReturning, Vector3.zero);
+            timeForSpiritToReturn = distanceSpiritBody / spiritReturningAverageSpeed;
+            timeSinceSpiritReturningStart = 0f;
 
-            if(dissolve)
-            {
-                spiritDissolve.ForceNoDissolve();
-            }
-
-            spiritObject.SetActive(false);
-            spirit = false;
+            spiritReturning = true;
         }
 
         public Transform FocusPoint()

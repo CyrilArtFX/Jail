@@ -19,8 +19,6 @@ namespace Jail
         bool inverseDissolveStarted = false;
         float dissolveValue = 0f;
 
-        public bool IsDissolve => dissolveValue == 1f;
-
         void Awake()
         {
             GetAllRenderersOfChilds(this.transform);

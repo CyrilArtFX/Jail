@@ -126,6 +126,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dissolveTime: 1
+  passDissolve:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2504873753576911163}
+        m_TargetAssemblyTypeName: Jail.Player, Assembly-CSharp
+        m_MethodName: ReturnToBody
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  passNoDissolve:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2336433481901585766
 GameObject:
   m_ObjectHideFlags: 0
@@ -5139,6 +5157,31 @@ MonoBehaviour:
   maintainButtonForClimb: 0
   camFocus: {fileID: 0}
   deathText: {fileID: 0}
+  spiritReturningAverageSpeed: 5
+  test:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!54 &7946750689201620298
 Rigidbody:
   m_ObjectHideFlags: 0
