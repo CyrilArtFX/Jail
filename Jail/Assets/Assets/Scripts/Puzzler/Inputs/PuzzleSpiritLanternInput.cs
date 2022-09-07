@@ -6,8 +6,6 @@ namespace Jail.Puzzler.Inputs
 {
     public class PuzzleSpiritLanternInput : PuzzleBaseInput
     {
-        [Header("Spirit Lantern"), Tooltip("How much time should it wait before turning itself off after trigger?"), SerializeField]
-        float unTriggerTime = 20.0f;
         [SerializeField]
         LayerMask detectionMask;
         [SerializeField]
@@ -21,16 +19,11 @@ namespace Jail.Puzzler.Inputs
         {
             if (disabled) return;
 
-            if (IsTriggered) return;
-
             if (!Player.instance.IsSpirit) return;
 
             //  trigger
-            IsTriggered = true;
-            particles.Play();
-
-            //  untrigger after time
-            StartCoroutine(CoroutineExitTrigger());
+            IsTriggered = !IsTriggered;
+            if(IsTriggered) particles.Play();
         }
 
         protected override void OnTrigger(bool state)
@@ -39,13 +32,6 @@ namespace Jail.Puzzler.Inputs
 
             //  change material depending on state
             renderer.material = state ? triggerMaterial : defaultMaterial;
-        }
-
-        IEnumerator CoroutineExitTrigger()
-        {
-            yield return new WaitForSeconds(unTriggerTime);
-
-            IsTriggered = false;
         }
     }
 }
