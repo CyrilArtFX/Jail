@@ -328,8 +328,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6ed2fcd36b8e0649ad55b8be17d9fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  A: {x: -2.19, y: 0.47, z: 0}
-  B: {x: 1.99, y: 1.87, z: 0.71}
+  points:
+  - {x: 2.0035489, y: 2.4881601, z: 3.4564118}
+  - {x: 4.471505, y: 4.6159306, z: 1.382725}
+  - {x: 0.08875418, y: 1.8909905, z: -0.74825895}
 --- !u!4 &2008937654
 Transform:
   m_ObjectHideFlags: 0
