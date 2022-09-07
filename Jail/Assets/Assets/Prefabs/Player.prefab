@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 76176138646387934}
   - component: {fileID: 8535524087697605873}
   - component: {fileID: 4374719162433304147}
+  - component: {fileID: 1719727978493690196}
   m_Layer: 14
   m_Name: SpiritModelFlip
   m_TagString: Untagged
@@ -112,6 +113,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1719727978493690196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2327322524486098906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 580949b7856a4c440b8cca515aecdf5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dissolveTime: 1
+  passDissolve:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2504873753576911163}
+        m_TargetAssemblyTypeName: Jail.Player, Assembly-CSharp
+        m_MethodName: ReturnToBody
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  passNoDissolve:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2336433481901585766
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,7 +220,7 @@ GameObject:
   - component: {fileID: 2981363657628824347}
   - component: {fileID: 5240545623696171845}
   m_Layer: 0
-  m_Name: f
+  m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4934,7 +4966,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5093,6 +5125,8 @@ MonoBehaviour:
   modelFlip: {fileID: 2883546376665707033}
   spiritObject: {fileID: 2336433481901585766}
   spiritModelFlip: {fileID: 76176138646387934}
+  spiritDissolve: {fileID: 1719727978493690196}
+  spiritParticles: {fileID: 5659053076780417179}
   maxSpeed: 10
   maxClimbSpeed: 2
   maxSpiritSpeed: 8
@@ -5123,6 +5157,31 @@ MonoBehaviour:
   maintainButtonForClimb: 0
   camFocus: {fileID: 0}
   deathText: {fileID: 0}
+  spiritReturningAverageSpeed: 5
+  test:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!54 &7946750689201620298
 Rigidbody:
   m_ObjectHideFlags: 0

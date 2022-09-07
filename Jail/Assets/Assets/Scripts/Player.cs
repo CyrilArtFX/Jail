@@ -16,6 +16,10 @@ namespace Jail
         GameObject spiritObject = default;
         [SerializeField] 
         Transform spiritModelFlip = default;
+        [SerializeField]
+        DissolveObject spiritDissolve = default;
+        [SerializeField]
+        GameObject spiritParticles = default;
 
         [Header("Parameters")]
         [SerializeField, Range(0f, 100f)] 
@@ -66,7 +70,7 @@ namespace Jail
 
         public bool IsSpirit => spirit;
 
-        bool spirit = false, spiritReturning = false;
+        bool spirit = false, spiritReturning = false, spiritDisabled = false;
         float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
         int stepsSinceLastGrounded, stepsSinceLastJump, stepsSinceLastClimbRequest;
         Vector3 connectionWorldPosition, connectionLocalPosition;
@@ -75,6 +79,22 @@ namespace Jail
         Quaternion startRotationModelFlip;
 
         public static Player instance;
+
+        CapsuleCollider spiritCollider = default;
+        Rigidbody spiritBody = default;
+
+
+        [Header("Spirit Returning Parameters")]
+        [SerializeField, Tooltip("The average speed of the spirit while returning, in meter per seconds")]
+        float spiritReturningAverageSpeed = 5f;
+        [SerializeField, Tooltip("The distance between spirit and body by the time")]
+        AnimationCurve spiritReturningCurve = default;
+        [SerializeField, Tooltip("The time after spirit returning when spirit is disabled")]
+        float disableSpiritTime = 0.5f;
+
+        Vector3 spiritPosAtStartReturning;
+        float timeForSpiritToReturn;
+        float timeSinceSpiritReturningStart;
 
         void OnValidate()
         {
@@ -94,7 +114,10 @@ namespace Jail
             body = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
             body.useGravity = false;
-            spiritObject.GetComponent<Rigidbody>().useGravity = false;
+
+            spiritBody = spiritObject.GetComponent<Rigidbody>();
+            spiritCollider = spiritObject.GetComponent<CapsuleCollider>();
+            spiritBody.useGravity = false;
             spiritObject.SetActive(false);
             OnValidate();
         }
@@ -137,6 +160,35 @@ namespace Jail
             UpdateRotations();
 
             animator.SetBool("Climb", Climbing);
+
+
+            if(spiritReturning)
+            {
+                timeSinceSpiritReturningStart += Time.deltaTime;
+
+                if (timeSinceSpiritReturningStart >= timeForSpiritToReturn)
+                {
+                    spiritCollider.isTrigger = false;
+                    spiritReturning = false;
+
+                    spiritDissolve.ForceNoDissolve();
+
+                    spiritObject.SetActive(false);
+                    spirit = false;
+
+                    if(disableSpiritTime > 0f)
+                    {
+                        StartCoroutine(DisableSpirit());
+                    }
+                }
+                else
+                {
+                    float time_scaled = timeSinceSpiritReturningStart * (1 / timeForSpiritToReturn);
+                    float return_fraction = spiritReturningCurve.Evaluate(time_scaled);
+
+                    spiritObject.transform.localPosition = spiritPosAtStartReturning * (1 - return_fraction);
+                }
+            }
         }
 
         void UpdateRotations()
@@ -145,15 +197,22 @@ namespace Jail
             if (spirit)
             {
                 Vector3 spirit_rotation_plane_normal;
-                if (spiritObject.GetComponent<Rigidbody>().velocity == Vector3.zero || playerInput == Vector2.zero && !spiritReturning)
+                if(spiritReturning)
                 {
-                    spirit_rotation_plane_normal = spiritObject.transform.up;
+                    spirit_rotation_plane_normal = -spiritObject.transform.localPosition.normalized;
                 }
                 else
                 {
-                    spirit_rotation_plane_normal = spiritObject.GetComponent<Rigidbody>().velocity.normalized;
+                    if (spiritBody.velocity == Vector3.zero || playerInput == Vector2.zero)
+                    {
+                        spirit_rotation_plane_normal = spiritObject.transform.up;
+                    }
+                    else
+                    {
+                        spirit_rotation_plane_normal = spiritBody.velocity.normalized;
+                    }
                 }
-
+                
                 Quaternion spirit_rotation = spiritObject.transform.localRotation;
                 if (modelAlignSpeed > 0f)
                 {
@@ -219,7 +278,7 @@ namespace Jail
             if(desireSpirit)
             {
                 desireSpirit = false;
-                if(!desiredJump && !Climbing && OnGround && !spirit)
+                if(!desiredJump && !Climbing && OnGround && !spirit && !spiritDisabled)
                 {
                     TransformToSpirit();
                 }
@@ -235,13 +294,13 @@ namespace Jail
         
             if (spirit)
             {
-                spiritObject.GetComponent<Rigidbody>().velocity = velocity;
+                spiritBody.velocity = velocity;
                 body_velocity = Vector3.zero;
 
                 if(desireNormal)
                 {
                     desireNormal = false;
-                    GoBackToNormalForm();
+                    GoBackToNormalForm(false);
                 }
             }
 
@@ -287,7 +346,7 @@ namespace Jail
             stepsSinceLastJump++;
             stepsSinceLastClimbRequest = requestClimbing ? 0 : stepsSinceLastClimbRequest + 1;
 
-            velocity = spirit ? spiritObject.GetComponent<Rigidbody>().velocity : body.velocity;
+            velocity = spirit ? spiritBody.velocity : body.velocity;
 
             if (CheckClimbing() || OnGround || SnapToGround() || CheckSteepContact())
             {
@@ -546,28 +605,40 @@ namespace Jail
             spiritObject.SetActive(true);
             spiritObject.transform.localPosition = Vector3.zero;
             spiritObject.transform.localRotation = transform.rotation;
+            spiritParticles.SetActive(true);
         }
 
-        public void GoBackToNormalForm()
+        public void GoBackToNormalForm(bool spiritDead)
         {
-            StartCoroutine(ReturnToBody());
-        }
+            spiritParticles.SetActive(false);
 
-        IEnumerator ReturnToBody()
-        {
-            spiritReturning = true;
-            spiritObject.GetComponent<CapsuleCollider>().isTrigger = true;
-
-            while (Vector3.Distance(spiritObject.transform.localPosition, Vector3.zero) > 0.5f)
+            if(spiritDead)
             {
-                spiritObject.GetComponent<Rigidbody>().AddForce(-spiritObject.transform.localPosition.normalized * Time.deltaTime * 100000f);
-                yield return new WaitForSeconds(Time.deltaTime);
+                spiritDissolve.Dissolve();
             }
+            else
+            {
+                ReturnToBody();
+            }
+        }
 
-            spiritObject.GetComponent<CapsuleCollider>().isTrigger = false;
-            spiritReturning = false;
-            spiritObject.SetActive(false);
-            spirit = false;
+        public void ReturnToBody()
+        {
+            spiritCollider.isTrigger = true;
+
+            spiritPosAtStartReturning = spiritObject.transform.localPosition;
+            float distanceSpiritBody = Vector3.Distance(spiritPosAtStartReturning, Vector3.zero);
+            timeForSpiritToReturn = distanceSpiritBody / spiritReturningAverageSpeed;
+            timeSinceSpiritReturningStart = 0f;
+
+            spiritReturning = true;
+        }
+
+        IEnumerator DisableSpirit()
+        {
+            spiritDisabled = true;
+            yield return new WaitForSeconds(disableSpiritTime);
+            spiritDisabled = false;
         }
 
         public Transform FocusPoint()

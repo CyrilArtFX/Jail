@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26af00b865d32c040b62703c5873876c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  renderer: {fileID: 6698850850311370832}
+  defaultMaterial: {fileID: 2100000, guid: 86f2a840428fc8d4e84f85029ef3c790, type: 2}
+  disabledMaterial: {fileID: 2100000, guid: df28d26f06151da4cabb80926a1f353d, type: 2}
   detectionMask:
     serializedVersion: 2
     m_Bits: 256
@@ -1113,7 +1116,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: daad0e37d00ea0c4b89c618067fc25b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1746,7 +1749,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: 86f2a840428fc8d4e84f85029ef3c790, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
