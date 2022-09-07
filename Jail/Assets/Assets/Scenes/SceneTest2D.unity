@@ -10632,6 +10632,18 @@ PrefabInstance:
       propertyPath: spiritReturningCurve.m_Curve.Array.data[1].value
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2504873753576911163, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
+      propertyPath: spiritReturningCurve.m_Curve.Array.data[0].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2504873753576911163, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
+      propertyPath: spiritReturningCurve.m_Curve.Array.data[0].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2504873753576911163, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
+      propertyPath: spiritReturningCurve.m_Curve.Array.data[0].outWeight
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2883546376665707033, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1

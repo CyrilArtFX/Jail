@@ -191,15 +191,22 @@ namespace Jail
             if (spirit)
             {
                 Vector3 spirit_rotation_plane_normal;
-                if (spiritObject.GetComponent<Rigidbody>().velocity == Vector3.zero || playerInput == Vector2.zero && !spiritReturning)
+                if(spiritReturning)
                 {
-                    spirit_rotation_plane_normal = spiritObject.transform.up;
+                    spirit_rotation_plane_normal = -spiritObject.transform.localPosition.normalized;
                 }
                 else
                 {
-                    spirit_rotation_plane_normal = spiritObject.GetComponent<Rigidbody>().velocity.normalized;
+                    if (spiritObject.GetComponent<Rigidbody>().velocity == Vector3.zero || playerInput == Vector2.zero)
+                    {
+                        spirit_rotation_plane_normal = spiritObject.transform.up;
+                    }
+                    else
+                    {
+                        spirit_rotation_plane_normal = spiritObject.GetComponent<Rigidbody>().velocity.normalized;
+                    }
                 }
-
+                
                 Quaternion spirit_rotation = spiritObject.transform.localRotation;
                 if (modelAlignSpeed > 0f)
                 {
