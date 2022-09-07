@@ -8,14 +8,6 @@ namespace Jail.Puzzler.Outputs
         [SerializeField]
         DissolveObject dissolve;
 
-        void FixedUpdate()
-        {
-            if(dissolve.Dissolving)
-            {
-                GetComponent<BoxCollider>().isTrigger = dissolve.IsDissolve;
-            }
-        }
-
         public override void OnInputsTriggered()
         {
             print("Breaking wall!");
@@ -26,6 +18,11 @@ namespace Jail.Puzzler.Outputs
         {
             print("Repairing wall!");
             dissolve.InverseDissolve();
+        }
+
+        public void ChangeBoxTrigger(bool trigger)
+        {
+            GetComponent<BoxCollider>().isTrigger = trigger;
         }
     }
 }

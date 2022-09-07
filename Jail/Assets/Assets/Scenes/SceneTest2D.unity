@@ -7720,7 +7720,6 @@ MonoBehaviour:
   renderer: {fileID: 154797877}
   defaultMaterial: {fileID: 2100000, guid: 65662980f228dfe47a63232882b79d5e, type: 2}
   disabledMaterial: {fileID: 2100000, guid: a9f6f965901ae5c4c8c2dfa65def4f7a, type: 2}
-  unTriggerTime: 1
   detectionMask:
     serializedVersion: 2
     m_Bits: 16384
@@ -8424,6 +8423,7 @@ Transform:
   - {fileID: 1392048566}
   - {fileID: 543450653391260468}
   - {fileID: 1293711812}
+  - {fileID: 1528641387}
   - {fileID: 1894375700}
   m_Father: {fileID: 248992983}
   m_RootOrder: 1
@@ -8475,6 +8475,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dissolveTime: 1
+  passDissolve:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1894375702}
+        m_TargetAssemblyTypeName: Jail.Puzzler.Outputs.PuzzleSpiritResistantOutput,
+          Assembly-CSharp
+        m_MethodName: ChangeBoxTrigger
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  passNoDissolve:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1894375702}
+        m_TargetAssemblyTypeName: Jail.Puzzler.Outputs.PuzzleSpiritResistantOutput,
+          Assembly-CSharp
+        m_MethodName: ChangeBoxTrigger
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!33 &1462084791
 MeshFilter:
   m_ObjectHideFlags: 10
@@ -15736,7 +15768,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-16456
+  m_Name: pb_Mesh74646
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -16026,7 +16058,7 @@ Transform:
   m_Children:
   - {fileID: 1462084789}
   m_Father: {fileID: 1456297119}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1894375701
 BoxCollider:
