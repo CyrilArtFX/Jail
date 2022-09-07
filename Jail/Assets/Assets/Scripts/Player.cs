@@ -70,7 +70,7 @@ namespace Jail
 
         public bool IsSpirit => spirit;
 
-        bool spirit = false, spiritReturning = false;
+        bool spirit = false, spiritReturning = false, spiritDisabled = false;
         float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
         int stepsSinceLastGrounded, stepsSinceLastJump, stepsSinceLastClimbRequest;
         Vector3 connectionWorldPosition, connectionLocalPosition;
@@ -86,6 +86,8 @@ namespace Jail
         float spiritReturningAverageSpeed = 5f;
         [SerializeField, Tooltip("The distance between spirit and body by the time")]
         AnimationCurve spiritReturningCurve = default;
+        [SerializeField, Tooltip("The time after spirit returning when spirit is disabled")]
+        float disableSpiritTime = 0.5f;
 
         Vector3 spiritPosAtStartReturning;
         float timeForSpiritToReturn;
@@ -167,6 +169,11 @@ namespace Jail
 
                     spiritObject.SetActive(false);
                     spirit = false;
+
+                    if(disableSpiritTime > 0f)
+                    {
+                        StartCoroutine(DisableSpirit());
+                    }
                 }
                 else
                 {
@@ -258,7 +265,7 @@ namespace Jail
             if(desireSpirit)
             {
                 desireSpirit = false;
-                if(!desiredJump && !Climbing && OnGround && !spirit)
+                if(!desiredJump && !Climbing && OnGround && !spirit && !spiritDisabled)
                 {
                     TransformToSpirit();
                 }
@@ -610,6 +617,13 @@ namespace Jail
             timeSinceSpiritReturningStart = 0f;
 
             spiritReturning = true;
+        }
+
+        IEnumerator DisableSpirit()
+        {
+            spiritDisabled = true;
+            yield return new WaitForSeconds(disableSpiritTime);
+            spiritDisabled = false;
         }
 
         public Transform FocusPoint()
