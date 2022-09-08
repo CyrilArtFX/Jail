@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +15,7 @@ namespace Jail
     {
         OnlyFadeIn,
         OnlyFadeOut,
-        FullFadeWithRestore
+        BothFadesWithRestore
     }
 
 
@@ -53,7 +51,7 @@ namespace Jail
                     {
                         timeSinceBlackFadeStarted = 0f;
                         blackFadeImage.color = new Color(0, 0, 0, 1);
-                        if(blackFadeType == FadeType.FullFadeWithRestore)
+                        if(blackFadeType == FadeType.BothFadesWithRestore)
                         {
                             blackFadeState = FadeStates.StayBlack;
 
