@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using Jail.Utility.Bezier;
-
-namespace Jail.Environment
+namespace Jail.Utility.Bezier
 {
     [ExecuteInEditMode]
     public class BezierSplineChainer : MonoBehaviour
     {
+        public float Ratio { get => ratio; set => ratio = value; }
+        public BezierSpline Spline => spline;
+
         [SerializeField]
         BezierSpline spline;
         [SerializeField]
@@ -18,6 +19,9 @@ namespace Jail.Environment
 
         [SerializeField]
         float stepSize = .5f;
+
+        [SerializeField, Range(0.0f, 1.0f)]
+        float ratio = 1.0f;
 
         List<Transform> items = new List<Transform>();
         bool toUpdate = false;
@@ -32,6 +36,10 @@ namespace Jail.Environment
             float dist = 0.0f;
             while (dist < spline.Length)
             {
+                //  compute ratio
+                float dist_ratio = dist / spline.Length;
+                if (dist_ratio > ratio) break;
+
                 //  get transform item
                 Transform item;
                 if (items.Count <= i)
@@ -47,9 +55,6 @@ namespace Jail.Environment
                     //  re-use last item
                     item = items[i];
                 }
-
-                //  compute ratio
-                float dist_ratio = dist / spline.Length;
 
                 //  set position
                 Vector3 point = spline.GetPoint(dist_ratio);

@@ -1,5 +1,4 @@
-﻿using SplineMesh;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace Jail.Interactables.ZapTurret
@@ -11,7 +10,8 @@ namespace Jail.Interactables.ZapTurret
         public Transform TurretAnchor { get; set; }
         public bool IsReturning => isReturning;
 
-            
+        Vector3 target;
+
         [SerializeField]
         float moveSpeed = 25.0f, returningSpeed = 15.0f;
         [SerializeField]
@@ -20,6 +20,11 @@ namespace Jail.Interactables.ZapTurret
         bool isReturning = false, isPaused = false;
 
         Coroutine returnCoroutine;
+
+        public void SetPause(bool pause)
+        {
+            isPaused = pause;
+        }
         
         public void ReturnToTurret()
         {
@@ -48,7 +53,7 @@ namespace Jail.Interactables.ZapTurret
 
         void UpdateReturningMovement()
         {
-            var nodes = Chainer.Nodes;
+            /*var nodes = Chainer.Nodes;
             int node_id = nodes.Count == 2 ? 1 : nodes.Count - 2;
             SplineNode node = nodes[node_id];
             print("moving to node " + node_id + "/" + (nodes.Count - 1));
@@ -75,13 +80,29 @@ namespace Jail.Interactables.ZapTurret
                 {
                     Chainer.RemoveNodeAt(node_id);
                 }
-            }
+            }*/
+
+            //Vector3 direction = Chainer.Spline.transform.TransformDirection(Chainer.Spline.GetDirection(0.0f));
+            //transform.position += direction * Time.fixedDeltaTime * returningSpeed;
+
+            //  move towards target
+            Chainer.SplineChainer.Ratio -= Time.fixedDeltaTime * returningSpeed;
+            target = Chainer.SplineChainer.Spline.GetPoint(Chainer.SplineChainer.Ratio);
+            transform.position = target;
+            //transform.position = Vector3.MoveTowards(transform.position, target, Time.fixedDeltaTime * returningSpeed);
+        }
+
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, target);
+            Gizmos.DrawWireSphere(target, .5f);
         }
 
         void UpdateChase()
         {
             transform.position = Vector3.MoveTowards(transform.position, Target.position, Time.fixedDeltaTime * moveSpeed);
-            transform.LookAt(Target);
+            //transform.LookAt(Target);
         }
 
         void FixedUpdate()

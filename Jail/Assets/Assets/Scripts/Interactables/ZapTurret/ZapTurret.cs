@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Jail.Interactables.ZapTurret
@@ -30,6 +28,10 @@ namespace Jail.Interactables.ZapTurret
 
         void Start()
         {
+            //  spawn a paused projectile
+            FireProjectileTo(null);
+            currentProjectile.SetPause(true);
+
             distToSqr = distance * distance;
         }
 
@@ -120,7 +122,14 @@ namespace Jail.Interactables.ZapTurret
             //  setup projectile script 
             if (projectile.TryGetComponent(out currentProjectile))
             {
-                currentProjectile.Chase(target_transform);
+                if (target_transform != null)
+                {
+                    currentProjectile.Chase(target_transform);
+                }
+                else
+                {
+                    currentProjectile.ReturnToTurret();
+                }
                 currentProjectile.TurretAnchor = projectileSpawnPoint;
 
                 //  link projectile & chainer together

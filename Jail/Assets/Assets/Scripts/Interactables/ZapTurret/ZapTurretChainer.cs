@@ -1,22 +1,48 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-using Jail.Environment;
-using SplineMesh;
+using Jail.Utility.Bezier;
 
 namespace Jail.Interactables.ZapTurret
 {
-	[ExecuteInEditMode]
 	public class ZapTurretChainer : MonoBehaviour
 	{
 		public ZapTurretProjectile Projectile { get; set; }
 		public Transform TurretAnchor { get; set; }
-		public Spline Spline => splineChain.Spline;
-		public SplineChain SplineChain => splineChain;
-		public List<SplineNode> Nodes => Spline.nodes;
+		public BezierSplineChainer SplineChainer => splineChainer;
+		
+		[SerializeField]
+		BezierSplineChainer splineChainer;
+
+        void FixedUpdate()
+        {
+			if (Projectile.Target == null) return;
+
+			BezierSpline spline = splineChainer.Spline;
+
+			//  update last point
+			Vector3 point = spline.transform.InverseTransformPoint(TurretAnchor.position);
+			spline.SetControlPoint(spline.ControlPointCount - 1, point);
+
+			//Vector3 direction = (Projectile.Target.position - transform.position).normalized;
+			
+			//  update last tangent
+			/*float t = Mathf.Clamp01(Vector3.Distance(transform.position, TurretAnchor.position) / 24.0f);
+			Vector3 tangent = Vector3.Lerp(point, spline.transform.localPosition + (spline.transform.forward + spline.transform.up).normalized * 5.0f, t);
+			spline.SetControlPoint(spline.ControlPointCount - 2, tangent);
+
+			//  update first tangent
+			point = spline.transform.TransformPoint(spline.GetControlPoint(0));
+			tangent = Vector3.Lerp(point, point - direction, 1.0f - t);
+			spline.SetControlPoint(1, tangent);*/
+		}
+
+        /*public ZapTurretProjectile Projectile { get; set; }
+		public Transform TurretAnchor { get; set; }
+		public BezierSpline Spline => spline;
+		public BezierSplineChainer SplineChain => splineChain;
 
 		[SerializeField]
-		SplineChain splineChain;
+		BezierSpline spline;
 		[SerializeField]
 		float nodeSpawnTime = .2f;
 
@@ -27,7 +53,7 @@ namespace Jail.Interactables.ZapTurret
 		/// Get farest node from the chainer considering Node 0 is the closest.
 		/// </summary>
 		/// <returns>Node ID</returns>
-		public int RetrieveFarestNode(out SplineNode node) //  TODO: change name
+		*//*public int RetrieveFarestNode(out SplineNode node) //  TODO: change name
         {
 			int id = Nodes.Count - 2;
 			node = Nodes[id];
@@ -41,7 +67,7 @@ namespace Jail.Interactables.ZapTurret
 			worldNodesPositions.Remove(node);
 
 			Spline.RefreshCurves();
-		}
+		}*//*
 
 		void Start()
         {
@@ -110,7 +136,7 @@ namespace Jail.Interactables.ZapTurret
 					currentNodeSpawnTime = nodeSpawnTime;
 				}
             }
-        }
+        }*/
 
         /*[Header("Chainer"), SerializeField]
 		GameObject chainPrefab;

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3555155408233662955}
   - component: {fileID: 4346278247567393068}
   - component: {fileID: 7138109193561712933}
-  - component: {fileID: 3963041467949949093}
   m_Layer: 0
   m_Name: Chainer
   m_TagString: Untagged
@@ -113,19 +112,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3963041467949949093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1518380062341689029}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0653959a49c2c34eb012a45a3871225, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chainPrefab: {fileID: 1774098988630015854, guid: 585d3dcb835bf1746a45c2be21148a68, type: 3}
 --- !u!1 &8501612673881807109
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,4 +354,3 @@ MonoBehaviour:
     m_Bits: 311553
   projectilePrefab: {fileID: 1034887875336051491, guid: 6a6b54126a2380741a25b83e39f9eb66, type: 3}
   projectileSpawnPoint: {fileID: 8501612673881807108}
-  chainer: {fileID: 3963041467949949093}
