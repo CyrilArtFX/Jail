@@ -10,10 +10,6 @@ namespace Jail
         [SerializeField]
         LayerMask detectedLayers = -1;
 
-        [SerializeField]
-        Player player = default;
-
-
         bool checkpointPassed = false;
 
         

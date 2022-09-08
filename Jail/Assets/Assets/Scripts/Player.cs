@@ -47,10 +47,6 @@ namespace Jail
         [SerializeField] 
         Transform camFocus = default;
 
-        [Header("UI")]
-        [SerializeField] 
-        GameObject deathText = default;
-
         Rigidbody body, connectedBody, previousConnectedBody;
         Animator animator;
 
@@ -83,7 +79,10 @@ namespace Jail
         CapsuleCollider spiritCollider = default;
         Rigidbody spiritBody = default;
 
+        [HideInInspector]
         public Checkpoint inCheckpoint = null;
+        [HideInInspector]
+        public bool dead = false;
 
 
         [Header("Spirit Returning Parameters")]
@@ -109,8 +108,6 @@ namespace Jail
         {
             instance = this;
 
-            deathText.SetActive(false);
-
             body = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
             body.useGravity = false;
@@ -125,6 +122,8 @@ namespace Jail
 
         void Update()
         {
+            if (dead) return;
+
             playerInput.x = Input.GetAxis("Horizontal");
             playerInput.y = Climbing || spirit ? Input.GetAxis("UpDown") : 0f;
             playerInput = Vector3.ClampMagnitude(playerInput, 1f);
@@ -272,6 +271,12 @@ namespace Jail
 
         void FixedUpdate()
         {
+            if (dead)
+            {
+                body.velocity = Vector3.zero;
+                return;
+            }
+
             UpdateState();
 
             AdjustVelocity();
