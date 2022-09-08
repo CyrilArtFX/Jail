@@ -2671,7 +2671,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 278961059}
   m_LocalRotation: {x: 0.060543496, y: 0.71660244, z: -0.062694624, w: 0.692015}
-  m_LocalPosition: {x: -8, y: 65.5, z: 85.29}
+  m_LocalPosition: {x: -8, y: 65.5, z: 85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 820472699}
@@ -11613,7 +11613,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7946750689201620303, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 86.29
+      value: 86
       objectReference: {fileID: 0}
     - target: {fileID: 7946750689201620303, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -17114,10 +17114,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e045adae03b7ee2488e471d2e9d8e27d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blackTransitionImage: {fileID: 1856060885}
-  blackTransitionHalfTime: 1
+  blackFadeImage: {fileID: 1856060885}
+  blackFadeHalfTime: 1
   fullBlackTime: 0.5
-  blackTransitionCurve:
+  blackFadeCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3

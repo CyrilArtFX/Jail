@@ -42,7 +42,7 @@ namespace Jail
 
         public void Respawn()
         {
-            BlackTransition.instance.StartBlackTransition();
+            BlackFade.instance.StartFade(FadeType.FullFadeWithRestore);
         }
 
 
