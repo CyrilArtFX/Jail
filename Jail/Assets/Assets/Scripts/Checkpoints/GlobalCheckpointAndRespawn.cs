@@ -8,7 +8,7 @@ namespace Jail
 {
     public class GlobalCheckpointAndRespawn : MonoBehaviour
     {
-        [SerializeField] 
+        [SerializeField]
         Player player = default;
 
         [SerializeField]
@@ -28,7 +28,7 @@ namespace Jail
         public static GlobalCheckpointAndRespawn instance;
 
         float timeSinceBlackTransitionStarted = 0f;
-        int blackTransitionState = 0;
+        TransitionStates blackTransitionState = TransitionStates.off;
 
 
         void Awake()
@@ -41,13 +41,13 @@ namespace Jail
         {
             if (blackTransitionState > 0)
             {
-                if (blackTransitionState == 1)
+                if (blackTransitionState == TransitionStates.becomingBlack)
                 {
                     timeSinceBlackTransitionStarted += Time.deltaTime;
                     if (timeSinceBlackTransitionStarted >= blackTransitionHalfTime)
                     {
                         timeSinceBlackTransitionStarted = 0f;
-                        blackTransitionState = 2;
+                        blackTransitionState = TransitionStates.stayBlack;
                         blackTransitionImage.color = new Color(0, 0, 0, 1);
 
                         player.Respawn();
@@ -62,22 +62,22 @@ namespace Jail
                         blackTransitionImage.color = new Color(0, 0, 0, blackTransitionCurve.Evaluate(transition_fraction));
                     }
                 }
-                else if (blackTransitionState == 2)
+                else if (blackTransitionState == TransitionStates.stayBlack)
                 {
                     timeSinceBlackTransitionStarted += Time.deltaTime;
-                    if(timeSinceBlackTransitionStarted >= fullBlackTime)
+                    if (timeSinceBlackTransitionStarted >= fullBlackTime)
                     {
                         timeSinceBlackTransitionStarted = 0f;
-                        blackTransitionState = 3;
+                        blackTransitionState = TransitionStates.becomingTransparent;
                     }
                 }
-                else if (blackTransitionState == 3)
+                else if (blackTransitionState == TransitionStates.becomingTransparent)
                 {
                     timeSinceBlackTransitionStarted += Time.deltaTime;
                     if (timeSinceBlackTransitionStarted >= blackTransitionHalfTime)
                     {
                         timeSinceBlackTransitionStarted = 0f;
-                        blackTransitionState = 0;
+                        blackTransitionState = TransitionStates.off;
                         blackTransitionImage.color = new Color(0, 0, 0, 0);
                         player.dead = false;
                     }
@@ -95,7 +95,7 @@ namespace Jail
         {
             Debug.Log("Checkpoint !");
             player.SavePosition();
-            foreach(PuzzleBaseInput puzzle_input in puzzleInputs)
+            foreach (PuzzleBaseInput puzzle_input in puzzleInputs)
             {
                 puzzle_input.SaveState();
             }
@@ -105,19 +105,27 @@ namespace Jail
         {
             player.dead = true;
             timeSinceBlackTransitionStarted = 0f;
-            blackTransitionState = 1;
+            blackTransitionState = TransitionStates.becomingBlack;
         }
 
 
         void RetrieveAllPuzzleInputs()
         {
-            for(int i = 0; i < puzzleInputsParent.childCount; i++)
+            for (int i = 0; i < puzzleInputsParent.childCount; i++)
             {
-                if(puzzleInputsParent.GetChild(i).TryGetComponent(out PuzzleBaseInput puzzle_input))
+                if (puzzleInputsParent.GetChild(i).TryGetComponent(out PuzzleBaseInput puzzle_input))
                 {
                     puzzleInputs.Add(puzzle_input);
                 }
             }
+        }
+
+        enum TransitionStates
+        {
+            becomingBlack,
+            stayBlack,
+            becomingTransparent,
+            off
         }
     }
 }

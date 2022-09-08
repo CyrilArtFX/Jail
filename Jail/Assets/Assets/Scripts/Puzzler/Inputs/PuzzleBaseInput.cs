@@ -78,7 +78,7 @@ namespace Jail.Puzzler.Inputs
 
         public void ResetState()
         {
-            if(savedEnabledState)
+            if (savedEnabledState)
             {
                 IsTriggered = savedTriggerState;
             }

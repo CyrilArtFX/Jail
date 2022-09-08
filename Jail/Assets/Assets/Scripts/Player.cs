@@ -71,8 +71,8 @@ namespace Jail
         int stepsSinceLastGrounded, stepsSinceLastJump, stepsSinceLastClimbRequest;
         Vector3 connectionWorldPosition, connectionLocalPosition;
 
-        Vector3 startPosition;
-        Quaternion startRotationModelFlip;
+        Vector3 savedPosition;
+        Quaternion savedRotationModelFlip;
 
         public static Player instance;
 
@@ -375,9 +375,9 @@ namespace Jail
                 }
             }
 
-            if(inCheckpoint)
+            if (inCheckpoint)
             {
-                if(!Climbing && OnGround)
+                if (!Climbing && OnGround)
                 {
                     inCheckpoint.UseCheckpoint();
                     inCheckpoint = null;
@@ -663,15 +663,15 @@ namespace Jail
 
         public void SavePosition()
         {
-            startPosition = transform.position;
-            startRotationModelFlip = modelFlip.localRotation;
+            savedPosition = transform.position;
+            savedRotationModelFlip = modelFlip.localRotation;
         }
 
         public void Respawn()
         {
             body.velocity = Vector3.zero;
-            transform.position = startPosition;
-            modelFlip.localRotation = startRotationModelFlip;
+            transform.position = savedPosition;
+            modelFlip.localRotation = savedRotationModelFlip;
         }
     }
 }
