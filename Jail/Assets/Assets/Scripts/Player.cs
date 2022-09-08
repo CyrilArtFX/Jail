@@ -9,13 +9,13 @@ namespace Jail
     public class Player : MonoBehaviour, ICheckpointSaver
     {
         [Header("Solid Body")]
-        [SerializeField] 
+        [SerializeField]
         Transform modelFlip = default;
 
         [Header("Spirit")]
-        [SerializeField] 
+        [SerializeField]
         GameObject spiritObject = default;
-        [SerializeField] 
+        [SerializeField]
         Transform spiritModelFlip = default;
         [SerializeField]
         DissolveObject spiritDissolve = default;
@@ -23,29 +23,29 @@ namespace Jail
         GameObject spiritParticles = default;
 
         [Header("Parameters")]
-        [SerializeField, Range(0f, 100f)] 
+        [SerializeField, Range(0f, 100f)]
         float maxSpeed = 13f, maxClimbSpeed = 2f, maxSpiritSpeed = 8f, maxSlowSpeed = 1f;
-        [SerializeField, Range(0f, 100f)] 
+        [SerializeField, Range(0f, 100f)]
         float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 20f, maxSpiritAcceleration = 15f;
-        [SerializeField, Range(0f, 10f)] 
+        [SerializeField, Range(0f, 10f)]
         float jumpHeight = 2f;
-        [SerializeField, Range(0f, 90f)] 
+        [SerializeField, Range(0f, 90f)]
         float maxGroundAngle = 25f, maxStairsAngle = 50f;
-        [SerializeField, Range(0f, 100f)] 
+        [SerializeField, Range(0f, 100f)]
         float maxSnapSpeed = 100f;
-        [SerializeField, Min(0f)] 
+        [SerializeField, Min(0f)]
         float probeDistance = 1f;
-        [SerializeField, Range(90f, 170f)] 
+        [SerializeField, Range(90f, 170f)]
         float maxClimbAngle = 140f;
-        [SerializeField] 
+        [SerializeField]
         LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, ladderMask = 0;
-        [SerializeField, Min(0f)] 
+        [SerializeField, Min(0f)]
         float modelAlignSpeed = 180f;
 
         [Header("Others")]
-        [SerializeField] 
+        [SerializeField]
         bool maintainButtonForClimb = false;
-        [SerializeField] 
+        [SerializeField]
         Transform camFocus = default;
 
         Rigidbody body, connectedBody, previousConnectedBody;
@@ -137,7 +137,7 @@ namespace Jail
                 desiresClimbing |= Mathf.Abs(Input.GetAxis("UpDown")) > 0.2f;
                 requestClimbing = Mathf.Abs(Input.GetAxis("UpDown")) > 0.2f;
             }
-            
+
             desiredJump |= Input.GetButtonDown("Jump");
 
             desireSpirit |= Input.GetButtonDown("Spirit");
@@ -162,7 +162,7 @@ namespace Jail
             animator.SetBool("Climb", Climbing);
 
 
-            if(spiritReturning)
+            if (spiritReturning)
             {
                 timeSinceSpiritReturningStart += Time.deltaTime;
 
@@ -176,7 +176,7 @@ namespace Jail
                     spiritObject.SetActive(false);
                     spirit = false;
 
-                    if(disableSpiritTime > 0f)
+                    if (disableSpiritTime > 0f)
                     {
                         StartCoroutine(DisableSpirit());
                     }
@@ -197,7 +197,7 @@ namespace Jail
             if (spirit)
             {
                 Vector3 spirit_rotation_plane_normal;
-                if(spiritReturning)
+                if (spiritReturning)
                 {
                     spirit_rotation_plane_normal = -spiritObject.transform.localPosition.normalized;
                 }
@@ -212,7 +212,7 @@ namespace Jail
                         spirit_rotation_plane_normal = spiritBody.velocity.normalized;
                     }
                 }
-                
+
                 Quaternion spirit_rotation = spiritObject.transform.localRotation;
                 if (modelAlignSpeed > 0f)
                 {
@@ -223,7 +223,7 @@ namespace Jail
 
 
             //  make the spirit or the player face toward where he goes
-            Quaternion flip_rotation = modelFlip.localRotation; 
+            Quaternion flip_rotation = modelFlip.localRotation;
             if (playerInput.x != 0 && !Climbing)
             {
                 int rotation_factor = 500;
@@ -263,9 +263,9 @@ namespace Jail
             float max_angle = modelAlignSpeed * Time.deltaTime;
 
             Quaternion new_alignment = Quaternion.FromToRotation(model_axis, rotation_axis) * rotation;
-            if (angle <= max_angle || Climbing) 
+            if (angle <= max_angle || Climbing)
                 return new_alignment;
-            else 
+            else
                 return Quaternion.SlerpUnclamped(rotation, new_alignment, max_angle / angle);
         }
 
@@ -281,10 +281,10 @@ namespace Jail
 
             AdjustVelocity();
 
-            if(desireSpirit)
+            if (desireSpirit)
             {
                 desireSpirit = false;
-                if(!desiredJump && !Climbing && OnGround && !spirit && !spiritDisabled)
+                if (!desiredJump && !Climbing && OnGround && !spirit && !spiritDisabled)
                 {
                     TransformToSpirit();
                 }
@@ -297,13 +297,13 @@ namespace Jail
             }
 
             Vector3 body_velocity = velocity;
-        
+
             if (spirit)
             {
                 spiritBody.velocity = velocity;
                 body_velocity = Vector3.zero;
 
-                if(desireNormal)
+                if (desireNormal)
                 {
                     desireNormal = false;
                     GoBackToNormalForm(false);
@@ -323,7 +323,7 @@ namespace Jail
             {
                 body_velocity += (Physics.gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
             }
-            else if(!spirit)
+            else if (!spirit)
             {
                 body_velocity += Physics.gravity * Time.deltaTime;
             }
@@ -627,7 +627,7 @@ namespace Jail
         {
             spiritParticles.SetActive(false);
 
-            if(spiritDead)
+            if (spiritDead)
             {
                 spiritDissolve.Dissolve();
             }
