@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Jail.Puzzler.Inputs;
+using Jail.SavedObjects;
 
 namespace Jail
 {
     public class GlobalCheckpointAndRespawn : MonoBehaviour
     {
         [SerializeField]
-        Player player = default;
-
-        [SerializeField]
-        Transform puzzleInputsParent = default;
+        Transform savedObjectsParent = default;
 
         [Header("Black Transition")]
         [SerializeField]
@@ -23,7 +21,7 @@ namespace Jail
         AnimationCurve blackTransitionCurve = default;
 
 
-        List<PuzzleBaseInput> puzzleInputs = new List<PuzzleBaseInput>();
+        List<SavedObject> savedObjects = new List<SavedObject>();
 
         public static GlobalCheckpointAndRespawn instance;
 
@@ -34,12 +32,12 @@ namespace Jail
         void Awake()
         {
             instance = this;
-            RetrieveAllPuzzleInputs();
+            RetrieveAllSavedObjects();
         }
 
         void Update()
         {
-            if (blackTransitionState > 0)
+            if (blackTransitionState != TransitionStates.off)
             {
                 if (blackTransitionState == TransitionStates.becomingBlack)
                 {
@@ -50,10 +48,9 @@ namespace Jail
                         blackTransitionState = TransitionStates.stayBlack;
                         blackTransitionImage.color = new Color(0, 0, 0, 1);
 
-                        player.Respawn();
-                        foreach (PuzzleBaseInput puzzle_input in puzzleInputs)
+                        foreach (SavedObject saved_object in savedObjects)
                         {
-                            puzzle_input.ResetState();
+                            saved_object.RestoreState();
                         }
                     }
                     else
@@ -79,7 +76,7 @@ namespace Jail
                         timeSinceBlackTransitionStarted = 0f;
                         blackTransitionState = TransitionStates.off;
                         blackTransitionImage.color = new Color(0, 0, 0, 0);
-                        player.dead = false;
+                        Player.instance.dead = false;
                     }
                     else
                     {
@@ -93,30 +90,27 @@ namespace Jail
 
         public void SaveCheckpoint()
         {
-            Debug.Log("Checkpoint !");
-            player.SavePosition();
-            foreach (PuzzleBaseInput puzzle_input in puzzleInputs)
+            Debug.Log("Checkpoint!");
+            foreach (SavedObject saved_object in savedObjects)
             {
-                puzzle_input.SaveState();
+                saved_object.SaveState();
             }
         }
 
         public void Respawn()
         {
-            player.dead = true;
+            Player.instance.dead = true;
             timeSinceBlackTransitionStarted = 0f;
             blackTransitionState = TransitionStates.becomingBlack;
         }
 
 
-        void RetrieveAllPuzzleInputs()
+        void RetrieveAllSavedObjects()
         {
-            for (int i = 0; i < puzzleInputsParent.childCount; i++)
+            SavedObject[] new_saved_objects = savedObjectsParent.GetComponentsInChildren<SavedObject>(true); 
+            foreach(SavedObject saved_object in new_saved_objects)
             {
-                if (puzzleInputsParent.GetChild(i).TryGetComponent(out PuzzleBaseInput puzzle_input))
-                {
-                    puzzleInputs.Add(puzzle_input);
-                }
+                savedObjects.Add(saved_object);
             }
         }
 

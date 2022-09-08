@@ -13,15 +13,12 @@ namespace Jail.Puzzler.Inputs
         public bool IsTriggered
         {
             get => isTriggered;
-            protected set
+            set
             {
                 isTriggered = value;
                 OnTrigger(value);
             }
         }
-
-        bool savedTriggerState;
-        bool savedEnabledState;
 
         new Collider collider = default;
 
@@ -36,7 +33,6 @@ namespace Jail.Puzzler.Inputs
 
         void Awake()
         {
-            SaveState();
             collider = GetComponent<Collider>();
         }
 
@@ -68,20 +64,6 @@ namespace Jail.Puzzler.Inputs
 
             //  change material depending on disable state
             renderer.material = disable ? disabledMaterial : defaultMaterial;
-        }
-
-        public void SaveState()
-        {
-            savedTriggerState = IsTriggered;
-            savedEnabledState = enabled;
-        }
-
-        public void ResetState()
-        {
-            if (savedEnabledState)
-            {
-                IsTriggered = savedTriggerState;
-            }
         }
     }
 }

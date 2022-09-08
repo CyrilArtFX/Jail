@@ -9,7 +9,7 @@ namespace Jail
     {
         [Header("Solid Body")]
         [SerializeField] 
-        Transform modelFlip = default;
+        public Transform modelFlip = default;
 
         [Header("Spirit")]
         [SerializeField] 
@@ -47,7 +47,10 @@ namespace Jail
         [SerializeField] 
         Transform camFocus = default;
 
-        Rigidbody body, connectedBody, previousConnectedBody;
+        [HideInInspector]
+        public Rigidbody body;
+
+        Rigidbody connectedBody, previousConnectedBody;
         Animator animator;
 
         Vector2 playerInput;
@@ -70,9 +73,6 @@ namespace Jail
         float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
         int stepsSinceLastGrounded, stepsSinceLastJump, stepsSinceLastClimbRequest;
         Vector3 connectionWorldPosition, connectionLocalPosition;
-
-        Vector3 savedPosition;
-        Quaternion savedRotationModelFlip;
 
         public static Player instance;
 
@@ -116,7 +116,6 @@ namespace Jail
             spiritCollider = spiritObject.GetComponent<CapsuleCollider>();
             spiritBody.useGravity = false;
             spiritObject.SetActive(false);
-            SavePosition();
             OnValidate();
         }
 
@@ -659,19 +658,6 @@ namespace Jail
         public Transform FocusPoint()
         {
             return spirit ? spiritObject.transform : transform;
-        }
-
-        public void SavePosition()
-        {
-            savedPosition = transform.position;
-            savedRotationModelFlip = modelFlip.localRotation;
-        }
-
-        public void Respawn()
-        {
-            body.velocity = Vector3.zero;
-            transform.position = savedPosition;
-            modelFlip.localRotation = savedRotationModelFlip;
         }
     }
 }

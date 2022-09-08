@@ -21,7 +21,7 @@ namespace Jail
 
         void Awake()
         {
-            RetrieveAllRenderersOfChilds(this.transform);
+            RetrieveAllRenderers();
         }
 
         void Update()
@@ -82,18 +82,12 @@ namespace Jail
             }
         }
 
-        void RetrieveAllRenderersOfChilds(Transform object_to_check)
+        void RetrieveAllRenderers()
         {
-            if (object_to_check.gameObject.TryGetComponent(out Renderer new_renderer))
+            Renderer[] new_renderers = transform.GetComponentsInChildren<Renderer>(true);
+            foreach(Renderer renderer in new_renderers)
             {
-                renderers.Add(new_renderer);
-            }
-
-            if (object_to_check.childCount == 0) return;
-
-            for (int i = 0; i < object_to_check.childCount; i++)
-            {
-                RetrieveAllRenderersOfChilds(object_to_check.GetChild(i));
+                renderers.Add(renderer);
             }
         }
     }
