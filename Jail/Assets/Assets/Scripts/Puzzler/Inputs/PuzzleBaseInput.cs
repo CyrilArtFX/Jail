@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using Jail.Puzzler.Outputs;
+using Jail.SavedObjects;
 
 namespace Jail.Puzzler.Inputs
 {
-    public class PuzzleBaseInput : MonoBehaviour
+    public class PuzzleBaseInput : MonoBehaviour, ICheckpointSaver
     {
         protected readonly List<PuzzleBaseOutput> outputs = new List<PuzzleBaseOutput>();
 
@@ -13,12 +14,15 @@ namespace Jail.Puzzler.Inputs
         public bool IsTriggered
         {
             get => isTriggered;
-            set
+            protected set
             {
                 isTriggered = value;
                 OnTrigger(value);
             }
         }
+
+        bool savedTriggerState;
+        bool savedEnabledState;
 
         new Collider collider = default;
 
@@ -64,6 +68,20 @@ namespace Jail.Puzzler.Inputs
 
             //  change material depending on disable state
             renderer.material = disable ? disabledMaterial : defaultMaterial;
+        }
+
+        public void SaveState()
+        {
+            savedTriggerState = IsTriggered;
+            savedEnabledState = enabled;
+        }
+
+        public void RestoreState()
+        {
+            if (savedEnabledState)
+            {
+                IsTriggered = savedTriggerState;
+            }
         }
     }
 }

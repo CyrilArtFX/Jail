@@ -8439,6 +8439,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0f83ba1e3a584846996e4377bd43d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  savedTriggerState: 0
+  savedEnabledState: 0
+  puzzleInput: {fileID: 0}
 --- !u!1 &1313562559
 GameObject:
   m_ObjectHideFlags: 0

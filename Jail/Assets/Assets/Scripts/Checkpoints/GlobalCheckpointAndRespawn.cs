@@ -7,6 +7,14 @@ using Jail.SavedObjects;
 
 namespace Jail
 {
+    enum TransitionStates
+    {
+        FadeIn,
+        StayBlack,
+        FadeOut,
+        Off
+    }
+
     public class GlobalCheckpointAndRespawn : MonoBehaviour
     {
         [SerializeField]
@@ -21,34 +29,35 @@ namespace Jail
         AnimationCurve blackTransitionCurve = default;
 
 
-        List<SavedObject> savedObjects = new List<SavedObject>();
+        List<ICheckpointSaver> savedObjects = new List<ICheckpointSaver>();
 
         public static GlobalCheckpointAndRespawn instance;
 
         float timeSinceBlackTransitionStarted = 0f;
-        TransitionStates blackTransitionState = TransitionStates.off;
+        TransitionStates blackTransitionState = TransitionStates.Off;
 
 
         void Awake()
         {
             instance = this;
             RetrieveAllSavedObjects();
+            SaveCheckpoint();
         }
 
         void Update()
         {
-            if (blackTransitionState != TransitionStates.off)
+            if (blackTransitionState != TransitionStates.Off)
             {
-                if (blackTransitionState == TransitionStates.becomingBlack)
+                if (blackTransitionState == TransitionStates.FadeIn)
                 {
                     timeSinceBlackTransitionStarted += Time.deltaTime;
                     if (timeSinceBlackTransitionStarted >= blackTransitionHalfTime)
                     {
                         timeSinceBlackTransitionStarted = 0f;
-                        blackTransitionState = TransitionStates.stayBlack;
+                        blackTransitionState = TransitionStates.StayBlack;
                         blackTransitionImage.color = new Color(0, 0, 0, 1);
 
-                        foreach (SavedObject saved_object in savedObjects)
+                        foreach (ICheckpointSaver saved_object in savedObjects)
                         {
                             saved_object.RestoreState();
                         }
@@ -59,22 +68,22 @@ namespace Jail
                         blackTransitionImage.color = new Color(0, 0, 0, blackTransitionCurve.Evaluate(transition_fraction));
                     }
                 }
-                else if (blackTransitionState == TransitionStates.stayBlack)
+                else if (blackTransitionState == TransitionStates.StayBlack)
                 {
                     timeSinceBlackTransitionStarted += Time.deltaTime;
                     if (timeSinceBlackTransitionStarted >= fullBlackTime)
                     {
                         timeSinceBlackTransitionStarted = 0f;
-                        blackTransitionState = TransitionStates.becomingTransparent;
+                        blackTransitionState = TransitionStates.FadeOut;
                     }
                 }
-                else if (blackTransitionState == TransitionStates.becomingTransparent)
+                else if (blackTransitionState == TransitionStates.FadeOut)
                 {
                     timeSinceBlackTransitionStarted += Time.deltaTime;
                     if (timeSinceBlackTransitionStarted >= blackTransitionHalfTime)
                     {
                         timeSinceBlackTransitionStarted = 0f;
-                        blackTransitionState = TransitionStates.off;
+                        blackTransitionState = TransitionStates.Off;
                         blackTransitionImage.color = new Color(0, 0, 0, 0);
                         Player.instance.dead = false;
                     }
@@ -91,7 +100,7 @@ namespace Jail
         public void SaveCheckpoint()
         {
             Debug.Log("Checkpoint!");
-            foreach (SavedObject saved_object in savedObjects)
+            foreach (ICheckpointSaver saved_object in savedObjects)
             {
                 saved_object.SaveState();
             }
@@ -101,25 +110,17 @@ namespace Jail
         {
             Player.instance.dead = true;
             timeSinceBlackTransitionStarted = 0f;
-            blackTransitionState = TransitionStates.becomingBlack;
+            blackTransitionState = TransitionStates.FadeIn;
         }
 
 
         void RetrieveAllSavedObjects()
         {
-            SavedObject[] new_saved_objects = savedObjectsParent.GetComponentsInChildren<SavedObject>(true); 
-            foreach(SavedObject saved_object in new_saved_objects)
+            ICheckpointSaver[] new_saved_objects = savedObjectsParent.GetComponentsInChildren<ICheckpointSaver>(true); 
+            foreach(ICheckpointSaver saved_object in new_saved_objects)
             {
                 savedObjects.Add(saved_object);
             }
-        }
-
-        enum TransitionStates
-        {
-            becomingBlack,
-            stayBlack,
-            becomingTransparent,
-            off
         }
     }
 }

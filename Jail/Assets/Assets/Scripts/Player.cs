@@ -2,14 +2,15 @@ using Jail.Utility;
 using System.Collections;
 using UnityEngine;
 using Jail;
+using Jail.SavedObjects;
 
 namespace Jail
 {
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, ICheckpointSaver
     {
         [Header("Solid Body")]
         [SerializeField] 
-        public Transform modelFlip = default;
+        Transform modelFlip = default;
 
         [Header("Spirit")]
         [SerializeField] 
@@ -47,10 +48,7 @@ namespace Jail
         [SerializeField] 
         Transform camFocus = default;
 
-        [HideInInspector]
-        public Rigidbody body;
-
-        Rigidbody connectedBody, previousConnectedBody;
+        Rigidbody body, connectedBody, previousConnectedBody;
         Animator animator;
 
         Vector2 playerInput;
@@ -83,6 +81,9 @@ namespace Jail
         public Checkpoint inCheckpoint = null;
         [HideInInspector]
         public bool dead = false;
+
+        Vector3 savedPosition;
+        Quaternion savedRotationModelFlip;
 
 
         [Header("Spirit Returning Parameters")]
@@ -658,6 +659,19 @@ namespace Jail
         public Transform FocusPoint()
         {
             return spirit ? spiritObject.transform : transform;
+        }
+
+        public void SaveState()
+        {
+            savedPosition = transform.position;
+            savedRotationModelFlip = modelFlip.localRotation;
+        }
+
+        public void RestoreState()
+        {
+            body.velocity = Vector3.zero;
+            transform.position = savedPosition;
+            modelFlip.localRotation = savedRotationModelFlip;
         }
     }
 }

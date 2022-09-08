@@ -12,13 +12,12 @@ namespace Jail
 
         bool checkpointPassed = false;
 
-        
-
         void OnTriggerStay(Collider other)
         {
             if (checkpointPassed) return;
             if (!LayerMaskUtils.HasLayer(detectedLayers, other.gameObject.layer))
                 return;
+
             Player.instance.inCheckpoint = this;
         }
 
