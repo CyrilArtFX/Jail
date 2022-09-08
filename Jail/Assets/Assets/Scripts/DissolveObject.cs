@@ -82,18 +82,18 @@ namespace Jail
             }
         }
 
-        void RetrieveAllRenderersOfChilds(Transform objectToCheck)
+        void RetrieveAllRenderersOfChilds(Transform object_to_check)
         {
-            if (objectToCheck.gameObject.TryGetComponent(out Renderer newRenderer))
+            if (object_to_check.gameObject.TryGetComponent(out Renderer new_renderer))
             {
-                renderers.Add(newRenderer);
+                renderers.Add(new_renderer);
             }
 
-            if (objectToCheck.childCount == 0) return;
+            if (object_to_check.childCount == 0) return;
 
-            for (int i = 0; i < objectToCheck.childCount; i++)
+            for (int i = 0; i < object_to_check.childCount; i++)
             {
-                RetrieveAllRenderersOfChilds(objectToCheck.GetChild(i));
+                RetrieveAllRenderersOfChilds(object_to_check.GetChild(i));
             }
         }
     }

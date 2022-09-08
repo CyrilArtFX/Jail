@@ -20,6 +20,8 @@ namespace Jail.Puzzler.Inputs
             }
         }
 
+        bool savedTriggerState;
+
         new Collider collider = default;
 
         [SerializeField]
@@ -33,6 +35,7 @@ namespace Jail.Puzzler.Inputs
 
         void Awake()
         {
+            SaveState();
             collider = GetComponent<Collider>();
         }
 
@@ -64,6 +67,16 @@ namespace Jail.Puzzler.Inputs
 
             //  change material depending on disable state
             renderer.material = disable ? disabledMaterial : defaultMaterial;
+        }
+
+        public void SaveState()
+        {
+            savedTriggerState = IsTriggered;
+        }
+
+        public void ResetState()
+        {
+            IsTriggered = savedTriggerState;
         }
     }
 }

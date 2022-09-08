@@ -83,6 +83,8 @@ namespace Jail
         CapsuleCollider spiritCollider = default;
         Rigidbody spiritBody = default;
 
+        public Checkpoint inCheckpoint = null;
+
 
         [Header("Spirit Returning Parameters")]
         [SerializeField, Tooltip("The average speed of the spirit while returning, in meter per seconds")]
@@ -108,8 +110,6 @@ namespace Jail
             instance = this;
 
             deathText.SetActive(false);
-            startPosition = transform.position;
-            startRotationModelFlip = modelFlip.localRotation;
 
             body = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
@@ -119,6 +119,7 @@ namespace Jail
             spiritCollider = spiritObject.GetComponent<CapsuleCollider>();
             spiritBody.useGravity = false;
             spiritObject.SetActive(false);
+            SavePosition();
             OnValidate();
         }
 
@@ -366,6 +367,15 @@ namespace Jail
                 if (connectedBody.isKinematic || connectedBody.mass >= body.mass)
                 {
                     UpdateConnectionState();
+                }
+            }
+
+            if(inCheckpoint)
+            {
+                if(!Climbing && OnGround)
+                {
+                    inCheckpoint.UseCheckpoint();
+                    inCheckpoint = null;
                 }
             }
         }
@@ -646,26 +656,17 @@ namespace Jail
             return spirit ? spiritObject.transform : transform;
         }
 
-        public void Die()
+        public void SavePosition()
         {
-            StartCoroutine(DeathMessage());
+            startPosition = transform.position;
+            startRotationModelFlip = modelFlip.localRotation;
         }
 
-        IEnumerator DeathMessage()
+        public void Respawn()
         {
-            animator.SetBool("Climb", false);
-            spirit = false;
-            spiritObject.SetActive(false);
-
-            deathText.SetActive(true);
-            Time.timeScale = 0f;
-            yield return new WaitUntil(() => Input.anyKeyDown);
-
             body.velocity = Vector3.zero;
             transform.position = startPosition;
             modelFlip.localRotation = startRotationModelFlip;
-            Time.timeScale = 1f;
-            deathText.SetActive(false);
         }
     }
 }
