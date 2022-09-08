@@ -3929,11 +3929,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3701995714212952394, guid: 6ade63a9446b85f49a4d1c5030955f67, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 62
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 3701995714212952394, guid: 6ade63a9446b85f49a4d1c5030955f67, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 111.25392
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3701995714212952394, guid: 6ade63a9446b85f49a4d1c5030955f67, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9816,7 +9816,7 @@ GameObject:
   - component: {fileID: 1487837163}
   - component: {fileID: 1487837162}
   - component: {fileID: 1487837161}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Cube (31)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16728,6 +16728,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1786748901}
   - component: {fileID: 1786748902}
+  - component: {fileID: 1786748903}
   m_Layer: 0
   m_Name: PushSpirit
   m_TagString: Untagged
@@ -16760,8 +16761,23 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 5, z: 5}
-  m_Center: {x: 0, y: 2, z: 0}
+  m_Size: {x: 1, y: 3.982338, z: 5}
+  m_Center: {x: 0, y: 3.6830063, z: 0}
+--- !u!114 &1786748903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786748900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2777518388704974ca79772a7c99b9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectedLayers:
+    serializedVersion: 2
+    m_Bits: 16384
 --- !u!43 &1802969560
 Mesh:
   m_ObjectHideFlags: 0
