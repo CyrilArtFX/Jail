@@ -29,6 +29,7 @@ namespace Jail.Puzzler.Inputs
 
         protected override void OnTrigger(bool state)
         {
+            Debug.Log("lantern ->   " + state);
             base.OnTrigger(state);
 
             //  change material depending on state

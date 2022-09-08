@@ -21,6 +21,7 @@ namespace Jail.Puzzler.Inputs
         }
 
         bool savedTriggerState;
+        bool savedEnabledState;
 
         new Collider collider = default;
 
@@ -72,11 +73,15 @@ namespace Jail.Puzzler.Inputs
         public void SaveState()
         {
             savedTriggerState = IsTriggered;
+            savedEnabledState = enabled;
         }
 
         public void ResetState()
         {
-            IsTriggered = savedTriggerState;
+            if(savedEnabledState)
+            {
+                IsTriggered = savedTriggerState;
+            }
         }
     }
 }
