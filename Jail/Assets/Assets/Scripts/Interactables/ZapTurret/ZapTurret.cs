@@ -23,15 +23,12 @@ namespace Jail.Interactables.ZapTurret
 
         ZapTurretProjectile currentProjectile;
 
-		/*[Header("Chainer"), SerializeField]
-        ZapTurretChainer chainer;*/
-
         void Start()
         {
             //  spawn a paused projectile
-            FireProjectileTo(null);
-            currentProjectile.SetPause(true);
+            SpawnProjectile();
 
+            //  compute square of distance
             distToSqr = distance * distance;
         }
 
@@ -51,15 +48,7 @@ namespace Jail.Interactables.ZapTurret
                 //  return to turret on sight lost
                 else if (wasTargetDetected && !hasDetectedTarget)
                 {
-                    currentProjectile.ReturnToTurret();
-                }
-            }
-            else
-            {
-                //  fire projectile
-                if (hasDetectedTarget)
-                {
-                    FireProjectileTo(Player.instance.Spirit.transform);
+                    currentProjectile.PullToTarget();
                 }
             }
         }
@@ -110,36 +99,22 @@ namespace Jail.Interactables.ZapTurret
             return true;
         }
 
-        void FireProjectileTo(Transform target_transform)
+        void SpawnProjectile()
         {
+            //  spawn projectile
             GameObject projectile = Instantiate(projectilePrefab);
             projectile.transform.position = projectileSpawnPoint.position;
 
-            //  order chainer to follow projectile
-            ZapTurretChainer chainer = projectile.GetComponent<ZapTurretChainer>();
-            chainer.TurretAnchor = projectileSpawnPoint;
+            //  get chainer
+            ZapTurretChainer chainer = projectileSpawnPoint.GetComponent<ZapTurretChainer>();
 
             //  setup projectile script 
-            if (projectile.TryGetComponent(out currentProjectile))
-            {
-                if (target_transform != null)
-                {
-                    currentProjectile.Chase(target_transform);
-                }
-                else
-                {
-                    currentProjectile.ReturnToTurret();
-                }
-                currentProjectile.TurretAnchor = projectileSpawnPoint;
+            currentProjectile = projectile.GetComponent<ZapTurretProjectile>();
+            currentProjectile.IsPaused = true;
 
-                //  link projectile & chainer together
-                chainer.Projectile = currentProjectile;
-                currentProjectile.Chainer = chainer; 
-            }
-            else
-            {
-                Debug.LogError("ZapTurret: Script ZapTurretProjectile wasn't found in the instantiated projectile!");
-            }
+            //  link projectile & chainer together
+            chainer.Projectile = currentProjectile;
+            currentProjectile.Chainer = chainer; 
         }
     }
 }

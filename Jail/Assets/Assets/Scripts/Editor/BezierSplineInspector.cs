@@ -30,6 +30,14 @@ namespace Jail.Debug
         {
             spline = (BezierSpline) target;
 
+            //  change selection id
+            EditorGUI.BeginChangeCheck();
+            int id = EditorGUILayout.IntSlider(selectedId, 0, spline.ControlPointCount - 1);
+            if (EditorGUI.EndChangeCheck())
+            {
+                selectedId = id;
+            }
+
             //  show selected point
             if (selectedId >= 0 && selectedId <= spline.ControlPointCount)
             {

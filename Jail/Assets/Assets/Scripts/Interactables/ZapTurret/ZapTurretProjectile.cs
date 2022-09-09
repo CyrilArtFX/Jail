@@ -7,113 +7,104 @@ namespace Jail.Interactables.ZapTurret
     {
         public ZapTurretChainer Chainer { get; set; }
         public Transform Target { get; set; }
-        public Transform TurretAnchor { get; set; }
-        public bool IsReturning => isReturning;
+        public bool IsPulling { get; protected set; }
+        public bool IsPaused { get; set; }
 
         Vector3 target;
 
-        [SerializeField]
-        float moveSpeed = 25.0f, returningSpeed = 15.0f;
-        [SerializeField]
+        [Tooltip("How the pulling movement should looks like?"), SerializeField]
+        AnimationCurve chaseAccelerationCurve;
+        [Tooltip("How the pulling movement should looks like?"), SerializeField]
+        AnimationCurve pullSpeedCurve;
+
+        [Tooltip("How fast the chase movement should be?"), SerializeField]
+        float chaseSpeed = 10.0f;
+        [Tooltip("How much time should it takes to be at full speed?"), SerializeField]
+        float accelerationTime = 1.0f;
+        [Tooltip("How fast the return movement should be?"), SerializeField]
+        float pullSpeed = 15.0f;
+        [Tooltip("How much time should it wait before returning to its default position after chase?"), SerializeField]
         float timeBeforeReturn = 1.0f;
         
-        bool isReturning = false, isPaused = false;
+        float currentAccelerationTime = 0.0f;
+        float t = 0.0f;
 
         Coroutine returnCoroutine;
-
-        public void SetPause(bool pause)
-        {
-            isPaused = pause;
-        }
         
-        public void ReturnToTurret()
+        public void PullToTarget()
         {
-            isReturning = true;
+            IsPulling = true;
             returnCoroutine = StartCoroutine(CoroutinePauseForTime(timeBeforeReturn));
         }
 
         IEnumerator CoroutinePauseForTime(float time)
         {
-            isPaused = true;
+            IsPaused = true;
 
             yield return new WaitForSeconds(time);
 
-            isPaused = false;
+            IsPaused = false;
         }
 
         public void Chase(Transform target)
         {
+            //  stop previous coroutine
             if (returnCoroutine != null)
                 StopCoroutine(returnCoroutine);
 
+            //  setup variables
             Target = target;
-            isReturning = false;
-            isPaused = false;
+            IsPulling = false;
+            IsPaused = false;
+
+            //  reset acceleration
+            currentAccelerationTime = 0.0f;
+
+            //  reset pulling variables
+            Chainer.SplineChainer.Ratio = 1.0f;
+            t = 0.0f;
         }
 
-        void UpdateReturningMovement()
+        void UpdatePullingMovement()
         {
-            /*var nodes = Chainer.Nodes;
-            int node_id = nodes.Count == 2 ? 1 : nodes.Count - 2;
-            SplineNode node = nodes[node_id];
-            print("moving to node " + node_id + "/" + (nodes.Count - 1));
-            Vector3 node_pos = Chainer.transform.TransformPoint(node.Position);
+            //  update chainer
+            Chainer.SplineChainer.Ratio = 1.0f - pullSpeedCurve.Evaluate(t);
+            Chainer.SplineChainer.DoUpdate();
 
-            //float d = Mathf.Min(1.0f, Chainer.Spline.Length);
-            //CurveSample sample = Chainer.Spline.GetSampleAtDistance(d);
-            Vector3 target = node_pos;//Chainer.transform.TransformPoint(sample.location);
+            //  increase time
+            t += Time.fixedDeltaTime * pullSpeed / Chainer.SplineChainer.Spline.Length;
 
-            //  move towards target
-            transform.position = Vector3.MoveTowards(transform.position, target, Time.fixedDeltaTime * returningSpeed);
-        
-            //  delete node
-            if ((transform.position - node_pos).sqrMagnitude <= 0)
+            //  auto-pause
+            if (Chainer.SplineChainer.Ratio == 0.0f)
             {
-                //  last node (e.g. turret's anchor), it's the end
-                if (nodes.Count == 2)
-                {
-                    isPaused = true;
-                    //Destroy(gameObject);
-                }
-                //  remove node
-                else
-                {
-                    Chainer.RemoveNodeAt(node_id);
-                }
-            }*/
-
-            //Vector3 direction = Chainer.Spline.transform.TransformDirection(Chainer.Spline.GetDirection(0.0f));
-            //transform.position += direction * Time.fixedDeltaTime * returningSpeed;
-
+                IsPaused = true;
+            }
+            
             //  move towards target
-            Chainer.SplineChainer.Ratio -= Time.fixedDeltaTime * returningSpeed;
             target = Chainer.SplineChainer.Spline.GetPoint(Chainer.SplineChainer.Ratio);
             transform.position = target;
-            //transform.position = Vector3.MoveTowards(transform.position, target, Time.fixedDeltaTime * returningSpeed);
-        }
-
-        void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, target);
-            Gizmos.DrawWireSphere(target, .5f);
         }
 
         void UpdateChase()
         {
-            transform.position = Vector3.MoveTowards(transform.position, Target.position, Time.fixedDeltaTime * moveSpeed);
-            //transform.LookAt(Target);
+            //  acceleration
+            currentAccelerationTime = Mathf.Min(accelerationTime, currentAccelerationTime + Time.fixedDeltaTime);
+            
+            //  move towards target
+            float speed = chaseSpeed * chaseAccelerationCurve.Evaluate(currentAccelerationTime / accelerationTime);
+            transform.position = Vector3.MoveTowards(transform.position, Target.position, Time.fixedDeltaTime * speed);
         }
 
         void FixedUpdate()
         {
-            if (isPaused) return;
+            if (IsPaused) return;
 
-            if (isReturning)
+            //  update movement
+            if (IsPulling)
             {
-                UpdateReturningMovement();
+                UpdatePullingMovement();
             }
-            else
+            else if (Target != null)
             {
                 UpdateChase();
             }
@@ -123,8 +114,18 @@ namespace Jail.Interactables.ZapTurret
         {
             if (other.gameObject != Player.instance.Spirit) return;
 
+            //  kill spirit
             Player.instance.GoBackToNormalForm();
-            ReturnToTurret();
+            
+            //  pull back
+            PullToTarget();
+        }
+
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, target);
+            Gizmos.DrawWireSphere(target, .5f);
         }
     }
 }
