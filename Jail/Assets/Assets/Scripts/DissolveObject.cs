@@ -85,7 +85,7 @@ namespace Jail
         void RetrieveAllRenderers()
         {
             Renderer[] new_renderers = transform.GetComponentsInChildren<Renderer>(true);
-            foreach(Renderer renderer in new_renderers)
+            foreach (Renderer renderer in new_renderers)
             {
                 renderers.Add(renderer);
             }

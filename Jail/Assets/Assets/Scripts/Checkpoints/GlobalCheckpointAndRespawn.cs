@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Jail.SavedObjects;
 
 namespace Jail
@@ -11,6 +12,9 @@ namespace Jail
         Transform savedObjectsParent = default;
 
         List<ICheckpointSaver> savedObjects = new List<ICheckpointSaver>();
+
+        [SerializeField]
+        UnityEvent restoreCheckpointEvent = default;
 
         public static GlobalCheckpointAndRespawn instance;
 
@@ -43,6 +47,7 @@ namespace Jail
         public void Respawn()
         {
             BlackFade.instance.StartFade(FadeType.BothFadesWithRestore);
+            BlackFade.instance.eventEndOfFadeIn = restoreCheckpointEvent;
         }
 
 

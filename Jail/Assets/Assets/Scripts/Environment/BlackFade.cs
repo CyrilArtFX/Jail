@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 namespace Jail
 {
@@ -33,6 +34,9 @@ namespace Jail
         FadeStates blackFadeState = FadeStates.Off;
         FadeType blackFadeType = FadeType.OnlyFadeIn;
 
+        [HideInInspector]
+        public UnityEvent eventEndOfFadeIn = default;
+
         public static BlackFade instance;
 
         void Awake()
@@ -42,20 +46,25 @@ namespace Jail
 
         void Update()
         {
-            if (blackFadeState != FadeStates.Off)
+            switch (blackFadeState)
             {
-                if (blackFadeState == FadeStates.FadeIn)
-                {
+                case FadeStates.Off:
+                    return;
+
+                case FadeStates.FadeIn:
+
                     timeSinceBlackFadeStarted += Time.deltaTime;
                     if (timeSinceBlackFadeStarted >= blackFadeHalfTime)
                     {
-                        timeSinceBlackFadeStarted = 0f;
+                        timeSinceBlackFadeStarted = 0f; 
+
+
                         blackFadeImage.color = new Color(0, 0, 0, 1);
-                        if(blackFadeType == FadeType.BothFadesWithRestore)
+                        if (blackFadeType == FadeType.BothFadesWithRestore)
                         {
                             blackFadeState = FadeStates.StayBlack;
 
-                            GlobalCheckpointAndRespawn.instance.RestoreCheckpoint();
+                            eventEndOfFadeIn.Invoke();
                         }
                         else
                         {
@@ -67,47 +76,54 @@ namespace Jail
                         float transition_fraction = timeSinceBlackFadeStarted / blackFadeHalfTime;
                         blackFadeImage.color = new Color(0, 0, 0, blackFadeCurve.Evaluate(transition_fraction));
                     }
-                }
-                else if (blackFadeState == FadeStates.StayBlack)
-                {
+
+                    break;
+
+                case FadeStates.StayBlack:
+
                     timeSinceBlackFadeStarted += Time.deltaTime;
                     if (timeSinceBlackFadeStarted >= fullBlackTime)
                     {
                         timeSinceBlackFadeStarted = 0f;
                         blackFadeState = FadeStates.FadeOut;
                     }
-                }
-                else if (blackFadeState == FadeStates.FadeOut)
-                {
+
+                    break;
+
+                case FadeStates.FadeOut:
+
                     timeSinceBlackFadeStarted += Time.deltaTime;
                     if (timeSinceBlackFadeStarted >= blackFadeHalfTime)
                     {
                         timeSinceBlackFadeStarted = 0f;
                         blackFadeState = FadeStates.Off;
                         blackFadeImage.color = new Color(0, 0, 0, 0);
-                        Player.instance.dead = false;
+                        Player.instance.disableCommands = false; 
                     }
                     else
                     {
                         float transition_fraction = 1 - (timeSinceBlackFadeStarted / blackFadeHalfTime);
                         blackFadeImage.color = new Color(0, 0, 0, blackFadeCurve.Evaluate(transition_fraction));
                     }
-                }
+
+                    break;
             }
         }
 
         public void StartFade(FadeType fadeType)
         {
-            Player.instance.dead = true;
+            Player.instance.disableCommands = true;
             timeSinceBlackFadeStarted = 0f;
             blackFadeType = fadeType;
-            if(fadeType == FadeType.OnlyFadeOut)
+            if (fadeType == FadeType.OnlyFadeOut)
             {
                 blackFadeState = FadeStates.FadeOut;
+                blackFadeImage.color = new Color(0, 0, 0, 1);
             }
             else
             {
                 blackFadeState = FadeStates.FadeIn;
+                blackFadeImage.color = new Color(0, 0, 0, 0);
             }
         }
     }

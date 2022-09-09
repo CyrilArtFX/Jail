@@ -80,7 +80,7 @@ namespace Jail
         [HideInInspector]
         public Checkpoint inCheckpoint = null;
         [HideInInspector]
-        public bool dead = false;
+        public bool disableCommands = false;
 
         Vector3 savedPosition;
         Quaternion savedRotationModelFlip;
@@ -122,7 +122,7 @@ namespace Jail
 
         void Update()
         {
-            if (dead) return;
+            if (disableCommands) return;
 
             playerInput.x = Input.GetAxis("Horizontal");
             playerInput.y = Climbing || spirit ? Input.GetAxis("UpDown") : 0f;
@@ -271,7 +271,7 @@ namespace Jail
 
         void FixedUpdate()
         {
-            if (dead)
+            if (disableCommands)
             {
                 body.velocity = Vector3.zero;
                 return;
@@ -375,6 +375,7 @@ namespace Jail
                 }
             }
 
+            //  use the checkpoint if the player is on the ground and not climbing
             if (inCheckpoint)
             {
                 if (!Climbing && OnGround)
