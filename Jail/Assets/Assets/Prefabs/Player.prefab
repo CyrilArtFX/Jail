@@ -5142,7 +5142,7 @@ MonoBehaviour:
   maxGroundAngle: 25
   maxStairsAngle: 50
   maxSnapSpeed: 100
-  probeDistance: 1
+  probeDistance: 1.6
   maxClimbAngle: 140
   probeMask:
     serializedVersion: 2
