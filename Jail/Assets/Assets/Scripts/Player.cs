@@ -9,7 +9,7 @@ namespace Jail
     public class Player : MonoBehaviour, ICheckpointSaver
     {
         public GameObject Spirit => spiritObject;
-        public bool IsSpiritReturning => spiritReturning;
+        public bool IsSpiritReturning => spiritReturning || spiritDissolving;
 
         [Header("Solid Body")]
         [SerializeField]
@@ -70,7 +70,7 @@ namespace Jail
 
         public bool IsSpirit => spirit;
 
-        bool spirit = false, spiritReturning = false, spiritDisabled = false;
+        bool spirit = false, spiritReturning = false, spiritDissolving = false, spiritDisabled = false;
         float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
         int stepsSinceLastGrounded, stepsSinceLastJump, stepsSinceLastClimbRequest;
         Vector3 connectionWorldPosition, connectionLocalPosition;
@@ -426,7 +426,7 @@ namespace Jail
             {
                 velocity += Vector3.up * adjustment.y;
             }
-            if (spiritReturning)
+            if (IsSpiritReturning)
             {
                 velocity = Vector3.zero;
             }
@@ -633,6 +633,7 @@ namespace Jail
 
             if (spiritDead)
             {
+                spiritDissolving = true;
                 spiritDissolve.Dissolve();
             }
             else
@@ -650,6 +651,7 @@ namespace Jail
             timeForSpiritToReturn = distanceSpiritBody / spiritReturningAverageSpeed;
             timeSinceSpiritReturningStart = 0.0f;
 
+            spiritDissolving = false;
             spiritReturning = true;
         }
 
