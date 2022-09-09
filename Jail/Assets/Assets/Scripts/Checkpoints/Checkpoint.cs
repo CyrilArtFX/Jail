@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Jail.Utility;
 
@@ -27,7 +25,7 @@ namespace Jail
             if (!LayerMaskUtils.HasLayer(detectedLayers, other.gameObject.layer))
                 return;
 
-            if(Player.instance.inCheckpoint == this)
+            if (Player.instance.inCheckpoint == this)
             {
                 Player.instance.inCheckpoint = null;
             }

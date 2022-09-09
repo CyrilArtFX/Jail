@@ -35,7 +35,7 @@ namespace Jail.Puzzler.Inputs
         [SerializeField]
         Material disabledMaterial = default;
 
-        void Awake()
+        protected virtual void Awake()
         {
             collider = GetComponent<Collider>();
         }
