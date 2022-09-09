@@ -9,6 +9,7 @@ namespace Jail.Utility.Bezier
     {
         public float Ratio { get => ratio; set => ratio = value; }
         public BezierSpline Spline => spline;
+        public List<Transform> Items => items;
 
         [SerializeField]
         BezierSpline spline;
@@ -18,7 +19,7 @@ namespace Jail.Utility.Bezier
         float scale = .2f;
 
         [SerializeField]
-        float stepSize = .5f;
+        float stepSize = .25f;
 
         [SerializeField, Range(0.0f, 1.0f)]
         float ratio = 1.0f;
@@ -26,13 +27,38 @@ namespace Jail.Utility.Bezier
         List<Transform> items = new List<Transform>();
         bool toUpdate = false;
 
+        public void RemoveItemsAtRange(int from_id, int to_id)
+        {
+            //  destroy items
+            for (int j = from_id; j <= to_id; j++)
+            {
+                Transform item = items[j];
+                if (item != null)
+                {
+                    #if UNITY_EDITOR
+                        DestroyImmediate(item.gameObject);
+                    #else
+                        Destroy(item.gameObject);
+                    #endif
+                }
+            }
+
+            //  remove registered items
+            items.RemoveRange(from_id, items.Count - from_id);
+        }
+
         public void DoUpdate()
         {
-            if (!spline || !prefab) return;
+            if (!spline)
+            {
+                Debug.LogError("BezierSplineChainer: Spline wasn't found!");
+                return;
+            }
+            if (!prefab) return;
             if (scale <= 0.0f || stepSize <= 0.0f) return;
 
             //  place items
-            int i = 0;
+            int i = 0, created_items_count = 0;
             float dist = 0.0f;
             while (dist < spline.Length)
             {
@@ -49,6 +75,7 @@ namespace Jail.Utility.Bezier
 
                     //  register item
                     items.Add(item);
+                    created_items_count++;
                 }
                 else
                 {
@@ -77,19 +104,7 @@ namespace Jail.Utility.Bezier
             }
 
             //  remove last items
-            for (int j = i; j < items.Count; j++)
-            {
-                Transform item = items[j];
-                if (item != null)
-                {
-                    #if UNITY_EDITOR
-                        DestroyImmediate(item.gameObject);
-                    #else
-                        Destroy(item.gameObject);
-                    #endif
-                }
-            }
-            items.RemoveRange(i, items.Count - i);
+            RemoveItemsAtRange(i, items.Count - 1);
         }
 
         public void QueueUpdate()
@@ -102,8 +117,17 @@ namespace Jail.Utility.Bezier
             //  try to retrieve spline automatically
             TryGetComponent(out spline);
 
+            //  compute length
+            spline.ComputeLength();
+
             //  update when spline is edited
             spline.OnSplineEdited.AddListener(QueueUpdate);
+        }
+
+        public void Reset()
+        {
+            SetupSpline();
+            RemoveItemsAtRange(0, Items.Count - 1);
         }
 
         void Awake()
@@ -117,7 +141,6 @@ namespace Jail.Utility.Bezier
             //  get children as items
             items = transform.Cast<Transform>().ToList();
 
-            SetupSpline();
             QueueUpdate();
         }
 
