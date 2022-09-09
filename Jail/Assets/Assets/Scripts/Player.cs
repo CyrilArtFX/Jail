@@ -477,10 +477,6 @@ namespace Jail
                     currentLadder = null;
                 }
             }
-            else if (OnSteep)
-            {
-                jump_direction = steepNormal;
-            }
             else return;
 
             stepsSinceLastJump = 0;
