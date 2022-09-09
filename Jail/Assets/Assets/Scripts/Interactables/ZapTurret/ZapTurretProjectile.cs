@@ -117,7 +117,7 @@ namespace Jail.Interactables.ZapTurret
             if (other.gameObject != Player.instance.Spirit) return;
 
             //  kill spirit
-            Player.instance.GoBackToNormalForm();
+            Player.instance.GoBackToNormalForm(true);
             
             //  pull back
             PullToTarget();
