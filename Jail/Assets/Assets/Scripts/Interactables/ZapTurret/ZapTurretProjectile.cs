@@ -50,7 +50,9 @@ namespace Jail.Interactables.ZapTurret
         {
             //  stop previous coroutine
             if (returnCoroutine != null)
+            {
                 StopCoroutine(returnCoroutine);
+            }
 
             //  setup variables
             Target = target;
