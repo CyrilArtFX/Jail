@@ -8,6 +8,9 @@ namespace Jail
 {
     public class Player : MonoBehaviour, ICheckpointSaver
     {
+        public GameObject Spirit => spiritObject;
+        public bool IsSpiritReturning => spiritReturning;
+
         [Header("Solid Body")]
         [SerializeField]
         Transform modelFlip = default;
