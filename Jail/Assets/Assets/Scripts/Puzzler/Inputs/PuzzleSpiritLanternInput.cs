@@ -56,7 +56,7 @@ namespace Jail.Puzzler.Inputs
             base.DisableInput(disable);
 
             fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-            fireLight.FadeOut();
+            fireLight.TurnLightOff();
         }
     }
 }
