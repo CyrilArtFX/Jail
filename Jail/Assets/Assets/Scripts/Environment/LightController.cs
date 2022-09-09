@@ -21,7 +21,7 @@ namespace Jail.LightControl
 
         float maxIntensity;
         LightFadeState lightFadeState = LightFadeState.Off;
-        float timeSinceFadeStarted = 0f;
+        float timeSinceFadeStarted = 0.0f;
 
         void Awake()
         {
@@ -57,12 +57,12 @@ namespace Jail.LightControl
 
                     if (timeSinceFadeStarted >= fadeTime)
                     {
-                        lightToControl.intensity = 0f;
+                        lightToControl.intensity = 0.0f;
                         lightFadeState = LightFadeState.Off;
                     }
                     else
                     {
-                        lightToControl.intensity = 1 - timeSinceFadeStarted / fadeTime;
+                        lightToControl.intensity = 1.0f - timeSinceFadeStarted / fadeTime;
                     }
 
                     break;
@@ -71,21 +71,21 @@ namespace Jail.LightControl
 
         public void FadeIn()
         {
-            lightToControl.intensity = 0f;
+            lightToControl.intensity = 0.0f;
             lightFadeState = LightFadeState.FadeIn;
-            timeSinceFadeStarted = 0f;
+            timeSinceFadeStarted = 0.0f;
         }
 
         public void FadeOut()
         {
             lightToControl.intensity = maxIntensity;
             lightFadeState = LightFadeState.FadeOut;
-            timeSinceFadeStarted = 0f;
+            timeSinceFadeStarted = 0.0f;
         }
 
         public void TurnLightOff()
         {
-            lightToControl.intensity = 0f;
+            lightToControl.intensity = 0.0f;
         }
     }
 }

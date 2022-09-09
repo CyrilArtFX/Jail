@@ -23,24 +23,24 @@ namespace Jail
         GameObject spiritParticles = default;
 
         [Header("Parameters")]
-        [SerializeField, Range(0f, 100f)]
-        float maxSpeed = 13f, maxClimbSpeed = 2f, maxSpiritSpeed = 8f, maxSlowSpeed = 1f;
-        [SerializeField, Range(0f, 100f)]
-        float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 20f, maxSpiritAcceleration = 15f;
-        [SerializeField, Range(0f, 10f)]
-        float jumpHeight = 2f;
-        [SerializeField, Range(0f, 90f)]
-        float maxGroundAngle = 25f, maxStairsAngle = 50f;
-        [SerializeField, Range(0f, 100f)]
-        float maxSnapSpeed = 100f;
-        [SerializeField, Min(0f)]
-        float probeDistance = 1f;
-        [SerializeField, Range(90f, 170f)]
-        float maxClimbAngle = 140f;
+        [SerializeField, Range(0.0f, 100.0f)]
+        float maxSpeed = 13.0f, maxClimbSpeed = 2.0f, maxSpiritSpeed = 8.0f, maxSlowSpeed = 1.0f;
+        [SerializeField, Range(0.0f, 100.0f)]
+        float maxAcceleration = 10.0f, maxAirAcceleration = 1.0f, maxClimbAcceleration = 20.0f, maxSpiritAcceleration = 15.0f;
+        [SerializeField, Range(0.0f, 10.0f)]
+        float jumpHeight = 2.0f;
+        [SerializeField, Range(0.0f, 90.0f)]
+        float maxGroundAngle = 25.0f, maxStairsAngle = 50.0f;
+        [SerializeField, Range(0.0f, 100.0f)]
+        float maxSnapSpeed = 100.0f;
+        [SerializeField, Min(0.0f)]
+        float probeDistance = 1.0f;
+        [SerializeField, Range(90.0f, 170.0f)]
+        float maxClimbAngle = 140.0f;
         [SerializeField]
         LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, ladderMask = 0;
-        [SerializeField, Min(0f)]
-        float modelAlignSpeed = 180f;
+        [SerializeField, Min(0.0f)]
+        float modelAlignSpeed = 180.0f;
 
         [Header("Others")]
         [SerializeField]
@@ -88,7 +88,7 @@ namespace Jail
 
         [Header("Spirit Returning Parameters")]
         [SerializeField, Tooltip("The average speed of the spirit while returning, in meter per seconds")]
-        float spiritReturningAverageSpeed = 5f;
+        float spiritReturningAverageSpeed = 5.0f;
         [SerializeField, Tooltip("The distance between spirit and body by the time")]
         AnimationCurve spiritReturningCurve = default;
         [SerializeField, Tooltip("The time after spirit returning when spirit is disabled")]
@@ -125,8 +125,8 @@ namespace Jail
             if (disableCommands) return;
 
             playerInput.x = Input.GetAxis("Horizontal");
-            playerInput.y = Climbing || spirit ? Input.GetAxis("UpDown") : 0f;
-            playerInput = Vector3.ClampMagnitude(playerInput, 1f);
+            playerInput.y = Climbing || spirit ? Input.GetAxis("UpDown") : 0.0f;
+            playerInput = Vector3.ClampMagnitude(playerInput, 1.0f);
 
             if (maintainButtonForClimb)
             {
@@ -176,7 +176,7 @@ namespace Jail
                     spiritObject.SetActive(false);
                     spirit = false;
 
-                    if (disableSpiritTime > 0f)
+                    if (disableSpiritTime > 0.0f)
                     {
                         StartCoroutine(DisableSpirit());
                     }
@@ -214,7 +214,7 @@ namespace Jail
                 }
 
                 Quaternion spirit_rotation = spiritObject.transform.localRotation;
-                if (modelAlignSpeed > 0f)
+                if (modelAlignSpeed > 0.0f)
                 {
                     spirit_rotation = AlignModelRotation(spirit_rotation_plane_normal, spirit_rotation);
                 }
@@ -258,7 +258,7 @@ namespace Jail
         Quaternion AlignModelRotation(Vector3 rotation_axis, Quaternion rotation)
         {
             Vector3 model_axis = spiritObject.transform.up;
-            float dot = Mathf.Clamp(Vector3.Dot(model_axis, rotation_axis), -1f, 1f);
+            float dot = Mathf.Clamp(Vector3.Dot(model_axis, rotation_axis), -1.0f, 1.0f);
             float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
             float max_angle = modelAlignSpeed * Time.deltaTime;
 
@@ -414,7 +414,7 @@ namespace Jail
 
             Vector2 adjustment;
             adjustment.x = playerInput.x * speed - Vector3.Dot(relative_velocity, x_axis);
-            adjustment.y = Climbing || spirit ? playerInput.y * speed - Vector3.Dot(relative_velocity, Vector3.up) : 0f;
+            adjustment.y = Climbing || spirit ? playerInput.y * speed - Vector3.Dot(relative_velocity, Vector3.up) : 0.0f;
             adjustment = Vector3.ClampMagnitude(adjustment, acceleration * Time.deltaTime);
 
             velocity += x_axis * adjustment.x;
@@ -453,7 +453,7 @@ namespace Jail
             groundContactCount = 1;
             contactNormal = hit.normal;
             float dot = Vector3.Dot(velocity, hit.normal);
-            if (dot > 0f)
+            if (dot > 0.0f)
             {
                 velocity = (velocity - hit.normal * dot).normalized * speed;
             }
@@ -481,13 +481,13 @@ namespace Jail
             else return;
 
             stepsSinceLastJump = 0;
-            float jumpSpeed = Mathf.Sqrt(2f * Physics.gravity.magnitude * jumpHeight);
+            float jumpSpeed = Mathf.Sqrt(2.0f * Physics.gravity.magnitude * jumpHeight);
             jump_direction = (jump_direction + Vector3.up).normalized;
 
             float alignedSpeed = Vector3.Dot(velocity, jump_direction);
-            if (alignedSpeed > 0f)
+            if (alignedSpeed > 0.0f)
             {
-                jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+                jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0.0f);
             }
 
             velocity += jump_direction * jumpSpeed;
@@ -645,7 +645,7 @@ namespace Jail
             spiritPosAtStartReturning = spiritObject.transform.localPosition;
             float distanceSpiritBody = Vector3.Distance(spiritPosAtStartReturning, Vector3.zero);
             timeForSpiritToReturn = distanceSpiritBody / spiritReturningAverageSpeed;
-            timeSinceSpiritReturningStart = 0f;
+            timeSinceSpiritReturningStart = 0.0f;
 
             spiritReturning = true;
         }

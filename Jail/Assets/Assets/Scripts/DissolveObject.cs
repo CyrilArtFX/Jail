@@ -17,7 +17,7 @@ namespace Jail
 
         bool dissolveStarted = false;
         bool inverseDissolveStarted = false;
-        float dissolveValue = 0f;
+        float dissolveValue = 0.0f;
 
         void Awake()
         {
@@ -34,9 +34,9 @@ namespace Jail
                     renderer.material.SetFloat("Vector1_7d1cd5e28bfe440ea3a8058edcc3457f", dissolveValue);
                 }
 
-                if (dissolveValue >= 1f)
+                if (dissolveValue >= 1.0f)
                 {
-                    dissolveValue = 1f;
+                    dissolveValue = 1.0f;
                     passDissolve.Invoke();
                     dissolveStarted = false;
                 }
@@ -50,9 +50,9 @@ namespace Jail
                     renderer.material.SetFloat("Vector1_7d1cd5e28bfe440ea3a8058edcc3457f", dissolveValue);
                 }
 
-                if (dissolveValue <= 0f)
+                if (dissolveValue <= 0.0f)
                 {
-                    dissolveValue = 0f;
+                    dissolveValue = 0.0f;
                     passNoDissolve.Invoke();
                     inverseDissolveStarted = false;
                 }
@@ -75,7 +75,7 @@ namespace Jail
         {
             dissolveStarted = false;
             inverseDissolveStarted = false;
-            dissolveValue = 0f;
+            dissolveValue = 0.0f;
             foreach (Renderer renderer in renderers)
             {
                 renderer.material.SetFloat("Vector1_7d1cd5e28bfe440ea3a8058edcc3457f", dissolveValue);
