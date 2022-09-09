@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7138109193561712933}
   - component: {fileID: 8606756228849542069}
   - component: {fileID: 5517777235957806444}
+  - component: {fileID: 7664023429713890138}
   m_Layer: 0
   m_Name: Chainer
   m_TagString: Untagged
@@ -122,12 +123,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1518380062341689029}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf1841653109cfb429a83e754393bf48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spline: {fileID: 0}
+  spline: {fileID: 7664023429713890138}
   prefab: {fileID: 3625152885419373739, guid: deec865932db0874081b055679332728, type: 3}
   scale: 0.35
   stepSize: 0.2
@@ -147,6 +148,27 @@ MonoBehaviour:
   smoothSpeed: 5
   tangentForce: 7
   splineChainer: {fileID: 8606756228849542069}
+--- !u!114 &7664023429713890138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518380062341689029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6ed2fcd36b8e0649ad55b8be17d9fe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points:
+  - {x: 0, y: 0, z: 0}
+  - {x: 1, y: 0, z: 0}
+  - {x: 1.1009982, y: -0.0000009536743, z: 0.40574074}
+  - {x: 2.1009982, y: -0.0000009536743, z: 0.40574074}
+  modes: 0200000002000000
+  OnSplineEdited:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8501612673881807109
 GameObject:
   m_ObjectHideFlags: 0
