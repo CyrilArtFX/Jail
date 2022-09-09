@@ -8,14 +8,16 @@ namespace Jail.Utility.Bezier
     {
         const float STEPS = 1.0f / 30.0f;
 
-        public BezierSplineData Data => data;
-        BezierSplineData data = new BezierSplineData();
+        [SerializeField]
+        Vector3[] points;
+        [SerializeField]
+        BezierControlPointMode[] modes;
 
         public UnityEvent OnSplineEdited;
 
         public float Length { get; private set; }
-        public int ControlPointCount => data.points.Length;
-        public int CurveCount => (data.points.Length - 1) / 3;
+        public int ControlPointCount => points.Length;
+        public int CurveCount => (points.Length - 1) / 3;
 
         public void UpdateSpline()
         {
@@ -39,7 +41,7 @@ namespace Jail.Utility.Bezier
 
         public Vector3 GetControlPoint(int id)
         {
-            return data.points[id];
+            return points[id];
         }
 
         public void SetControlPoint(int id, Vector3 point)
@@ -47,19 +49,19 @@ namespace Jail.Utility.Bezier
             //  move tangent points
             if (id % 3 == 0)
             {
-                Vector3 delta = point - data.points[id];
+                Vector3 delta = point - points[id];
                 if (id > 0)
                 {
-                    data.points[id - 1] += delta;
+                    points[id - 1] += delta;
                 }
-                else if (id + 1 < data.points.Length) 
+                else if (id + 1 < points.Length) 
                 {
-                    data.points[id + 1] += delta;
+                    points[id + 1] += delta;
                 }
             }
 
             //  set point
-            data.points[id] = point;
+            points[id] = point;
 
             //  enforce mode
             EnforceMode(id);
@@ -70,13 +72,13 @@ namespace Jail.Utility.Bezier
 
         public BezierControlPointMode GetControlPointMode(int id)
         {
-            return data.modes[(id + 1) / 3];
+            return modes[(id + 1) / 3];
         }
 
         public void SetControlPointMode(int id, BezierControlPointMode mode)
         {
             //  set mode
-            data.modes[(id + 1) / 3] = mode;
+            modes[(id + 1) / 3] = mode;
 
             //  enforce mode
             EnforceMode(id);
@@ -88,10 +90,10 @@ namespace Jail.Utility.Bezier
         void EnforceMode(int id)
         {
             int mode_id = (id + 1) / 3;
-            if (mode_id == 0 || mode_id == data.modes.Length - 1) return;
+            if (mode_id == 0 || mode_id == modes.Length - 1) return;
 
             //  get current mode
-            BezierControlPointMode mode = data.modes[mode_id];
+            BezierControlPointMode mode = modes[mode_id];
             if (mode == BezierControlPointMode.Free) return;
 
             //  get indexes
@@ -109,41 +111,41 @@ namespace Jail.Utility.Bezier
             }
 
             //  enforce mode
-            Vector3 middle = data.points[middle_id];
-            Vector3 enforced_tangent = middle - data.points[fixed_id];
+            Vector3 middle = points[middle_id];
+            Vector3 enforced_tangent = middle - points[fixed_id];
             if (mode == BezierControlPointMode.Aligned)
             {
-                enforced_tangent = enforced_tangent.normalized * Vector3.Distance(middle, data.points[enforced_id]);
+                enforced_tangent = enforced_tangent.normalized * Vector3.Distance(middle, points[enforced_id]);
             }
-            data.points[enforced_id] = middle + enforced_tangent;
+            points[enforced_id] = middle + enforced_tangent;
         }
 
         public void AddCurve()
         {
-            Vector3 point = data.points[data.points.Length - 1];
+            Vector3 point = points[points.Length - 1];
 
             #region AddPoints
             //  resize array
-            Array.Resize(ref data.points, data.points.Length + 3);
+            Array.Resize(ref points, points.Length + 3);
 
             //  add new points
             point.x += 1.0f;
-            data.points[data.points.Length - 3] = point;
+            points[points.Length - 3] = point;
             point.x += 1.0f;
-            data.points[data.points.Length - 2] = point;
+            points[points.Length - 2] = point;
             point.x += 1.0f;
-            data.points[data.points.Length - 1] = point;
+            points[points.Length - 1] = point;
             #endregion
 
             #region AddMode
             //  resize modes
-            Array.Resize(ref data.modes, data.modes.Length + 1);
+            Array.Resize(ref modes, modes.Length + 1);
 
             //  add new mode
-            data.modes[data.modes.Length - 1] = data.modes[data.modes.Length - 2];
+            modes[modes.Length - 1] = modes[modes.Length - 2];
 
             //  enforce mode
-            EnforceMode(data.points.Length - 4);
+            EnforceMode(points.Length - 4);
             #endregion
 
             //  update
@@ -152,7 +154,7 @@ namespace Jail.Utility.Bezier
 
         public void Reset()
         {
-            data.points = new Vector3[]
+            points = new Vector3[]
             {
                 new Vector3(1.0f, 0.0f, 0.0f),
                 new Vector3(2.0f, 0.0f, 0.0f),
@@ -160,7 +162,7 @@ namespace Jail.Utility.Bezier
                 new Vector3(4.0f, 0.0f, 0.0f)
             };
 
-            data.modes = new BezierControlPointMode[]
+            modes = new BezierControlPointMode[]
             {
                 BezierControlPointMode.Free,
                 BezierControlPointMode.Free,
@@ -173,7 +175,7 @@ namespace Jail.Utility.Bezier
             if (t >= 1.0f)
             {
                 t = 1.0f;
-                i = data.points.Length - 4;
+                i = points.Length - 4;
             }
             else
             {
@@ -191,7 +193,7 @@ namespace Jail.Utility.Bezier
             int i = GetCurveIndexByTime(ref t);
 
             return transform.TransformPoint(
-                Bezier.GetPoint(data.points[i], data.points[i + 1], data.points[i + 2], data.points[i + 3], t)
+                Bezier.GetPoint(points[i], points[i + 1], points[i + 2], points[i + 3], t)
             );
         }
 
@@ -200,7 +202,7 @@ namespace Jail.Utility.Bezier
             int i = GetCurveIndexByTime(ref t);
 
             return transform.TransformPoint(
-                        Bezier.GetFirstDerivative(data.points[i], data.points[i + 1], data.points[i + 2], data.points[i + 3], t)
+                        Bezier.GetFirstDerivative(points[i], points[i + 1], points[i + 2], points[i + 3], t)
                     ) - transform.position;
         }
 
