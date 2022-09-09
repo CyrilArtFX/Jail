@@ -26,11 +26,11 @@ namespace Jail
         [SerializeField]
         Image blackFadeImage = default;
         [SerializeField]
-        float blackFadeHalfTime = 1f, fullBlackTime = 0.5f;
+        float blackFadeHalfTime = 1.0f, fullBlackTime = 0.5f;
         [SerializeField]
         AnimationCurve blackFadeCurve = default;
 
-        float timeSinceBlackFadeStarted = 0f;
+        float timeSinceBlackFadeStarted = 0.0f;
         FadeStates blackFadeState = FadeStates.Off;
         FadeType blackFadeType = FadeType.OnlyFadeIn;
 
@@ -56,10 +56,10 @@ namespace Jail
                     timeSinceBlackFadeStarted += Time.deltaTime;
                     if (timeSinceBlackFadeStarted >= blackFadeHalfTime)
                     {
-                        timeSinceBlackFadeStarted = 0f; 
+                        timeSinceBlackFadeStarted = 0.0f; 
 
 
-                        blackFadeImage.color = new Color(0, 0, 0, 1);
+                        blackFadeImage.color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
                         if (blackFadeType == FadeType.BothFadesWithRestore)
                         {
                             blackFadeState = FadeStates.StayBlack;
@@ -74,7 +74,7 @@ namespace Jail
                     else
                     {
                         float transition_fraction = timeSinceBlackFadeStarted / blackFadeHalfTime;
-                        blackFadeImage.color = new Color(0, 0, 0, blackFadeCurve.Evaluate(transition_fraction));
+                        blackFadeImage.color = new Color(0.0f, 0.0f, 0.0f, blackFadeCurve.Evaluate(transition_fraction));
                     }
 
                     break;
@@ -84,7 +84,7 @@ namespace Jail
                     timeSinceBlackFadeStarted += Time.deltaTime;
                     if (timeSinceBlackFadeStarted >= fullBlackTime)
                     {
-                        timeSinceBlackFadeStarted = 0f;
+                        timeSinceBlackFadeStarted = 0.0f;
                         blackFadeState = FadeStates.FadeOut;
                     }
 
@@ -95,15 +95,15 @@ namespace Jail
                     timeSinceBlackFadeStarted += Time.deltaTime;
                     if (timeSinceBlackFadeStarted >= blackFadeHalfTime)
                     {
-                        timeSinceBlackFadeStarted = 0f;
+                        timeSinceBlackFadeStarted = 0.0f;
                         blackFadeState = FadeStates.Off;
-                        blackFadeImage.color = new Color(0, 0, 0, 0);
+                        blackFadeImage.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
                         Player.instance.disableCommands = false; 
                     }
                     else
                     {
                         float transition_fraction = 1 - (timeSinceBlackFadeStarted / blackFadeHalfTime);
-                        blackFadeImage.color = new Color(0, 0, 0, blackFadeCurve.Evaluate(transition_fraction));
+                        blackFadeImage.color = new Color(0.0f, 0.0f, 0.0f, blackFadeCurve.Evaluate(transition_fraction));
                     }
 
                     break;
@@ -113,17 +113,17 @@ namespace Jail
         public void StartFade(FadeType fadeType)
         {
             Player.instance.disableCommands = true;
-            timeSinceBlackFadeStarted = 0f;
+            timeSinceBlackFadeStarted = 0.0f;
             blackFadeType = fadeType;
             if (fadeType == FadeType.OnlyFadeOut)
             {
                 blackFadeState = FadeStates.FadeOut;
-                blackFadeImage.color = new Color(0, 0, 0, 1);
+                blackFadeImage.color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
             }
             else
             {
                 blackFadeState = FadeStates.FadeIn;
-                blackFadeImage.color = new Color(0, 0, 0, 0);
+                blackFadeImage.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
             }
         }
     }

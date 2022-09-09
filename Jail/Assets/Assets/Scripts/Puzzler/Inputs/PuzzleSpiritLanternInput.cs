@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Jail.LightControl;
 
 namespace Jail.Puzzler.Inputs
 {
@@ -9,11 +10,19 @@ namespace Jail.Puzzler.Inputs
         [SerializeField]
         LayerMask detectionMask;
         [SerializeField]
-        ParticleSystem particles;
+        ParticleSystem fireParticles;
+        [SerializeField]
+        LightController fireLight;
 
         //  TODO: replace w/ final assets
         [Header("PREVIEW PLACEHOLDER"), SerializeField]
         Material triggerMaterial;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            fireLight.TurnLightOff();
+        }
 
         void OnTriggerEnter(Collider other)
         {
@@ -21,10 +30,6 @@ namespace Jail.Puzzler.Inputs
 
             //  trigger
             IsTriggered = !IsTriggered;
-            if (IsTriggered)
-            {
-                particles.Play();
-            }
         }
 
         protected override void OnTrigger(bool state)
@@ -33,6 +38,25 @@ namespace Jail.Puzzler.Inputs
 
             //  change material depending on state
             renderer.material = state ? triggerMaterial : defaultMaterial;
+
+            if (state)
+            {
+                fireParticles.Play(true);
+                fireLight.FadeIn();
+            }
+            else
+            {
+                fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+                fireLight.FadeOut();
+            }
+        }
+
+        public override void DisableInput(bool disable)
+        {
+            base.DisableInput(disable);
+
+            fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            fireLight.FadeOut();
         }
     }
 }
