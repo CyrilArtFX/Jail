@@ -13,9 +13,6 @@ namespace Jail
 
         List<ICheckpointSaver> savedObjects = new List<ICheckpointSaver>();
 
-        [SerializeField]
-        UnityEvent restoreCheckpointEvent = default;
-
         public static GlobalCheckpointAndRespawn instance;
 
 
@@ -42,12 +39,14 @@ namespace Jail
             {
                 saved_object.RestoreState();
             }
+
+            BlackFade.instance.eventEndOfFadeIn.RemoveListener(RestoreCheckpoint);
         }
 
         public void Respawn()
         {
             BlackFade.instance.StartFade(FadeType.BothFadesWithRestore);
-            BlackFade.instance.eventEndOfFadeIn = restoreCheckpointEvent;
+            BlackFade.instance.eventEndOfFadeIn.AddListener(RestoreCheckpoint);
         }
 
 
