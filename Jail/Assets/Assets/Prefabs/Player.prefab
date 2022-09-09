@@ -5085,6 +5085,7 @@ GameObject:
   - component: {fileID: 7946750689201620298}
   - component: {fileID: 7394255807167011279}
   - component: {fileID: 7569107038464549840}
+  - component: {fileID: 5330794375628755043}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -5156,32 +5157,17 @@ MonoBehaviour:
   modelAlignSpeed: 180
   maintainButtonForClimb: 0
   camFocus: {fileID: 0}
-  deathText: {fileID: 0}
+  body: {fileID: 0}
+  inCheckpoint: {fileID: 0}
+  dead: 0
   spiritReturningAverageSpeed: 5
-  test:
+  spiritReturningCurve:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  disableSpiritTime: 0.5
 --- !u!54 &7946750689201620298
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5231,6 +5217,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5330794375628755043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7946750689201620291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c152463e212af524ba930ed6d6f120db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8587793193187989228
 GameObject:
   m_ObjectHideFlags: 0
