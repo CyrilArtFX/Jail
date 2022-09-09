@@ -58,6 +58,7 @@ namespace Jail.Puzzler.Inputs
 
         public virtual void DisableInput(bool disable)
         {
+            Debug.Log(name + "  " + collider);
             collider.enabled = !disable;
             enabled = !disable;
 
