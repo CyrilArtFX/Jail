@@ -30,12 +30,17 @@ namespace Jail.Debug
         {
             spline = (BezierSpline) target;
 
+            GUILayout.Label("Selection Point");
+
             //  change selection id
             EditorGUI.BeginChangeCheck();
             int id = EditorGUILayout.IntSlider(selectedId, 0, spline.ControlPointCount - 1);
             if (EditorGUI.EndChangeCheck())
             {
                 selectedId = id;
+
+                //  update scene
+                SceneView.RepaintAll();
             }
 
             //  show selected point
@@ -60,8 +65,6 @@ namespace Jail.Debug
 
         void DrawSelectedPointInspector()
         {
-            GUILayout.Label("Selected Point");
-
             //  show position
             EditorGUI.BeginChangeCheck();
             Vector3 point = EditorGUILayout.Vector3Field("Position", spline.GetControlPoint(selectedId));
