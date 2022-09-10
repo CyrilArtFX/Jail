@@ -18,7 +18,7 @@ namespace Jail.LightControl
         float fadeTime = 0.3f;
 
         Light lightToControl = default;
-        float maxIntensity = 2.0f;
+        float maxIntensity;
 
         LightFadeState lightFadeState = LightFadeState.Off;
         float timeSinceFadeStarted = 0.0f;
