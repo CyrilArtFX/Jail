@@ -14,16 +14,6 @@ namespace Jail.Puzzler.Inputs
         [SerializeField]
         LightController fireLight;
 
-        //  TODO: replace w/ final assets
-        [Header("PREVIEW PLACEHOLDER"), SerializeField]
-        Material triggerMaterial;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            fireLight.TurnLightOff();
-        }
-
         void OnTriggerEnter(Collider other)
         {
             if (!Player.instance.IsSpirit) return;
@@ -35,9 +25,6 @@ namespace Jail.Puzzler.Inputs
         protected override void OnTrigger(bool state)
         {
             base.OnTrigger(state);
-
-            //  change material depending on state
-            renderer.material = state ? triggerMaterial : defaultMaterial;
 
             if (state)
             {

@@ -19,14 +19,11 @@ namespace Jail.LightControl
         [SerializeField]
         float fadeTime = 0.3f;
 
-        float maxIntensity;
+        [SerializeField]
+        float maxIntensity = 2f;
+
         LightFadeState lightFadeState = LightFadeState.Off;
         float timeSinceFadeStarted = 0.0f;
-
-        void Awake()
-        {
-            maxIntensity = lightToControl.intensity;
-        }
 
         void Update()
         {
