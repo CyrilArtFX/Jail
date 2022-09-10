@@ -111,20 +111,20 @@ namespace Jail.Utility.Bezier
         {
             //  try to retrieve spline automatically
             if (!TryGetComponent(out spline))
-			{
+            {
                 gameObject.AddComponent<BezierSpline>();
                 print("BezierSplineChainer: 'BezierSpline' component not found, creating one..");
                 return;
-			}
+            }
 
             //  compute length
             spline.ComputeLength();
 
             //  update when spline is edited
             if (spline.OnSplineEdited != null)
-			{
+            {
                 spline.OnSplineEdited.AddListener(QueueUpdate);
-			}
+            }
         }
 
         public void Reset()
