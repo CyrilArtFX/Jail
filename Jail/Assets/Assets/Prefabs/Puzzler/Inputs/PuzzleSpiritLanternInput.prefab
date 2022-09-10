@@ -56,7 +56,6 @@ MonoBehaviour:
     m_Bits: 16384
   fireParticles: {fileID: 1568932323143535668}
   fireLight: {fileID: 1568932324121658564}
-  triggerMaterial: {fileID: 2100000, guid: 86ce2ae9861253142be6d42458d0c24c, type: 2}
 --- !u!114 &1568932322774370308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,7 +81,7 @@ BoxCollider:
   m_GameObject: {fileID: 1568932322774370304}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -5095,5 +5094,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d208736d0baf65242ab97209b6f5371d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightToControl: {fileID: 1568932324121658567}
   fadeTime: 0.3
+  lightOn: 0

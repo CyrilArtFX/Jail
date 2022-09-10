@@ -14,14 +14,13 @@ namespace Jail.Puzzler.Inputs
         [SerializeField]
         LightController fireLight;
 
-        //  TODO: replace w/ final assets
-        [Header("PREVIEW PLACEHOLDER"), SerializeField]
-        Material triggerMaterial;
-
-        protected override void Awake()
+        public override void Start()
         {
-            base.Awake();
-            fireLight.TurnLightOff();
+            base.Start();
+            if (!IsTriggered)
+            {
+                fireLight.TurnLightOff();
+            }
         }
 
         void OnTriggerEnter(Collider other)
@@ -36,18 +35,21 @@ namespace Jail.Puzzler.Inputs
         {
             base.OnTrigger(state);
 
-            //  change material depending on state
-            renderer.material = state ? triggerMaterial : defaultMaterial;
-
             if (state)
             {
                 fireParticles.Play(true);
-                fireLight.FadeIn();
+                if (!fireLight.lightOn)
+                {
+                    fireLight.FadeIn();
+                }
             }
             else
             {
                 fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-                fireLight.FadeOut();
+                if (fireLight.lightOn)
+                {
+                    fireLight.FadeOut();
+                }
             }
         }
 
@@ -56,7 +58,10 @@ namespace Jail.Puzzler.Inputs
             base.DisableInput(disable);
 
             fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-            fireLight.TurnLightOff();
+            if (fireLight.lightOn)
+            {
+                fireLight.TurnLightOff();
+            }
         }
     }
 }

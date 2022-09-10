@@ -13,18 +13,22 @@ namespace Jail.LightControl
 
     public class LightController : MonoBehaviour
     {
-        [SerializeField]
-        Light lightToControl = default;
 
         [SerializeField]
         float fadeTime = 0.3f;
 
+        Light lightToControl = default;
         float maxIntensity;
+
         LightFadeState lightFadeState = LightFadeState.Off;
         float timeSinceFadeStarted = 0.0f;
 
+        [HideInInspector]
+        public bool lightOn = false;
+
         void Awake()
         {
+            lightToControl = GetComponent<Light>();
             maxIntensity = lightToControl.intensity;
         }
 
@@ -74,6 +78,7 @@ namespace Jail.LightControl
             lightToControl.intensity = 0.0f;
             lightFadeState = LightFadeState.FadeIn;
             timeSinceFadeStarted = 0.0f;
+            lightOn = true;
         }
 
         public void FadeOut()
@@ -81,11 +86,13 @@ namespace Jail.LightControl
             lightToControl.intensity = maxIntensity;
             lightFadeState = LightFadeState.FadeOut;
             timeSinceFadeStarted = 0.0f;
+            lightOn = false;
         }
 
         public void TurnLightOff()
         {
             lightToControl.intensity = 0.0f;
+            lightOn = false;
         }
     }
 }
