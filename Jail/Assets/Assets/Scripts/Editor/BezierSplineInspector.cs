@@ -61,6 +61,21 @@ namespace Jail.Debug
                 //  add curve
                 spline.AddCurve();
             }
+
+            //  remove curve button
+            EditorGUI.BeginDisabledGroup(spline.ControlPointCount - 3 <= 1);
+            if (GUILayout.Button("Remove Curve"))
+            {
+                //  record undo
+                Undo.RecordObject(spline, "Remove Curve");
+
+                //  set object as dirty
+                EditorUtility.SetDirty(spline);
+
+                //  add curve
+                spline.RemoveCurve();
+            }
+            EditorGUI.EndDisabledGroup();
         }
 
         void DrawSelectedPointInspector()
