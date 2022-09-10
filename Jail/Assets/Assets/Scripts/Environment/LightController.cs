@@ -26,7 +26,7 @@ namespace Jail.LightControl
         [HideInInspector]
         public bool lightOn = false;
 
-        private void Awake()
+        void Awake()
         {
             lightToControl = GetComponent<Light>();
             maxIntensity = lightToControl.intensity;

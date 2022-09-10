@@ -17,7 +17,10 @@ namespace Jail.Puzzler.Inputs
         public override void Start()
         {
             base.Start();
-            if (!IsTriggered) fireLight.TurnLightOff();
+            if (!IsTriggered)
+            {
+                fireLight.TurnLightOff();
+            }
         }
 
         void OnTriggerEnter(Collider other)
