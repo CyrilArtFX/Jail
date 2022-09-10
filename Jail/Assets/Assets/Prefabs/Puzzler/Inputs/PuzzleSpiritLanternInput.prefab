@@ -48,7 +48,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0cdd53b58ad944190c6a79e686e17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collider: {fileID: 1568932322774370310}
   renderer: {fileID: 1568932323783489270}
   defaultMaterial: {fileID: 2100000, guid: 65662980f228dfe47a63232882b79d5e, type: 2}
   disabledMaterial: {fileID: 2100000, guid: a9f6f965901ae5c4c8c2dfa65def4f7a, type: 2}
@@ -5019,7 +5018,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.08432349, g: 0.6226415, b: 0.032306872, a: 1}
-  m_Intensity: 0
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -5095,6 +5094,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d208736d0baf65242ab97209b6f5371d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightToControl: {fileID: 1568932324121658567}
   fadeTime: 0.3
-  maxIntensity: 2
+  lightOn: 0

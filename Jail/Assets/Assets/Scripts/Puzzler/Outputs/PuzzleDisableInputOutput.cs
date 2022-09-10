@@ -11,12 +11,12 @@ namespace Jail.Puzzler.Outputs
         [SerializeField]
         bool startDisable = false;
 
-        protected override void Awake()
+        void Start()
         {
-            base.Awake();
             if (startDisable)
             {
                 inputToDisable.DisableInput(true);
+                inputToDisable.Start();
             }
         }
 

@@ -14,6 +14,12 @@ namespace Jail.Puzzler.Inputs
         [SerializeField]
         LightController fireLight;
 
+        public override void Start()
+        {
+            base.Start();
+            if (!IsTriggered) fireLight.TurnLightOff();
+        }
+
         void OnTriggerEnter(Collider other)
         {
             if (!Player.instance.IsSpirit) return;
@@ -29,12 +35,18 @@ namespace Jail.Puzzler.Inputs
             if (state)
             {
                 fireParticles.Play(true);
-                fireLight.FadeIn();
+                if (!fireLight.lightOn)
+                {
+                    fireLight.FadeIn();
+                }
             }
             else
             {
                 fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-                fireLight.FadeOut();
+                if (fireLight.lightOn)
+                {
+                    fireLight.FadeOut();
+                }
             }
         }
 
@@ -43,7 +55,10 @@ namespace Jail.Puzzler.Inputs
             base.DisableInput(disable);
 
             fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-            fireLight.TurnLightOff();
+            if (fireLight.lightOn)
+            {
+                fireLight.TurnLightOff();
+            }
         }
     }
 }

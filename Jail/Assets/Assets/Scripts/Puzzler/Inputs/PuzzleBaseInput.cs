@@ -24,8 +24,10 @@ namespace Jail.Puzzler.Inputs
         bool savedTriggerState;
         bool savedEnabledState;
 
+        Collider _collider;
+
         [SerializeField]
-        Collider _collider = default;
+        protected bool startTriggered = false;
 
         [SerializeField]
         protected new Renderer renderer;
@@ -35,6 +37,16 @@ namespace Jail.Puzzler.Inputs
         protected Material defaultMaterial = default;
         [SerializeField]
         Material disabledMaterial = default;
+
+        void Awake()
+        {
+            _collider = GetComponent<Collider>();
+        }
+
+        public virtual void Start()
+        {
+            IsTriggered = startTriggered;
+        }
 
         public void LinkOutput(PuzzleBaseOutput output)
         {
@@ -54,7 +66,6 @@ namespace Jail.Puzzler.Inputs
 
         public virtual void DisableInput(bool disable)
         {
-            Debug.Log(name + "  " + _collider);
             _collider.enabled = !disable;
             enabled = !disable;
 
