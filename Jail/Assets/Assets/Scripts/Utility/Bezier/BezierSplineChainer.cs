@@ -49,12 +49,7 @@ namespace Jail.Utility.Bezier
 
         public void DoUpdate()
         {
-            if (!spline)
-            {
-                Debug.LogError("BezierSplineChainer: Spline wasn't found!");
-                return;
-            }
-            if (!prefab) return;
+            if (!spline || !prefab) return;
             if (scale <= 0.0f || stepSize <= 0.0f) return;
 
             //  place items
@@ -115,13 +110,21 @@ namespace Jail.Utility.Bezier
         void SetupSpline()
         {
             //  try to retrieve spline automatically
-            TryGetComponent(out spline);
+            if (!TryGetComponent(out spline))
+			{
+                gameObject.AddComponent<BezierSpline>();
+                print("BezierSplineChainer: 'BezierSpline' component not found, creating one..");
+                return;
+			}
 
             //  compute length
             spline.ComputeLength();
 
             //  update when spline is edited
-            spline.OnSplineEdited.AddListener(QueueUpdate);
+            if (spline.OnSplineEdited != null)
+			{
+                spline.OnSplineEdited.AddListener(QueueUpdate);
+			}
         }
 
         public void Reset()
@@ -130,17 +133,12 @@ namespace Jail.Utility.Bezier
             RemoveItemsAtRange(0, Items.Count - 1);
         }
 
-        void Awake()
-        {
-            SetupSpline();
-            QueueUpdate();
-        }
-
         void OnValidate()
         {
             //  get children as items
             items = transform.Cast<Transform>().ToList();
 
+            SetupSpline();
             QueueUpdate();
         }
 
