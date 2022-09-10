@@ -30,12 +30,17 @@ namespace Jail.Debug
         {
             spline = (BezierSpline) target;
 
+            GUILayout.Label("Selection Point");
+
             //  change selection id
             EditorGUI.BeginChangeCheck();
             int id = EditorGUILayout.IntSlider(selectedId, 0, spline.ControlPointCount - 1);
             if (EditorGUI.EndChangeCheck())
             {
                 selectedId = id;
+
+                //  update scene
+                SceneView.RepaintAll();
             }
 
             //  show selected point
@@ -56,12 +61,25 @@ namespace Jail.Debug
                 //  add curve
                 spline.AddCurve();
             }
+
+            //  remove curve button
+            EditorGUI.BeginDisabledGroup(spline.ControlPointCount - 3 <= 1);
+            if (GUILayout.Button("Remove Curve"))
+            {
+                //  record undo
+                Undo.RecordObject(spline, "Remove Curve");
+
+                //  set object as dirty
+                EditorUtility.SetDirty(spline);
+
+                //  add curve
+                spline.RemoveCurve();
+            }
+            EditorGUI.EndDisabledGroup();
         }
 
         void DrawSelectedPointInspector()
         {
-            GUILayout.Label("Selected Point");
-
             //  show position
             EditorGUI.BeginChangeCheck();
             Vector3 point = EditorGUILayout.Vector3Field("Position", spline.GetControlPoint(selectedId));

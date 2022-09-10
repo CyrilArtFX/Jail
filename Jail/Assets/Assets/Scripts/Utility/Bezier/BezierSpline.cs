@@ -152,6 +152,18 @@ namespace Jail.Utility.Bezier
             UpdateSpline();
         }
 
+        public void RemoveCurve()
+        {
+            if (points.Length - 3 <= 1) return;
+
+            //  resize arrays
+            Array.Resize(ref points, points.Length - 3);
+            Array.Resize(ref modes, modes.Length - 1);
+
+             //  update
+            UpdateSpline();
+        }
+
         public void Reset()
         {
             points = new Vector3[]
