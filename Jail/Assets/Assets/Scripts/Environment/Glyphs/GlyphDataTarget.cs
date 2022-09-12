@@ -8,9 +8,13 @@ namespace Jail.Environment.Glyphs
     [Serializable]
     public class GlyphDataTarget
     {
+		[Tooltip("Which character should it links to?")]
         public GlyphTarget target;
+		[Tooltip("Target Radius action-effect")]
         public float distance = 8.0f;
+		[Tooltip("Color gradient used in the action-ranged glyph")]
         public Gradient gradient;
+		[Tooltip("How should we prioritize this target depending on other? Lower value means higher priority")]
         public int priority = 0;
 
         Transform transform;
@@ -44,8 +48,6 @@ namespace Jail.Environment.Glyphs
                         transform = MadSpirit.instance.transform;
                         break;
                 }
-
-                Debug.Log("retrieve transform for " + target);
             }
 
             return transform;
@@ -57,7 +59,6 @@ namespace Jail.Environment.Glyphs
             if (distToSqr == -1.0f)
             {
                 distToSqr = distance * distance;
-                Debug.Log("compute squared distance ");
             }
 
             return distToSqr;
