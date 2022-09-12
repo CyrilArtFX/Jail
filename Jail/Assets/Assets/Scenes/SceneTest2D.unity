@@ -4297,7 +4297,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3701995714212952394, guid: 6ade63a9446b85f49a4d1c5030955f67, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 96
+      value: 96.75
       objectReference: {fileID: 0}
     - target: {fileID: 3701995714212952394, guid: 6ade63a9446b85f49a4d1c5030955f67, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4323,18 +4323,6 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 98
       objectReference: {fileID: 0}
-    - target: {fileID: 3701995714212952398, guid: 6ade63a9446b85f49a4d1c5030955f67, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: 9c9f4e992da06db43831ef781af2ae3d, type: 2}
-    - target: {fileID: 6250238842855410683, guid: 6ade63a9446b85f49a4d1c5030955f67, type: 3}
-      propertyPath: frictionPM
-      value: 
-      objectReference: {fileID: 13400000, guid: 9c9f4e992da06db43831ef781af2ae3d, type: 2}
-    - target: {fileID: 6250238842855410683, guid: 6ade63a9446b85f49a4d1c5030955f67, type: 3}
-      propertyPath: noFrictionPM
-      value: 
-      objectReference: {fileID: 13400000, guid: 7b5396db04d5bb741bcf3cdb834069c9, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ade63a9446b85f49a4d1c5030955f67, type: 3}
 --- !u!1 &484707264

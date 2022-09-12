@@ -13,8 +13,7 @@ namespace Jail
         [SerializeField]
         PhysicMaterial frictionPM = default, noFrictionPM = default;
 
-        [HideInInspector]
-        public Rigidbody body;
+        public Rigidbody Body { get; private set; }
 
         Collider physicCollider;
 
@@ -24,17 +23,17 @@ namespace Jail
 
         void Awake()
         {
-            body = GetComponent<Rigidbody>();
+            Body = GetComponent<Rigidbody>();
             physicCollider = GetComponent<Collider>();
         }
 
         void Update()
         {
-            if (Mathf.Abs(body.velocity.y) <= 0.1f && playerInTrigger)
+            if (Mathf.Abs(Body.velocity.y) <= 0.1f && playerInTrigger)
             {
                 if (Input.GetButton("Interact"))
                 {
-                    if (!Player.instance.attachedCrates.Contains(this))
+                    if (Player.instance.AttachedCrate == null)
                     {
                         GoGrabbedMode();
                     }
@@ -42,7 +41,7 @@ namespace Jail
 
                 if (Input.GetButtonUp("Interact"))
                 {
-                    if (Player.instance.attachedCrates.Contains(this))
+                    if (Player.instance.AttachedCrate == this)
                     {
                         GoNormalMode();
                     }
@@ -50,7 +49,7 @@ namespace Jail
             }
             else
             {
-                if (Player.instance.attachedCrates.Contains(this))
+                if (Player.instance.AttachedCrate == this)
                 {
                     GoNormalMode();
                 }
@@ -59,16 +58,16 @@ namespace Jail
 
         public void GoGrabbedMode()
         {
-            Player.instance.attachedCrates.Add(this);
-            body.mass = 1.0f;
+            Player.instance.AttachedCrate = this;
+            Body.mass = 1.0f;
             physicCollider.material = noFrictionPM;
         }
 
         public void GoNormalMode()
         {
-            Player.instance.attachedCrates.Remove(this);
-            body.mass = 1000000.0f;
-            body.velocity = Vector3.zero;
+            Player.instance.AttachedCrate = null;
+            Body.mass = 1000000.0f;
+            Body.velocity = Vector3.zero;
             physicCollider.material = frictionPM;
         }
 

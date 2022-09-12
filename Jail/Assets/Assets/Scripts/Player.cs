@@ -65,7 +65,7 @@ namespace Jail
         int groundContactCount, steepContactCount, climbContactCount, realGroundContactCount;
         Ladder currentLadder;
 
-        public List<Crate> attachedCrates = new List<Crate>();
+        public Crate AttachedCrate { get; set; }
 
         bool OnGround => groundContactCount > 0;
         bool OnSteep => steepContactCount > 0;
@@ -338,21 +338,15 @@ namespace Jail
 
             body.velocity = body_velocity;
 
-            if (attachedCrates.Count != 0)
+            if (AttachedCrate != null)
             {
                 if (!OnRealGround)
                 {
-                    foreach (Crate crate in attachedCrates)
-                    {
-                        crate.GoNormalMode();
-                    }
+                    AttachedCrate.GoNormalMode();
                 }
                 else
                 {
-                    foreach (Crate crate in attachedCrates)
-                    {
-                        crate.body.velocity = body_velocity;
-                    }
+                    AttachedCrate.Body.velocity = body_velocity;
                 }
             }
 
@@ -431,7 +425,7 @@ namespace Jail
             else
             {
                 acceleration = OnGround ? maxAcceleration : maxAirAcceleration;
-                speed = attachedCrates.Count != 0 ? maxCrateSpeed : maxSpeed;
+                speed = AttachedCrate != null ? maxCrateSpeed : maxSpeed;
                 x_axis = Vector3.back;
             }
             x_axis = ProjectDirectionOnPlane(x_axis, contactNormal);
