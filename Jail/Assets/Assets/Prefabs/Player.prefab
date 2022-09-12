@@ -5152,7 +5152,7 @@ MonoBehaviour:
     m_Bits: 1024
   climbMask:
     serializedVersion: 2
-    m_Bits: 169251
+    m_Bits: 234787
   ladderMask:
     serializedVersion: 2
     m_Bits: 131072

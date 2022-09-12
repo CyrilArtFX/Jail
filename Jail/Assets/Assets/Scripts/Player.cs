@@ -618,7 +618,7 @@ namespace Jail
             if (PlayerTrigger.instance.ObstacleDetected) return;
             spirit = true;
             spiritObject.SetActive(true);
-            spiritObject.transform.localPosition = Vector3.zero;
+            spiritObject.transform.localPosition = new Vector3(-1.0f, 0.0f, 0.0f);
             spiritObject.transform.localRotation = transform.rotation;
             spiritParticles.SetActive(true);
         }
