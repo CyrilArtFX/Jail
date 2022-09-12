@@ -9461,7 +9461,7 @@ PrefabInstance:
       objectReference: {fileID: 243705599}
     - target: {fileID: 1502537579541234562, guid: 05978325b38937146bfbac3f5379be16, type: 3}
       propertyPath: exitTriggerTime
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5396029424104458004, guid: 05978325b38937146bfbac3f5379be16, type: 3}
       propertyPath: m_RootOrder
