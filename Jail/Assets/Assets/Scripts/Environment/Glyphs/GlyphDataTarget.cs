@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
+using Jail.Interactables;
+
 namespace Jail.Environment.Glyphs
 {
     [Serializable]
@@ -39,6 +41,7 @@ namespace Jail.Environment.Glyphs
                         transform = Player.instance.transform;
                         break;
                     case GlyphTarget.MadSpirit:
+                        transform = MadSpirit.instance.transform;
                         break;
                 }
 
