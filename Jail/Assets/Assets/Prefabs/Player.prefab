@@ -5133,7 +5133,7 @@ MonoBehaviour:
   maxSpeed: 10
   maxClimbSpeed: 2
   maxSpiritSpeed: 8
-  maxSlowSpeed: 1
+  maxCrateSpeed: 5
   maxAcceleration: 10
   maxAirAcceleration: 1
   maxClimbAcceleration: 20
@@ -5156,9 +5156,13 @@ MonoBehaviour:
   ladderMask:
     serializedVersion: 2
     m_Bits: 131072
+  realGroundMask:
+    serializedVersion: 2
+    m_Bits: 265217
   modelAlignSpeed: 180
   maintainButtonForClimb: 0
   camFocus: {fileID: 0}
+  attachedCrates: []
   inCheckpoint: {fileID: 0}
   disableCommands: 0
   spiritReturningAverageSpeed: 10

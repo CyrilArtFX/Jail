@@ -8,9 +8,15 @@ namespace Jail
     public class Crate : MonoBehaviour, ICheckpointSaver
     {
         [SerializeField]
-        LayerMask detectionMask;
+        LayerMask detectionMask = 0;
 
-        Rigidbody body;
+        [SerializeField]
+        PhysicMaterial frictionPM = default, noFrictionPM = default;
+
+        [HideInInspector]
+        public Rigidbody body;
+
+        Collider physicCollider;
 
         bool playerInTrigger = false;
 
@@ -19,40 +25,51 @@ namespace Jail
         void Awake()
         {
             body = GetComponent<Rigidbody>();
+            physicCollider = GetComponent<Collider>();
         }
 
         void Update()
         {
-            if (body.velocity.y == 0.0f && playerInTrigger)
+            if (Mathf.Abs(body.velocity.y) <= 0.1f && playerInTrigger)
             {
                 if (Input.GetButton("Interact"))
                 {
-                    if (!Player.instance.attachedCrates.Contains(body))
+                    if (!Player.instance.attachedCrates.Contains(this))
                     {
-                        Player.instance.attachedCrates.Add(body);
-                        body.mass = 0.01f;
+                        GoGrabbedMode();
                     }
                 }
 
                 if (Input.GetButtonUp("Interact"))
                 {
-                    if (Player.instance.attachedCrates.Contains(body))
+                    if (Player.instance.attachedCrates.Contains(this))
                     {
-                        Player.instance.attachedCrates.Remove(body);
-                        body.velocity = Vector3.zero;
-                        body.mass = 1000000.0f;
+                        GoNormalMode();
                     }
                 }
             }
             else
             {
-                if (Player.instance.attachedCrates.Contains(body))
+                if (Player.instance.attachedCrates.Contains(this))
                 {
-                    Player.instance.attachedCrates.Remove(body);
-                    body.velocity = Vector3.zero;
-                    body.mass = 1000000.0f;
+                    GoNormalMode();
                 }
             }
+        }
+
+        public void GoGrabbedMode()
+        {
+            Player.instance.attachedCrates.Add(this);
+            body.mass = 1.0f;
+            physicCollider.material = noFrictionPM;
+        }
+
+        public void GoNormalMode()
+        {
+            Player.instance.attachedCrates.Remove(this);
+            body.mass = 1000000.0f;
+            body.velocity = Vector3.zero;
+            physicCollider.material = frictionPM;
         }
 
         void OnTriggerEnter(Collider other)

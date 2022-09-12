@@ -42,7 +42,7 @@ namespace Jail
         [SerializeField, Range(90.0f, 170.0f)]
         float maxClimbAngle = 140.0f;
         [SerializeField]
-        LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, ladderMask = 0;
+        LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, ladderMask = 0, realGroundMask = 0;
         [SerializeField, Min(0.0f)]
         float modelAlignSpeed = 180.0f;
 
@@ -62,14 +62,16 @@ namespace Jail
         Vector3 groundNormal, contactNormal, steepNormal, climbNormal, lastClimbNormal;
         Vector3 lastContactNormal, lastSteepNormal, lastConnectionVelocity;
 
-        int groundContactCount, steepContactCount, climbContactCount;
+        int groundContactCount, steepContactCount, climbContactCount, realGroundContactCount;
         Ladder currentLadder;
 
-        public List<Rigidbody> attachedCrates = new List<Rigidbody>();
+        public List<Crate> attachedCrates = new List<Crate>();
 
         bool OnGround => groundContactCount > 0;
         bool OnSteep => steepContactCount > 0;
         bool Climbing => climbContactCount > 0 && stepsSinceLastJump > 2;
+
+        bool OnRealGround => realGroundContactCount > 0 && !Climbing;
 
         public bool IsSpirit => spirit;
 
@@ -338,9 +340,19 @@ namespace Jail
 
             if (attachedCrates.Count != 0)
             {
-                foreach (Rigidbody crate in attachedCrates)
+                if (!OnRealGround)
                 {
-                    crate.velocity = body_velocity;
+                    foreach (Crate crate in attachedCrates)
+                    {
+                        crate.GoNormalMode();
+                    }
+                }
+                else
+                {
+                    foreach (Crate crate in attachedCrates)
+                    {
+                        crate.body.velocity = body_velocity;
+                    }
                 }
             }
 
@@ -353,7 +365,7 @@ namespace Jail
             lastSteepNormal = steepNormal;
             lastConnectionVelocity = connectionVelocity;
 
-            groundContactCount = steepContactCount = climbContactCount = 0;
+            groundContactCount = steepContactCount = climbContactCount = realGroundContactCount = 0;
             groundNormal = contactNormal = steepNormal = connectionVelocity = climbNormal = Vector3.zero;
 
             previousConnectedBody = connectedBody;
@@ -567,6 +579,11 @@ namespace Jail
                 float upDot = Vector3.Dot(Vector3.up, normal);
                 if (upDot >= min_dot)
                 {
+                    if (LayerMaskUtils.HasLayer(realGroundMask, collision.gameObject.layer))
+                    {
+                        realGroundContactCount += 1;
+                    }
+
                     groundContactCount += 1;
                     contactNormal += normal;
                     connectedBody = collision.rigidbody;
