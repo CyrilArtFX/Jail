@@ -9,8 +9,8 @@ namespace Jail.Environment.Glyphs
     public class GlyphDataTarget
     {
 		[Tooltip("Which character should it links to?")]
-        public GlyphTarget target;
-		[Tooltip("Target Radius action-effect")]
+        public GlyphTargetType target;
+		[Range(1.0f, 128.0f), Tooltip("Target Radius action-effect")]
         public float distance = 8.0f;
 		[Tooltip("Color gradient used in the action-ranged glyph")]
         public Gradient gradient;
@@ -24,7 +24,7 @@ namespace Jail.Environment.Glyphs
         {
             switch (target)
             {
-                case GlyphTarget.PlayerSpirit:
+                case GlyphTargetType.PlayerSpirit:
                     return Player.instance.IsSpirit || Player.instance.IsSpiritReturning;
                 default:
                     return true;
@@ -38,13 +38,13 @@ namespace Jail.Environment.Glyphs
             {
                 switch (target)
                 {
-                    case GlyphTarget.PlayerSpirit:
+                    case GlyphTargetType.PlayerSpirit:
                         transform = Player.instance.Spirit.transform;
                         break;
-                    case GlyphTarget.PlayerBody:
+                    case GlyphTargetType.PlayerBody:
                         transform = Player.instance.transform;
                         break;
-                    case GlyphTarget.MadSpirit:
+                    case GlyphTargetType.MadSpirit:
                         transform = MadSpirit.instance.transform;
                         break;
                 }

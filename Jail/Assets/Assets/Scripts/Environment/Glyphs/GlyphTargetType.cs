@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-
+﻿
 namespace Jail.Environment.Glyphs
 {
-    public enum GlyphTarget
+    public enum GlyphTargetType
     {
         PlayerSpirit,
         PlayerBody,
