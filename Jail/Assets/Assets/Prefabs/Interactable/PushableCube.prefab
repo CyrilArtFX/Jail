@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6250238842855410683}
   - component: {fileID: 3701995714212952398}
   - component: {fileID: 3701995714212952397}
+  - component: {fileID: 1069646208261131592}
   m_Layer: 16
   m_Name: PushableCube
   m_TagString: Untagged
@@ -97,6 +98,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16c8c802a244c4c43bb7783b6dec3690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!65 &3701995714212952398
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -104,7 +108,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3701995714212952396}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8e026833d049b7141b5499a5d12d34d7, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -126,3 +130,16 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 114
   m_CollisionDetection: 0
+--- !u!65 &1069646208261131592
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3701995714212952396}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1.5}
+  m_Center: {x: 0, y: 0, z: 0}

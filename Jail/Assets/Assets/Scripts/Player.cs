@@ -1,5 +1,6 @@
 using Jail.Utility;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Jail;
 using Jail.SavedObjects;
@@ -27,7 +28,7 @@ namespace Jail
 
         [Header("Parameters")]
         [SerializeField, Range(0.0f, 100.0f)]
-        float maxSpeed = 13.0f, maxClimbSpeed = 2.0f, maxSpiritSpeed = 8.0f, maxSlowSpeed = 1.0f;
+        float maxSpeed = 13.0f, maxClimbSpeed = 2.0f, maxSpiritSpeed = 8.0f, maxCrateSpeed = 5.0f;
         [SerializeField, Range(0.0f, 100.0f)]
         float maxAcceleration = 10.0f, maxAirAcceleration = 1.0f, maxClimbAcceleration = 20.0f, maxSpiritAcceleration = 15.0f;
         [SerializeField, Range(0.0f, 10.0f)]
@@ -63,6 +64,8 @@ namespace Jail
 
         int groundContactCount, steepContactCount, climbContactCount;
         Ladder currentLadder;
+
+        public List<Rigidbody> attachedCrates = new List<Rigidbody>();
 
         bool OnGround => groundContactCount > 0;
         bool OnSteep => steepContactCount > 0;
@@ -333,6 +336,14 @@ namespace Jail
 
             body.velocity = body_velocity;
 
+            if (attachedCrates.Count != 0)
+            {
+                foreach (Rigidbody crate in attachedCrates)
+                {
+                    crate.velocity = body_velocity;
+                }
+            }
+
             ClearState();
         }
 
@@ -408,7 +419,7 @@ namespace Jail
             else
             {
                 acceleration = OnGround ? maxAcceleration : maxAirAcceleration;
-                speed = desiresClimbing ? maxSlowSpeed : maxSpeed;
+                speed = attachedCrates.Count != 0 ? maxCrateSpeed : maxSpeed;
                 x_axis = Vector3.back;
             }
             x_axis = ProjectDirectionOnPlane(x_axis, contactNormal);
@@ -618,7 +629,7 @@ namespace Jail
             if (PlayerTrigger.instance.ObstacleDetected) return;
             spirit = true;
             spiritObject.SetActive(true);
-            spiritObject.transform.localPosition = new Vector3(-1.0f, 0.0f, 0.0f);
+            spiritObject.transform.localPosition = Vector3.zero;
             spiritObject.transform.localRotation = transform.rotation;
             spiritParticles.SetActive(true);
         }
