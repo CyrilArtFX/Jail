@@ -40,10 +40,18 @@ namespace Jail.Interactables.ZapTurret
 
             if (currentProjectile != null)
             {
-                //  continue chase if detected again
+                //  chase spirit if not pulling
                 if (!wasTargetDetected && hasDetectedTarget)
                 {
-                    currentProjectile.Chase(Player.instance.Spirit.transform);
+                    if (!currentProjectile.IsPulling)
+                    {
+                        currentProjectile.Chase(Player.instance.Spirit.transform);
+                    }
+                    else
+                    {
+                        //  ensure it can chase next frame if possible
+                        hasDetectedTarget = false;
+                    }
                 }
                 //  return to turret on sight lost
                 else if (wasTargetDetected && !hasDetectedTarget)

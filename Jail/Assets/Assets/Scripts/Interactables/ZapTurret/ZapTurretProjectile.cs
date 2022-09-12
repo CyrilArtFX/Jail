@@ -76,15 +76,16 @@ namespace Jail.Interactables.ZapTurret
             //  increase time
             t += Time.fixedDeltaTime * pullSpeed / Chainer.SplineChainer.Spline.Length;
 
-            //  auto-pause
-            if (Chainer.SplineChainer.Ratio == 0.0f)
-            {
-                IsPaused = true;
-            }
-            
             //  move towards target
             target = Chainer.SplineChainer.Spline.GetPoint(Chainer.SplineChainer.Ratio);
             transform.position = target;
+
+            //  auto-pause
+            if (Chainer.SplineChainer.Ratio == 0.0f)
+            {
+                IsPulling = false;
+                IsPaused = true;
+            }
         }
 
         void UpdateChase()
