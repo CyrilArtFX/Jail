@@ -55,7 +55,7 @@ namespace Jail.Environment.Glyphs
             {
                 //  check for active target
                 if (!target.IsActive()) continue;
-                //  check for priority
+                //  check for higher priority
                 if (target.priority > priority_id) continue;
 
                 //  get target's transform
@@ -89,11 +89,24 @@ namespace Jail.Environment.Glyphs
 			}
 
             //  increase interpolation value 
-            t = Mathf.Clamp01(t + Time.deltaTime * data.smoothFactor);
+            t = Mathf.Clamp01(t + Time.deltaTime * data.smoothSpeed);
 
-            //  smoothing color changes
-            smoothPriorityColor = Color.Lerp(smoothPriorityColor, targetPriorityColor, t);
-            
+            if (data.isRGBGamer)
+            {
+                //  rgb g@m3r mode
+                float hue = (Time.time) % 1.0f;
+                if (data.isDistanceDependent)
+                {
+                    hue *= t;
+                }
+                smoothPriorityColor = Color.HSVToRGB(hue, 1.0f, 1.0f);
+            }
+            else
+			{
+                //  smoothing color changes
+                smoothPriorityColor = Color.Lerp(smoothPriorityColor, targetPriorityColor, t);
+			}
+
             //  apply color
             ApplyColor(smoothPriorityColor);
         }
