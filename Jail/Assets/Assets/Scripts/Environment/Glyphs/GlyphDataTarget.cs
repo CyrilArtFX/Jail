@@ -6,7 +6,7 @@ using Jail.Interactables;
 namespace Jail.Environment.Glyphs
 {
     [Serializable]
-    public class GlyphDataTarget
+    public class GlyphDataTarget : ISerializationCallbackReceiver
     {
 		[Tooltip("Which character should it links to?")]
         public GlyphTargetType target;
@@ -63,5 +63,13 @@ namespace Jail.Environment.Glyphs
 
             return distToSqr;
         }
-    }
+
+		public void OnBeforeSerialize() {}
+
+		public void OnAfterDeserialize()
+        { 
+            //  re-compute squared distance after inspector changes
+            distToSqr = distance * distance; 
+        }
+	}
 }
