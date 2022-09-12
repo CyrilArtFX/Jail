@@ -8,7 +8,7 @@ namespace Jail.Environment.Glyphs
     {
         public GlyphTarget target;
         public float distance = 8.0f;
-        public Color color;
+        public Gradient gradient;
         public int priority = 0;
 
         Transform transform;

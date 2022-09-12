@@ -9,6 +9,14 @@ namespace Jail.Environment.Glyphs
         GlyphData data;
 
         float t = 0.0f;
+        Color smoothPriorityColor;
+        Color targetPriorityColor;
+
+        void Start()
+		{
+            smoothPriorityColor = data.gradient.Evaluate(0.0f);
+            targetPriorityColor = smoothPriorityColor;
+		}
 
         void Update()
         {
@@ -41,26 +49,53 @@ namespace Jail.Environment.Glyphs
             }*//*
             ApplyColor(new_color);*/
 
-            Color priority_color = data.idleColor;
+            Color priority_color = data.gradient.Evaluate(0.0f);
             int priority_id = int.MaxValue;
             foreach (GlyphDataTarget target in data.targets)
             {
+                //  check for active target
                 if (!target.IsActive()) continue;
+                //  check for priority
                 if (target.priority > priority_id) continue;
 
+                //  get target's transform
                 Transform target_transform = target.GetTransform();
-
-                Vector2 direction = new Vector2(target_transform.position.z - transform.position.z, target_transform.position.y - transform.position.y);  //  flat depth
                 
+                //  compute distance ratio
+                Vector2 direction = new Vector2(target_transform.position.z - transform.position.z, target_transform.position.y - transform.position.y);  //  flat depth
                 float dist_ratio = direction.sqrMagnitude / target.GetDistToSqr();
                 if (dist_ratio > 1.0f) continue;
 
                 //  prioritize color
-                priority_color = data.useTargetColor ? target.color : data.idleColor;
+                if (data.useTargetColor)
+				{
+                    priority_color = target.gradient.Evaluate(1.0f - dist_ratio);
+				}
+                else
+				{
+                    priority_color = data.gradient.Evaluate(1.0f - dist_ratio);
+				}
                 priority_id = target.priority;
             }
 
-            ApplyColor(priority_color);
+            //  listen for color target changes
+            if (targetPriorityColor != priority_color)
+			{
+                //  reset smoothing interpolation on color change
+                t = 0.0f;
+
+                //  keep track of targeted color
+                targetPriorityColor = priority_color;
+			}
+
+            //  increase interpolation value 
+            t = Mathf.Clamp01(t + Time.deltaTime * data.smoothFactor);
+
+            //  smoothing color changes
+            smoothPriorityColor = Color.Lerp(smoothPriorityColor, targetPriorityColor, t);
+            
+            //  apply color
+            ApplyColor(smoothPriorityColor);
         }
 
         /*void OnDrawGizmosSelected()

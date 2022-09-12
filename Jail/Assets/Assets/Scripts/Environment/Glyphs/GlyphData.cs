@@ -6,7 +6,7 @@ namespace Jail.Environment.Glyphs
     public class GlyphData : ScriptableObject
     {
         [Header("Coloring")]
-        public Color idleColor;
+        public Gradient gradient;
         public float smoothFactor = 5.0f;
         public bool useTargetColor = true;
         public GlyphDataTarget[] targets;
