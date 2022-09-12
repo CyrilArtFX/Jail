@@ -25,7 +25,7 @@ namespace Jail.Puzzler.Inputs
 
         void OnTriggerEnter(Collider other)
         {
-            if (!Player.instance.IsSpirit) return;
+            if (!Player.instance.IsSpirit || Player.instance.IsSpiritReturning) return;
 
             //  trigger
             IsTriggered = !IsTriggered;
