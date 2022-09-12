@@ -81,7 +81,7 @@ namespace Jail
         Vector3 connectionWorldPosition, connectionLocalPosition;
 
         [SerializeField]
-        float physicModifier = 2.0f;
+        float gravityModifier = 2.0f;
 
         public static Player instance;
 
@@ -336,7 +336,7 @@ namespace Jail
             }
             else if (!spirit)
             {
-                body_velocity += Physics.gravity * physicModifier * Time.deltaTime;
+                body_velocity += Physics.gravity * gravityModifier * Time.deltaTime;
             }
 
             body.velocity = body_velocity;
@@ -500,7 +500,7 @@ namespace Jail
             else return;
 
             stepsSinceLastJump = 0;
-            float jumpSpeed = Mathf.Sqrt(2.0f * Physics.gravity.magnitude * jumpHeight);
+            float jumpSpeed = Mathf.Sqrt(2.0f * Physics.gravity.magnitude * jumpHeight * gravityModifier);
             jump_direction = (jump_direction + Vector3.up).normalized;
 
             float alignedSpeed = Vector3.Dot(velocity, jump_direction);

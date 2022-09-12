@@ -5138,7 +5138,7 @@ MonoBehaviour:
   maxAirAcceleration: 1
   maxClimbAcceleration: 20
   maxSpiritAcceleration: 25
-  jumpHeight: 2
+  jumpHeight: 4
   maxGroundAngle: 25
   maxStairsAngle: 50
   maxSnapSpeed: 100
@@ -5162,7 +5162,7 @@ MonoBehaviour:
   modelAlignSpeed: 180
   maintainButtonForClimb: 0
   camFocus: {fileID: 0}
-  attachedCrates: []
+  gravityModifier: 2.5
   inCheckpoint: {fileID: 0}
   disableCommands: 0
   spiritReturningAverageSpeed: 10
