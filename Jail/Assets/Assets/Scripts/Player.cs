@@ -80,6 +80,9 @@ namespace Jail
         int stepsSinceLastGrounded, stepsSinceLastJump, stepsSinceLastClimbRequest;
         Vector3 connectionWorldPosition, connectionLocalPosition;
 
+        [SerializeField]
+        float physicModifier = 2.0f;
+
         public static Player instance;
 
         CapsuleCollider spiritCollider = default;
@@ -333,7 +336,7 @@ namespace Jail
             }
             else if (!spirit)
             {
-                body_velocity += Physics.gravity * Time.deltaTime;
+                body_velocity += Physics.gravity * physicModifier * Time.deltaTime;
             }
 
             body.velocity = body_velocity;
