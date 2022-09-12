@@ -21,10 +21,10 @@ TagManager:
   - DetectionZone
   - Spirit
   - SpiritResistant
-  - Pushable
+  - Crate
   - Ladder
   - PlayerResistant
-  - 
+  - CrateBlock
   - 
   - 
   - 

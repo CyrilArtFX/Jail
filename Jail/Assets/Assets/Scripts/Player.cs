@@ -1,5 +1,6 @@
 using Jail.Utility;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Jail;
 using Jail.SavedObjects;
@@ -27,7 +28,7 @@ namespace Jail
 
         [Header("Parameters")]
         [SerializeField, Range(0.0f, 100.0f)]
-        float maxSpeed = 13.0f, maxClimbSpeed = 2.0f, maxSpiritSpeed = 8.0f, maxSlowSpeed = 1.0f;
+        float maxSpeed = 13.0f, maxClimbSpeed = 2.0f, maxSpiritSpeed = 8.0f, maxCrateSpeed = 5.0f;
         [SerializeField, Range(0.0f, 100.0f)]
         float maxAcceleration = 10.0f, maxAirAcceleration = 1.0f, maxClimbAcceleration = 20.0f, maxSpiritAcceleration = 15.0f;
         [SerializeField, Range(0.0f, 10.0f)]
@@ -41,7 +42,7 @@ namespace Jail
         [SerializeField, Range(90.0f, 170.0f)]
         float maxClimbAngle = 140.0f;
         [SerializeField]
-        LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, ladderMask = 0;
+        LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, ladderMask = 0, realGroundMask = 0;
         [SerializeField, Min(0.0f)]
         float modelAlignSpeed = 180.0f;
 
@@ -61,12 +62,16 @@ namespace Jail
         Vector3 groundNormal, contactNormal, steepNormal, climbNormal, lastClimbNormal;
         Vector3 lastContactNormal, lastSteepNormal, lastConnectionVelocity;
 
-        int groundContactCount, steepContactCount, climbContactCount;
+        int groundContactCount, steepContactCount, climbContactCount, realGroundContactCount;
         Ladder currentLadder;
+
+        public Crate AttachedCrate { get; set; }
 
         bool OnGround => groundContactCount > 0;
         bool OnSteep => steepContactCount > 0;
         bool Climbing => climbContactCount > 0 && stepsSinceLastJump > 2;
+
+        bool OnRealGround => realGroundContactCount > 0 && !Climbing;
 
         public bool IsSpirit => spirit;
 
@@ -333,6 +338,18 @@ namespace Jail
 
             body.velocity = body_velocity;
 
+            if (AttachedCrate != null)
+            {
+                if (!OnRealGround)
+                {
+                    AttachedCrate.GoNormalMode();
+                }
+                else
+                {
+                    AttachedCrate.Body.velocity = body_velocity;
+                }
+            }
+
             ClearState();
         }
 
@@ -342,7 +359,7 @@ namespace Jail
             lastSteepNormal = steepNormal;
             lastConnectionVelocity = connectionVelocity;
 
-            groundContactCount = steepContactCount = climbContactCount = 0;
+            groundContactCount = steepContactCount = climbContactCount = realGroundContactCount = 0;
             groundNormal = contactNormal = steepNormal = connectionVelocity = climbNormal = Vector3.zero;
 
             previousConnectedBody = connectedBody;
@@ -408,7 +425,7 @@ namespace Jail
             else
             {
                 acceleration = OnGround ? maxAcceleration : maxAirAcceleration;
-                speed = desiresClimbing ? maxSlowSpeed : maxSpeed;
+                speed = AttachedCrate != null ? maxCrateSpeed : maxSpeed;
                 x_axis = Vector3.back;
             }
             x_axis = ProjectDirectionOnPlane(x_axis, contactNormal);
@@ -556,6 +573,11 @@ namespace Jail
                 float upDot = Vector3.Dot(Vector3.up, normal);
                 if (upDot >= min_dot)
                 {
+                    if (LayerMaskUtils.HasLayer(realGroundMask, collision.gameObject.layer))
+                    {
+                        realGroundContactCount += 1;
+                    }
+
                     groundContactCount += 1;
                     contactNormal += normal;
                     connectedBody = collision.rigidbody;
