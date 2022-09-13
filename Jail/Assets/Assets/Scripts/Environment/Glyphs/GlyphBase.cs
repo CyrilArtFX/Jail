@@ -8,6 +8,7 @@ namespace Jail.Environment.Glyphs
         [SerializeField]
         GlyphData data;
 
+        int lastPriorityID;
         float t = 0.0f;
         Color smoothPriorityColor;
         Color targetPriorityColor;
@@ -52,8 +53,14 @@ namespace Jail.Environment.Glyphs
             //  listen for color target changes
             if (targetPriorityColor != priority_color)
 			{
-                //  reset smoothing interpolation on color change
-                t = 0.0f;
+                //  ensure we have changed priority (cuz color changes w/ gradient)
+                if (lastPriorityID != priority_id)
+                {
+                    //  reset smoothing interpolation on color change
+                    t = 0.0f;
+
+                    lastPriorityID = priority_id;
+                }
 
                 //  keep track of targeted color
                 targetPriorityColor = priority_color;
