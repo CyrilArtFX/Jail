@@ -44,7 +44,7 @@ namespace Jail
         [SerializeField]
         LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, ladderMask = 0, realGroundMask = 0;
         [SerializeField, Min(0.0f)]
-        float modelAlignSpeed = 180.0f;
+        float modelAlignSpeed = 180.0f, modelFlipSpeed = 1080.0f;
 
         [Header("Others")]
         [SerializeField]
@@ -79,6 +79,9 @@ namespace Jail
         float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
         int stepsSinceLastGrounded, stepsSinceLastJump, stepsSinceLastClimbRequest;
         Vector3 connectionWorldPosition, connectionLocalPosition;
+
+        [SerializeField]
+        float gravityModifier = 2.0f;
 
         public static Player instance;
 
@@ -234,10 +237,8 @@ namespace Jail
             Quaternion flip_rotation = modelFlip.localRotation;
             if (playerInput.x != 0 && !Climbing)
             {
-                int rotation_factor = 500;
-
                 float second_rotation_y = flip_rotation.eulerAngles.y;
-                second_rotation_y = Mathf.Clamp(second_rotation_y - playerInput.x * rotation_factor * Time.deltaTime, 0, 180);
+                second_rotation_y = Mathf.Clamp(second_rotation_y - playerInput.x * modelFlipSpeed * Time.deltaTime, 0, 180);
                 flip_rotation = Quaternion.Euler(0, second_rotation_y, 0);
             }
             else
@@ -333,7 +334,7 @@ namespace Jail
             }
             else if (!spirit)
             {
-                body_velocity += Physics.gravity * Time.deltaTime;
+                body_velocity += Physics.gravity * gravityModifier * Time.deltaTime;
             }
 
             body.velocity = body_velocity;
@@ -497,7 +498,7 @@ namespace Jail
             else return;
 
             stepsSinceLastJump = 0;
-            float jumpSpeed = Mathf.Sqrt(2.0f * Physics.gravity.magnitude * jumpHeight);
+            float jumpSpeed = Mathf.Sqrt(2.0f * Physics.gravity.magnitude * jumpHeight * gravityModifier * (1.0f + jumpHeight / 25.0f));
             jump_direction = (jump_direction + Vector3.up).normalized;
 
             float alignedSpeed = Vector3.Dot(velocity, jump_direction);

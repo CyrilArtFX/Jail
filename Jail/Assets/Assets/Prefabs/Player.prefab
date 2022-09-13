@@ -5130,17 +5130,17 @@ MonoBehaviour:
   spiritModelFlip: {fileID: 76176138646387934}
   spiritDissolve: {fileID: 1719727978493690196}
   spiritParticles: {fileID: 5659053076780417179}
-  maxSpeed: 10
-  maxClimbSpeed: 2
+  maxSpeed: 7
+  maxClimbSpeed: 4
   maxSpiritSpeed: 8
   maxCrateSpeed: 5
-  maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAcceleration: 100
+  maxAirAcceleration: 28
   maxClimbAcceleration: 20
   maxSpiritAcceleration: 25
-  jumpHeight: 2
+  jumpHeight: 2.86
   maxGroundAngle: 25
-  maxStairsAngle: 50
+  maxStairsAngle: 69.9
   maxSnapSpeed: 100
   probeDistance: 1.6
   maxClimbAngle: 140
@@ -5159,13 +5159,13 @@ MonoBehaviour:
   realGroundMask:
     serializedVersion: 2
     m_Bits: 265217
-  modelAlignSpeed: 180
+  modelAlignSpeed: 360
   maintainButtonForClimb: 0
-  camFocus: {fileID: 0}
-  attachedCrates: []
+  camFocus: {fileID: 5002237398831701227}
+  gravityModifier: 4
   inCheckpoint: {fileID: 0}
   disableCommands: 0
-  spiritReturningAverageSpeed: 10
+  spiritReturningAverageSpeed: 15
   spiritReturningCurve:
     serializedVersion: 2
     m_Curve:

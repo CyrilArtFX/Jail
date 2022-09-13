@@ -526,6 +526,8 @@
         "m_GuidSerialized": "4fde4e5a-e703-4008-a35a-270fc754bf31"
     },
     "m_Name": "Base Color",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Color_1f2b0944e15e4545978921670003a0a3",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -945,6 +947,8 @@
         "m_GuidSerialized": "2032ea47-23cb-49ed-a683-e7541a43f565"
     },
     "m_Name": "Edge Thickness",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_70ab0b1cec734a62b4a421ff1a7f403d",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -968,6 +972,8 @@
         "m_GuidSerialized": "65f28191-d2e8-4310-a357-151dc0b44010"
     },
     "m_Name": "Noise Scale",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_711fadf3fe6246029ec1d25f6c627d81",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -1102,6 +1108,8 @@
         "m_GuidSerialized": "667c4ac7-d548-44f7-8d50-18de5a8d2015"
     },
     "m_Name": "ClipTreshold",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_7d1cd5e28bfe440ea3a8058edcc3457f",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -1348,6 +1356,8 @@
         "m_GuidSerialized": "ea5a61a0-3c1f-43ae-aa13-c8275a7f3b71"
     },
     "m_Name": "Edge Color",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Color_b1a2cfcb5d454076a7a232788ec22c94",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
