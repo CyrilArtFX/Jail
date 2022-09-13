@@ -34,7 +34,7 @@ namespace Jail.UI
                     currentButton.GoNormal();
                 }
 
-                /*if (!controllerDisabled)
+                if (!controllerDisabled)
                 {
                     if (Input.GetAxis("ControllerX") > 0.8f)
                     {
@@ -67,9 +67,12 @@ namespace Jail.UI
                             ChangeCurrentButton(currentButton.buttonAtDown);
                         }
                     }
-                }*/
+                }
 
-                //if ()
+                if (Input.GetButtonDown("ControllerPress"))
+                {
+                    currentButton.Press();
+                }
             }
             else
             {
