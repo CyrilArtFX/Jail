@@ -25,7 +25,7 @@ namespace Jail.Environment.Glyphs
             switch (target)
             {
                 case GlyphTargetType.PlayerSpirit:
-                    return Player.instance.IsSpirit || Player.instance.IsSpiritReturning;
+                    return Player.instance.IsSpirit;
                 default:
                     return true;
             }
