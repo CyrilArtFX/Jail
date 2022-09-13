@@ -41,7 +41,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  smoothFactor: 1
+  smoothSpeed: 1
   useTargetColor: 1
   targets:
   - target: 2
