@@ -14,10 +14,10 @@ namespace Jail.Environment.Glyphs
         Color targetPriorityColor;
 
         void Start()
-		{
+        {
             smoothPriorityColor = data.gradient.Evaluate(0.0f);
             targetPriorityColor = smoothPriorityColor;
-		}
+        }
 
         void Update()
         {
@@ -40,19 +40,19 @@ namespace Jail.Environment.Glyphs
 
                 //  prioritize color
                 if (data.useTargetColor)
-				{
+                {
                     priority_color = target.gradient.Evaluate(1.0f - dist_ratio);
-				}
+                }
                 else
-				{
+                {
                     priority_color = data.gradient.Evaluate(1.0f - dist_ratio);
-				}
+                }
                 priority_id = target.priority;
             }
 
             //  listen for color target changes
             if (targetPriorityColor != priority_color)
-			{
+            {
                 //  ensure we have changed priority (cuz color changes w/ gradient)
                 if (lastPriorityID != priority_id)
                 {
@@ -64,7 +64,7 @@ namespace Jail.Environment.Glyphs
 
                 //  keep track of targeted color
                 targetPriorityColor = priority_color;
-			}
+            }
 
             //  increase interpolation value 
             t = Mathf.Clamp01(t + Time.deltaTime * data.smoothSpeed);
@@ -80,10 +80,10 @@ namespace Jail.Environment.Glyphs
                 smoothPriorityColor = Color.HSVToRGB(hue, 1.0f, 1.0f);
             }
             else
-			{
+            {
                 //  smoothing color changes
                 smoothPriorityColor = Color.Lerp(smoothPriorityColor, targetPriorityColor, t);
-			}
+            }
 
             //  apply color
             ApplyColor(smoothPriorityColor);

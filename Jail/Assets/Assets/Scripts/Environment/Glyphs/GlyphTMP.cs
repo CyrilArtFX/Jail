@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Jail.Environment.Glyphs
 {
-	[RequireComponent(typeof(TMPro.TextMeshPro))]
+    [RequireComponent(typeof(TMPro.TextMeshPro))]
     public class GlyphTMP : GlyphBase
     {
         TMPro.TextMeshPro textMesh;

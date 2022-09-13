@@ -7,11 +7,11 @@ namespace Jail.Environment.Glyphs
     {
         [Header("Coloring"), Tooltip("Color gradient used when no target color is used")]
         public Gradient gradient;
-		[Tooltip("Color Interpolation speed factor")]
+        [Tooltip("Color Interpolation speed factor")]
         public float smoothSpeed = 5.0f;
-		[Tooltip("Should the current target's color override the gradient defined here?")]
+        [Tooltip("Should the current target's color override the gradient defined here?")]
         public bool useTargetColor = true;
-		[Tooltip("List of target relations with this glyph type")]
+        [Tooltip("List of target relations with this glyph type")]
         public GlyphDataTarget[] targets;
 
         [Header("RGB Gamer Mode"), Tooltip("Only for G@M3RS.")]
