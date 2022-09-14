@@ -116,6 +116,7 @@ namespace Jail.Interactables.ZapTurret
         void OnTriggerEnter(Collider other)
         {
             if (other.gameObject != Player.instance.Spirit) return;
+            if (Player.instance.IsSpiritReturning) return;
 
             //  kill spirit
             Player.instance.GoBackToNormalForm(true);
