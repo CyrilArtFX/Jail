@@ -5133,7 +5133,7 @@ MonoBehaviour:
   maxSpeed: 7
   maxClimbSpeed: 4
   maxSpiritSpeed: 8
-  maxCrateSpeed: 5
+  maxCrateSpeed: 3.5
   maxAcceleration: 100
   maxAirAcceleration: 28
   maxClimbAcceleration: 20
