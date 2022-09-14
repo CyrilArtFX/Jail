@@ -9,5 +9,9 @@ namespace Jail.Utility
         {
             SceneManager.LoadScene(scene_id);
         }
+        public static void SwitchScene(string scene_name)
+        {
+            SceneManager.LoadScene(scene_name);
+        }
     }
 }

@@ -16,17 +16,17 @@ namespace Jail.UI
 
         public void Play()
         {
-            SceneSwitcher.SwitchScene(1);
+            SceneSwitcher.SwitchScene("SceneTest2D");
         }
 
         public void ShowOptions()
         {
-            SceneSwitcher.SwitchScene(2);
+            SceneSwitcher.SwitchScene("OptionsMenu");
         }
 
         public void HideOptions()
         {
-            SceneSwitcher.SwitchScene(0);
+            SceneSwitcher.SwitchScene("MainMenu");
         }
     }
 }

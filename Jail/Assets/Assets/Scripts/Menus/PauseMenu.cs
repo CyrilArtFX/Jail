@@ -48,7 +48,7 @@ namespace Jail.UI
 
         public void MainMenu()
         {
-            SceneSwitcher.SwitchScene(0);
+            SceneSwitcher.SwitchScene("MainMenu");
         }
     }
 }
