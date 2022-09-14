@@ -1,5 +1,6 @@
 #  OUR CUSTOM IGNORE 
 /[Pp]roject[Ss]ettings/Packages/com.unity.probuilder/Settings.json
+bin/
 
 
 
