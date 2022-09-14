@@ -18,5 +18,15 @@ namespace Jail.UI
         {
             SceneSwitcher.SwitchScene(1);
         }
+
+        public void ShowOptions()
+        {
+            SceneSwitcher.SwitchScene(2);
+        }
+
+        public void HideOptions()
+        {
+            SceneSwitcher.SwitchScene(0);
+        }
     }
 }
