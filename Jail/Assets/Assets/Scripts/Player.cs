@@ -427,7 +427,7 @@ namespace Jail
             else
             {
                 acceleration = OnGround ? maxAcceleration : maxAirAcceleration;
-                speed = AttachedCrate != null ? maxCrateSpeed : maxSpeed;
+                speed = (AttachedCrate != null && OnRealGround) ? maxCrateSpeed : maxSpeed;
                 x_axis = Vector3.back;
             }
             x_axis = ProjectDirectionOnPlane(x_axis, contactNormal);
