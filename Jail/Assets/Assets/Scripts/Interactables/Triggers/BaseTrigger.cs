@@ -1,21 +1,20 @@
 ﻿using UnityEngine;
-using Cinemachine;
 
-namespace Jail.Utility.Camera
+using Jail.Utility;
+
+namespace Jail.Interactables.Triggers
 {
     [RequireComponent(typeof(BoxCollider))]
-    public class CameraArea : MonoBehaviour
+    public abstract class BaseTrigger : MonoBehaviour
     {
-        public CinemachineVirtualCamera Camera => cvCamera;
         public BoxCollider Collider { get; private set; }
 
-        [SerializeField]
-        LayerMask triggerMask;
+        protected Color color = Color.cyan;
 
         [SerializeField]
-        CinemachineVirtualCamera cvCamera;
+        protected LayerMask triggerMask;
 
-        void Awake()
+        protected virtual void Awake()
         {
             Collider = GetComponent<BoxCollider>();
         }
@@ -24,29 +23,29 @@ namespace Jail.Utility.Camera
         {
             if (!LayerMaskUtils.HasLayer(triggerMask, other.gameObject.layer)) return;
 
-            CameraManager.SwitchArea(this);
+            OnTrigger(other, true);
         }
 
         void OnTriggerExit(Collider other)
         {
             if (!LayerMaskUtils.HasLayer(triggerMask, other.gameObject.layer)) return;
 
-            if (this == CameraManager.CurrentArea)
-            {
-                CameraManager.SwitchArea(CameraManager.PreviousArea);
-                print("CameraArea: detected coming back in previous area, switching back..");
-            }
+            OnTrigger(other, false);    
         }
 
         void OnDrawGizmos()
         {
+            //  retrieve collider
             if (Collider == null)
             {
                 Awake();
             }
-            
-            Gizmos.color = Color.yellow;
+
+            //  draw collider bounds
+            Gizmos.color = color;
             Gizmos.DrawWireCube(Collider.bounds.center, Collider.bounds.size);
         }
+
+        protected virtual void OnTrigger(Collider other, bool is_enter) {}
     }
 }

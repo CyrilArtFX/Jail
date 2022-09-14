@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Jail.Utility.Camera
+namespace Jail.Interactables.Triggers.Camera
 {
     public sealed class CameraManager : MonoBehaviour
     {
