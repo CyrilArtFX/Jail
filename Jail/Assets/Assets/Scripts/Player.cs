@@ -183,7 +183,6 @@ namespace Jail
             animator.SetBool("Pushing", crateAction == CrateAction.Pushing);
             animator.SetBool("Pulling", crateAction == CrateAction.Pulling);
             animator.SetBool("Falling", !Climbing && body.velocity.y < -0.01f);
-
             animator.SetBool("Climbing", Climbing);
 
 
@@ -252,8 +251,8 @@ namespace Jail
             if (playerInput.x != 0 && !Climbing && crateAction != CrateAction.Pulling)
             {
                 float second_rotation_y = flip_rotation.eulerAngles.y;
-                second_rotation_y = Mathf.Clamp(second_rotation_y - playerInput.x * modelFlipSpeed * Time.deltaTime, 0, 180);
-                flip_rotation = Quaternion.Euler(0, second_rotation_y, 0);
+                second_rotation_y = Mathf.Clamp(second_rotation_y - playerInput.x * modelFlipSpeed * Time.deltaTime, 0.0f, 180.0f);
+                flip_rotation = Quaternion.Euler(0.0f, second_rotation_y, 0.0f);
             }
             else
             {
@@ -261,11 +260,11 @@ namespace Jail
                 {
                     if (currentLadder != null)
                     {
-                        flip_rotation = Quaternion.Euler(0, 270, 0);
+                        flip_rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
                     }
                 }
             }
-            if (Time.timeScale != 0)
+            if (Time.timeScale != 0.0f)
             {
                 if (spirit)
                 {
