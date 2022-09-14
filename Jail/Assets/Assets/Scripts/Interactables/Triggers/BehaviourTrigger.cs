@@ -14,7 +14,7 @@ namespace Jail.Interactables.Triggers
 
     public class BehaviourTrigger : BaseTrigger
     {
-        [SerializeField]
+        [Header("Behaviour"), SerializeField]
         BehaviourTriggerActions actions;
 
         [SerializeField]

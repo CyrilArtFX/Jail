@@ -11,8 +11,12 @@ namespace Jail.Interactables.Triggers
 
         protected Color color = Color.cyan;
 
+        [Header("Base"), SerializeField]
+        protected bool isOnce = false;
         [SerializeField]
         protected LayerMask triggerMask;
+
+        int triggerCount = 0;
 
         protected virtual void Awake()
         {
@@ -21,16 +25,20 @@ namespace Jail.Interactables.Triggers
 
         void OnTriggerEnter(Collider other)
         {
+            if (isOnce && triggerCount > 0) return;
             if (!LayerMaskUtils.HasLayer(triggerMask, other.gameObject.layer)) return;
 
             OnTrigger(other, true);
+            triggerCount++;
         }
 
         void OnTriggerExit(Collider other)
         {
+            if (isOnce && triggerCount > 0) return;
             if (!LayerMaskUtils.HasLayer(triggerMask, other.gameObject.layer)) return;
 
             OnTrigger(other, false);    
+            triggerCount++;
         }
 
         void OnDrawGizmos()

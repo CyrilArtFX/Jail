@@ -8,7 +8,7 @@ namespace Jail.Interactables.Triggers.Camera
     {
         public CinemachineVirtualCamera Camera => cvCamera;
 
-        [SerializeField]
+        [Header("Camera Area"), SerializeField]
         CinemachineVirtualCamera cvCamera;
 
         protected override void Awake()
