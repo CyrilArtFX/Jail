@@ -347,7 +347,8 @@ namespace Jail
                 }
                 else
                 {
-                    AttachedCrate.Body.velocity = body_velocity;
+                    Vector3 crate_velocity = new Vector3(0.0f, 0.0f, body_velocity.z);
+                    AttachedCrate.Body.velocity = crate_velocity;
                 }
             }
 
