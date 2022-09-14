@@ -23,6 +23,14 @@ namespace Jail
             SaveCheckpoint();
         }
 
+        void Update()
+        {
+            if (Input.GetButtonDown("RestoreCheckpoint"))
+            {
+                Respawn();
+            }
+        }
+
 
         public void SaveCheckpoint()
         {
