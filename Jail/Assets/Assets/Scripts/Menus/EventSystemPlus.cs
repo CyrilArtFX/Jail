@@ -43,7 +43,7 @@ public class EventSystemPlus : MonoBehaviour
         }
         else
         {
-            if (Input.GetAxis("ControllerX") != 0 || Input.GetAxis("ControllerY") != 0)
+            if (Input.GetAxis("ControllerX") != 0.0f || Input.GetAxis("ControllerY") != 0.0f)
             {
                 eventSystem.SetSelectedGameObject(selectedButton);
                 isControllerMode = true;
