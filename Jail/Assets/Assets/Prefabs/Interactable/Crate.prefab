@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3701995714212952397}
   - component: {fileID: 1069646208261131592}
   m_Layer: 16
-  m_Name: PushableCube
+  m_Name: Crate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,7 +103,6 @@ MonoBehaviour:
     m_Bits: 256
   frictionPM: {fileID: 13400000, guid: 9c9f4e992da06db43831ef781af2ae3d, type: 2}
   noFrictionPM: {fileID: 13400000, guid: 7b5396db04d5bb741bcf3cdb834069c9, type: 2}
-  body: {fileID: 0}
 --- !u!65 &3701995714212952398
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -144,5 +143,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1.5}
+  m_Size: {x: 1, y: 1.1, z: 1.1}
   m_Center: {x: 0, y: 0, z: 0}
