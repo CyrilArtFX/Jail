@@ -5160,6 +5160,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 265217
   modelAlignSpeed: 360
+  modelFlipSpeed: 1080
   maintainButtonForClimb: 0
   camFocus: {fileID: 5002237398831701227}
   gravityModifier: 4
@@ -5251,6 +5252,7 @@ GameObject:
   - component: {fileID: 8854889414623868953}
   - component: {fileID: 8967777679023702173}
   - component: {fileID: 5473445483860539836}
+  - component: {fileID: 9024151206034432315}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5265,7 +5267,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8587793193187989228}
-  m_LocalRotation: {x: 0.06162845, y: 0.70441604, z: -0.06162845, w: 0.70441604}
+  m_LocalRotation: {x: 0.060543492, y: 0.7166025, z: -0.06269463, w: 0.692015}
   m_LocalPosition: {x: -8, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -5323,6 +5325,40 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8587793193187989228}
   m_Enabled: 1
+--- !u!114 &9024151206034432315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8587793193187989228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowDebugText: 0
+  m_ShowCameraFrustum: 1
+  m_IgnoreTimeScale: 0
+  m_WorldUpOverride: {fileID: 0}
+  m_UpdateMethod: 2
+  m_BlendUpdateMethod: 1
+  m_DefaultBlend:
+    m_Style: 2
+    m_Time: 2
+    m_CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  m_CustomBlends: {fileID: 0}
+  m_CameraCutEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_CameraActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8742648992558764197
 GameObject:
   m_ObjectHideFlags: 0

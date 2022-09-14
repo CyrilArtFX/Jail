@@ -29,6 +29,8 @@ namespace Jail.Utility.Camera
 
         void OnTriggerExit(Collider other)
         {
+            if (!LayerMaskUtils.HasLayer(triggerMask, other.gameObject.layer)) return;
+
             if (this == CameraManager.CurrentArea)
             {
                 CameraManager.SwitchArea(CameraManager.PreviousArea);
