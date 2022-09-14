@@ -429,9 +429,9 @@ namespace Jail
                 }
                 else
                 {
-                    if(AttachedCrate.transform.position.z < transform.position.z)
+                    if (AttachedCrate.transform.position.z < transform.position.z)
                     {
-                        if(body.velocity.z > 0.0f)
+                        if (body.velocity.z > 0.0f)
                         {
                             crateAction = CrateAction.Pulling;
                         }
@@ -457,8 +457,6 @@ namespace Jail
             {
                 crateAction = CrateAction.None;
             }
-
-            Debug.Log(crateAction);
         }
 
         void AdjustVelocity()
