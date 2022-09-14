@@ -9,6 +9,13 @@ namespace Jail
 {
     public class Player : MonoBehaviour, ICheckpointSaver
     {
+        enum CrateAction
+        {
+            Pushing,
+            Pulling,
+            None
+        }
+
         public GameObject Spirit => spiritObject;
         public bool IsSpiritReturning => spiritReturning || spiritDissolving;
 
@@ -66,6 +73,7 @@ namespace Jail
         Ladder currentLadder;
 
         public Crate AttachedCrate { get; set; }
+        CrateAction crateAction = CrateAction.None;
 
         bool OnGround => groundContactCount > 0;
         bool OnSteep => steepContactCount > 0;
@@ -170,7 +178,12 @@ namespace Jail
 
             UpdateRotations();
 
-            animator.SetBool("Climb", Climbing);
+
+            animator.SetFloat("Speed", Mathf.Abs(body.velocity.z));
+            animator.SetBool("Pushing", crateAction == CrateAction.Pushing);
+            animator.SetBool("Pulling", crateAction == CrateAction.Pulling);
+
+            animator.SetBool("Climbing", Climbing);
 
 
             if (spiritReturning)
@@ -235,7 +248,7 @@ namespace Jail
 
             //  make the spirit or the player face toward where he goes
             Quaternion flip_rotation = spirit ? spiritModelFlip.localRotation : modelFlip.localRotation;
-            if (playerInput.x != 0 && !Climbing && (AttachedCrate == null || !OnRealGround))
+            if (playerInput.x != 0 && !Climbing && crateAction != CrateAction.Pulling)
             {
                 float second_rotation_y = flip_rotation.eulerAngles.y;
                 second_rotation_y = Mathf.Clamp(second_rotation_y - playerInput.x * modelFlipSpeed * Time.deltaTime, 0, 180);
@@ -406,6 +419,46 @@ namespace Jail
                     inCheckpoint = null;
                 }
             }
+
+            //  set the crateAction value
+            if (AttachedCrate != null)
+            {
+                if (Mathf.Abs(body.velocity.z) < 0.01f)
+                {
+                    crateAction = CrateAction.None;
+                }
+                else
+                {
+                    if(AttachedCrate.transform.position.z < transform.position.z)
+                    {
+                        if(body.velocity.z > 0.0f)
+                        {
+                            crateAction = CrateAction.Pulling;
+                        }
+                        else
+                        {
+                            crateAction = CrateAction.Pushing;
+                        }
+                    }
+                    else
+                    {
+                        if (body.velocity.z > 0.0f)
+                        {
+                            crateAction = CrateAction.Pushing;
+                        }
+                        else
+                        {
+                            crateAction = CrateAction.Pulling;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                crateAction = CrateAction.None;
+            }
+
+            Debug.Log(crateAction);
         }
 
         void AdjustVelocity()
