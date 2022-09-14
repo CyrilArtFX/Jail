@@ -21,6 +21,7 @@ namespace Jail.Puzzler.Inputs
             if (Input.GetButtonDown("Interact"))
             {
                 IsTriggered = !IsTriggered;
+                Player.instance.AnimTriggerLever();
             }
         }
 

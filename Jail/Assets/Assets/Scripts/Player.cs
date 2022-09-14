@@ -750,5 +750,10 @@ namespace Jail
             transform.position = savedPosition;
             modelFlip.localRotation = savedRotationModelFlip;
         }
+
+        public void AnimTriggerLever()
+        {
+            animator.SetTrigger("TriggerLever");
+        }
     }
 }
