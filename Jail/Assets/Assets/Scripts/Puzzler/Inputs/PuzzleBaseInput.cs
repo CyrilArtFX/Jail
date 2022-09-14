@@ -46,6 +46,7 @@ namespace Jail.Puzzler.Inputs
         public virtual void Start()
         {
             IsTriggered = startTriggered;
+            SaveState();
         }
 
         public void LinkOutput(PuzzleBaseOutput output)

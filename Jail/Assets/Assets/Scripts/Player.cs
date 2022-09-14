@@ -133,6 +133,8 @@ namespace Jail
 
         void Update()
         {
+            camFocus.localPosition = spirit ? spiritObject.transform.localPosition : Vector3.zero;
+
             if (disableCommands) return;
 
             playerInput.x = Input.GetAxis("Horizontal");
@@ -160,12 +162,6 @@ namespace Jail
                 desiredJump = false;
 
                 desireNormal |= Input.GetButtonDown("Spirit");
-
-                camFocus.localPosition = spiritObject.transform.localPosition;
-            }
-            else
-            {
-                camFocus.localPosition = Vector3.zero;
             }
 
             UpdateRotations();
@@ -658,21 +654,41 @@ namespace Jail
             }
             else
             {
-                ReturnToBody();
+                ReturnToBody(false);
             }
         }
 
-        public void ReturnToBody()
+        public void ReturnToBody(bool instant)
         {
-            spiritCollider.isTrigger = true;
+            if (!instant)
+            {
+                spiritCollider.isTrigger = true;
 
-            spiritPosAtStartReturning = spiritObject.transform.localPosition;
-            float distanceSpiritBody = Vector3.Distance(spiritPosAtStartReturning, Vector3.zero);
-            timeForSpiritToReturn = distanceSpiritBody / spiritReturningAverageSpeed;
-            timeSinceSpiritReturningStart = 0.0f;
+                spiritPosAtStartReturning = spiritObject.transform.localPosition;
+                float distanceSpiritBody = Vector3.Distance(spiritPosAtStartReturning, Vector3.zero);
+                timeForSpiritToReturn = distanceSpiritBody / spiritReturningAverageSpeed;
+                timeSinceSpiritReturningStart = 0.0f;
 
-            spiritDissolving = false;
-            spiritReturning = true;
+                spiritDissolving = false;
+                spiritReturning = true;
+            }
+            else
+            {
+                spiritDissolve.ForceNoDissolve();
+
+                spiritObject.SetActive(false);
+                spirit = false;
+
+                if (disableSpiritTime > 0.0f)
+                {
+                    StartCoroutine(DisableSpirit());
+                }
+            }
+        }
+
+        public void FreezeSpirit()
+        {
+            spiritBody.velocity = Vector3.zero;
         }
 
         IEnumerator DisableSpirit()
