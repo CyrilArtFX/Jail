@@ -12855,6 +12855,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8510694668293766980, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
+      propertyPath: m_Mass
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 8587793193187989228, guid: 9449f0f22df20d648971e289ff26a79a, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -21495,9 +21499,9 @@ Animation:
   m_GameObject: {fileID: 2078558387}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: -203655887218126122, guid: ed2d3a68df21ad34b9d3a5fe932367dd, type: 3}
+  m_Animation: {fileID: -203655887218126122, guid: b981a50d5d1942d48afc6ac35b576c08, type: 3}
   m_Animations:
-  - {fileID: -203655887218126122, guid: ed2d3a68df21ad34b9d3a5fe932367dd, type: 3}
+  - {fileID: -203655887218126122, guid: b981a50d5d1942d48afc6ac35b576c08, type: 3}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0

@@ -234,7 +234,7 @@ namespace Jail
 
 
             //  make the spirit or the player face toward where he goes
-            Quaternion flip_rotation = modelFlip.localRotation;
+            Quaternion flip_rotation = spirit ? spiritModelFlip.localRotation : modelFlip.localRotation;
             if (playerInput.x != 0 && !Climbing && (AttachedCrate == null || !OnRealGround))
             {
                 float second_rotation_y = flip_rotation.eulerAngles.y;
