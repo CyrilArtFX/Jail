@@ -121,7 +121,7 @@ namespace Jail
             instance = this;
 
             body = GetComponent<Rigidbody>();
-            animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>();
             body.useGravity = false;
 
             spiritBody = spiritObject.GetComponent<Rigidbody>();
@@ -235,7 +235,7 @@ namespace Jail
 
             //  make the spirit or the player face toward where he goes
             Quaternion flip_rotation = modelFlip.localRotation;
-            if (playerInput.x != 0 && !Climbing)
+            if (playerInput.x != 0 && !Climbing && (AttachedCrate == null || !OnRealGround))
             {
                 float second_rotation_y = flip_rotation.eulerAngles.y;
                 second_rotation_y = Mathf.Clamp(second_rotation_y - playerInput.x * modelFlipSpeed * Time.deltaTime, 0, 180);
