@@ -182,6 +182,7 @@ namespace Jail
             animator.SetFloat("Speed", Mathf.Abs(body.velocity.z));
             animator.SetBool("Pushing", crateAction == CrateAction.Pushing);
             animator.SetBool("Pulling", crateAction == CrateAction.Pulling);
+            animator.SetBool("Falling", !Climbing && body.velocity.y < -0.01f);
 
             animator.SetBool("Climbing", Climbing);
 
@@ -560,6 +561,8 @@ namespace Jail
             }
 
             velocity += jump_direction * jumpSpeed;
+
+            animator.SetTrigger("Jumping");
         }
 
         bool CheckSteepContact()
