@@ -14,6 +14,7 @@ namespace Jail.UI
         {
             pauseMenuObject.SetActive(false);
             pause = false;
+            Time.timeScale = 1f;
         }
 
         void Update()
