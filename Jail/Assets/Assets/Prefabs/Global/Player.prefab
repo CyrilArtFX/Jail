@@ -5164,7 +5164,7 @@ MonoBehaviour:
   spiritObject: {fileID: 2336433481901585766}
   spiritModelFlip: {fileID: 76176138646387934}
   spiritDissolve: {fileID: 1719727978493690196}
-  spiritParticles: {fileID: 5659053076780417179}
+  spiritParticles: {fileID: 2981363657628824347}
   maxSpeed: 7
   maxClimbSpeed: 4
   maxSpiritSpeed: 8
