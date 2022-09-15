@@ -19,7 +19,10 @@ namespace Jail.Interactables.Triggers
 
         protected override void OnTrigger(Collider other, bool is_enter)
         {
-            SceneSwitcher.SwitchScene(sceneName);
+            if (is_enter)
+            {
+                SceneSwitcher.SwitchScene(sceneName);
+            }
         }
     }
 }

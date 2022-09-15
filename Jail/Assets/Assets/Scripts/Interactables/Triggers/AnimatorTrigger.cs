@@ -8,13 +8,13 @@ namespace Jail.Interactables.Triggers
         [Header("Animator"), SerializeField]
         Animator animator;
         [SerializeField]
-        string animationName;
+        Motion motion;
 
         protected override void OnTrigger(Collider other, bool is_enter)
         {
             if (is_enter)
             {
-                animator.Play(animationName);
+                animator.Play(motion.name);
             }
         }
     }
