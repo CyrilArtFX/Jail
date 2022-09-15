@@ -17,7 +17,7 @@ namespace Jail.Puzzler.Inputs
         public override void Start()
         {
             base.Start();
-            if (!IsTriggered)
+            if (!IsRawTriggered)
             {
                 fireLight.TurnLightOff();
             }
@@ -28,7 +28,7 @@ namespace Jail.Puzzler.Inputs
             if (!Player.instance.IsSpirit || Player.instance.IsSpiritReturning) return;
 
             //  trigger
-            IsTriggered = !IsTriggered;
+            IsRawTriggered = !IsRawTriggered;
         }
 
         protected override void OnTrigger(bool state)

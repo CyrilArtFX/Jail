@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using Jail.Utility;
 
 namespace Jail.UI
@@ -35,14 +36,22 @@ namespace Jail.UI
         void PauseGame()
         {
             Time.timeScale = 0.0f;
+            Player.instance.disableCommands = true;
             pauseMenuObject.SetActive(true);
             pause = true;
         }
 
         public void ResumeGame()
         {
+            StartCoroutine(TimedResumeGame());
+        }
+
+        IEnumerator TimedResumeGame()
+        {
+            yield return new WaitForSecondsRealtime(0.0f);
             pauseMenuObject.SetActive(false);
             pause = false;
+            Player.instance.disableCommands = false;
             Time.timeScale = 1.0f;
         }
 
