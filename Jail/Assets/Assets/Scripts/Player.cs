@@ -178,7 +178,7 @@ namespace Jail
             animator.SetFloat("Speed", Mathf.Abs(body.velocity.z));
             animator.SetBool("Pushing", crateAction == CrateAction.Pushing);
             animator.SetBool("Pulling", crateAction == CrateAction.Pulling);
-            animator.SetBool("Falling", !Climbing && body.velocity.y < -0.01f);
+            animator.SetBool("Falling", !Climbing && !OnGround && body.velocity.y < -0.01f);
             animator.SetBool("Climbing", Climbing);
 
 
@@ -535,7 +535,7 @@ namespace Jail
             Vector3 jump_direction;
             if (OnGround)
             {
-                jump_direction = contactNormal;
+                jump_direction = Vector3.up;
                 if (Climbing && currentLadder != null)
                 {
                     jump_direction = Vector3.zero;
