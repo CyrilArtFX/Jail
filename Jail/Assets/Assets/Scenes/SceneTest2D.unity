@@ -6919,24 +6919,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &771310292 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 848943656056290516, guid: 065d3444937a7a5419846f07ac840792, type: 3}
+--- !u!114 &771310294 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5466570465143403267, guid: 065d3444937a7a5419846f07ac840792, type: 3}
   m_PrefabInstance: {fileID: 1994992251}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &771310294
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 771310292}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1365528027ad3674aabaf8418b0a4dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseMenuObject: {fileID: 998834951}
 --- !u!1001 &773386579
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7523,11 +7516,6 @@ Transform:
   m_Father: {fileID: 248992983}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &998834951 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6422776424132745966, guid: 065d3444937a7a5419846f07ac840792, type: 3}
-  m_PrefabInstance: {fileID: 1994992251}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1020470359
 Mesh:
   m_ObjectHideFlags: 0

@@ -410,6 +410,6 @@ MonoBehaviour:
   distance: 20
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 311553
+    m_Bits: 377089
   projectilePrefab: {fileID: 1034887875336051491, guid: 6a6b54126a2380741a25b83e39f9eb66, type: 3}
   projectileSpawnPoint: {fileID: 141279186448080309}

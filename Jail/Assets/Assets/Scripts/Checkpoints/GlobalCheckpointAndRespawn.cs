@@ -28,6 +28,11 @@ namespace Jail
             if (Input.GetButtonDown("RestoreCheckpoint"))
             {
                 Respawn();
+
+                if (Player.instance.IsSpirit)
+                {
+                    Player.instance.FreezeSpirit();
+                }
             }
         }
 
@@ -46,6 +51,11 @@ namespace Jail
             foreach (ICheckpointSaver saved_object in savedObjects)
             {
                 saved_object.RestoreState();
+            }
+
+            if (Player.instance.IsSpirit)
+            {
+                Player.instance.ReturnToBody(true);
             }
 
             BlackFade.instance.eventEndOfFadeIn.RemoveListener(RestoreCheckpoint);
