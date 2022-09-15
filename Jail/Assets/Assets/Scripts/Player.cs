@@ -31,7 +31,7 @@ namespace Jail
         [SerializeField]
         DissolveObject spiritDissolve = default;
         [SerializeField]
-        GameObject spiritParticles = default;
+        ParticleSystem spiritParticles = default;
 
         [Header("Parameters")]
         [SerializeField, Range(0.0f, 100.0f)]
@@ -694,7 +694,7 @@ namespace Jail
 
         public void GoBackToNormalForm(bool spiritDead)
         {
-            spiritParticles.SetActive(false);
+            spiritParticles.Stop();
 
             if (spiritDead)
             {
@@ -760,7 +760,7 @@ namespace Jail
             spiritObject.SetActive(true);
             spiritObject.transform.localPosition = Vector3.zero;
             spiritObject.transform.localRotation = transform.rotation;
-            spiritParticles.SetActive(true);
+            spiritParticles.Play();
         }
 
         public Transform FocusPoint()
