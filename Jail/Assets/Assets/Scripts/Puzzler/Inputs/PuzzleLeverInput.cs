@@ -20,7 +20,7 @@ namespace Jail.Puzzler.Inputs
 
             if (Input.GetButtonDown("Interact"))
             {
-                IsTriggered = !IsTriggered;
+                IsRawTriggered = !IsRawTriggered;
                 Player.instance.AnimTriggerLever();
             }
         }

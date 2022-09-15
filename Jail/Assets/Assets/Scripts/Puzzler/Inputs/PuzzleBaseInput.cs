@@ -9,17 +9,19 @@ namespace Jail.Puzzler.Inputs
     {
         protected readonly List<PuzzleBaseOutput> outputs = new List<PuzzleBaseOutput>();
 
-        bool isTriggered = false;
+        bool isRawTriggered = false;
 
-        public bool IsTriggered
+        public bool IsRawTriggered
         {
-            get => isTriggered;
+            get => isRawTriggered;
             protected set
             {
-                isTriggered = value;
+                isRawTriggered = value;
                 OnTrigger(value);
             }
         }
+
+        public bool IsTriggered => isReversed ? !isRawTriggered : isRawTriggered;
 
         bool savedTriggerState;
         bool savedEnabledState;
@@ -28,6 +30,8 @@ namespace Jail.Puzzler.Inputs
 
         [SerializeField]
         protected bool startTriggered = false;
+        [SerializeField]
+        protected bool isReversed = false;
 
         [SerializeField]
         protected new Renderer renderer;
@@ -45,7 +49,7 @@ namespace Jail.Puzzler.Inputs
 
         public virtual void Start()
         {
-            IsTriggered = startTriggered;
+            IsRawTriggered = startTriggered;
             SaveState();
         }
 
@@ -56,7 +60,7 @@ namespace Jail.Puzzler.Inputs
 
         protected virtual void OnTrigger(bool state)
         {
-            print("input: " + this + " state is " + isTriggered);
+            print("input: " + this + " state is " + isRawTriggered);
 
             //  alert output from change
             foreach (PuzzleBaseOutput output in outputs)
@@ -72,7 +76,7 @@ namespace Jail.Puzzler.Inputs
 
             if (disable)
             {
-                IsTriggered = false;
+                IsRawTriggered = false;
             }
 
             //  change material depending on disable state
@@ -81,7 +85,7 @@ namespace Jail.Puzzler.Inputs
 
         public void SaveState()
         {
-            savedTriggerState = IsTriggered;
+            savedTriggerState = isRawTriggered;
             savedEnabledState = enabled;
         }
 
@@ -89,7 +93,7 @@ namespace Jail.Puzzler.Inputs
         {
             if (savedEnabledState)
             {
-                IsTriggered = savedTriggerState;
+                IsRawTriggered = savedTriggerState;
             }
         }
     }
