@@ -3930,6 +3930,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &398483616 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3837590372592666932, guid: 065d3444937a7a5419846f07ac840792, type: 3}
+  m_PrefabInstance: {fileID: 1994992251}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55d857370745fa44878c9ef6b1819d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &405327110
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19166,6 +19177,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 771310294}
+    - target: {fileID: 5466570465143403267, guid: 065d3444937a7a5419846f07ac840792, type: 3}
+      propertyPath: eventSystemPlus
+      value: 
+      objectReference: {fileID: 398483616}
     - target: {fileID: 6400156103884814381, guid: 065d3444937a7a5419846f07ac840792, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
