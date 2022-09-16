@@ -1,12 +1,14 @@
-using Jail.Utility;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+
+using Jail.Utility;
 
 public class Ladder : MonoBehaviour
 {
 
     [SerializeField, Range(1, 100)]
+    [InvokeMethod("Build Ladder", nameof(BuildLadder))]
     int ladderLength = 1;
 
 

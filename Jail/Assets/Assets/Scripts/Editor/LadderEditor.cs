@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 
 
-[CustomEditor(typeof(Ladder))]
+//[CustomEditor(typeof(Ladder))]
 public class LadderEditor : Editor
 {
     Ladder ladder;
