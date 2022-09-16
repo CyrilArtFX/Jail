@@ -87,7 +87,7 @@ Material:
     - _Beast_TessellationDepthPassLOD: 0.5
     - _Beast_TessellationDisplaceMapChannel: 0
     - _Beast_TessellationDisplaceMapUVSet: 0
-    - _Beast_TessellationDisplaceStrength: 0.3
+    - _Beast_TessellationDisplaceStrength: 0.4
     - _Beast_TessellationEdgeLength: 16
     - _Beast_TessellationFactor: 64
     - _Beast_TessellationMaxDistance: 35
