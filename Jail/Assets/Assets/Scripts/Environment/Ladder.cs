@@ -1,12 +1,13 @@
-using Jail.Utility;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+
+using Jail.Utility;
 
 public class Ladder : MonoBehaviour
 {
 
-    [SerializeField, Range(1, 100)]
+    [SerializeField, Range( 1, 100 )]
     int ladderLength = 1;
 
 
@@ -33,6 +34,7 @@ public class Ladder : MonoBehaviour
     [SerializeField]
     BoxCollider topDetection = default;
 
+    [MethodButton("Build Ladder")]
     public void BuildLadder()
     {
         List<Transform> children = ladderMeshParent.Cast<Transform>().ToList();
