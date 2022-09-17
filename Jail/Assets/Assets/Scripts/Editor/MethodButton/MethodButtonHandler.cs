@@ -47,7 +47,7 @@ namespace Jail.Unity.MethodButton
 			foreach (MethodInfo method in type.GetMethods(flags))
 			{
 				MethodButtonAttribute attribute = method.GetCustomAttribute<MethodButtonAttribute>();
-				if (attribute == null) return;
+				if (attribute == null) continue;
 
 				buttons.Add(new MethodButton(method, attribute));
 			}
@@ -55,11 +55,16 @@ namespace Jail.Unity.MethodButton
 
 		public void Draw(Object[] targets)
 		{
+			int count = buttons.Count;
+			if (count == 0) return;
+
+			//  some margin so it's cleaner
 			GUILayout.Space(12.0f);
 
 			//  draw all buttons
-			foreach (MethodButton button in buttons)
+			for (int i = 0; i < count; i++)
 			{
+				MethodButton button = buttons[i];
 				button.Draw(targets);
 			}
 		}
