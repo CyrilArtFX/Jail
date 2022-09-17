@@ -8,7 +8,7 @@ public class Ladder : MonoBehaviour
 {
 
     [SerializeField, Range( 1, 100 )]
-	int ladderLength = 1;
+    int ladderLength = 1;
 
 
     [Header("Assignations")]
@@ -34,7 +34,7 @@ public class Ladder : MonoBehaviour
     [SerializeField]
     BoxCollider topDetection = default;
 
-	[MethodButton("Build Ladder")]
+    [MethodButton("Build Ladder")]
     public void BuildLadder()
     {
         List<Transform> children = ladderMeshParent.Cast<Transform>().ToList();

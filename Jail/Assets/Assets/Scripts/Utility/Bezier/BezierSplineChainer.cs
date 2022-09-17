@@ -47,7 +47,7 @@ namespace Jail.Utility.Bezier
             items.RemoveRange(from_id, items.Count - from_id);
         }
 
-		[MethodButton("Update")]
+        [MethodButton("Update")]
         public void DoUpdate()
         {
             if (!spline || !prefab) return;
@@ -128,19 +128,19 @@ namespace Jail.Utility.Bezier
             }
         }
 
-		[MethodButton("Delete Generated Items")]
+        [MethodButton("Delete Generated Items")]
         public void Reset()
         {
             SetupSpline();
             RemoveItemsAtRange(0, Items.Count - 1);
         }
 
-		[MethodButton("Re-Generate All")]
+        [MethodButton("Re-Generate All")]
         public void ReGenerateAll()
-		{
+        {
             RemoveItemsAtRange(0, Items.Count - 1);
             DoUpdate();
-		}
+        }
 
         void OnValidate()
         {

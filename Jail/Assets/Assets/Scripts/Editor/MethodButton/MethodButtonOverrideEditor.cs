@@ -16,14 +16,14 @@ namespace Jail.Unity.MethodButton
         MethodButtonHandler handler;
 
         void OnEnable()
-		{
+        {
             handler = new MethodButtonHandler(target);
-		}
+        }
 
-		public override void OnInspectorGUI()
-		{
+        public override void OnInspectorGUI()
+        {
             DrawDefaultInspector();
             handler.Draw(targets);
-		}
+        }
     }
 }
