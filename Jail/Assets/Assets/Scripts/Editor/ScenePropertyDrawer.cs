@@ -3,7 +3,7 @@ using UnityEngine;
 
 using Jail.Utility;
 
-namespace Jail.Debug
+namespace Jail.Unity
 {
     //  https://forum.unity.com/threads/how-to-link-scenes-in-the-inspector.383140/
     [CustomPropertyDrawer(typeof(SceneAttribute))]

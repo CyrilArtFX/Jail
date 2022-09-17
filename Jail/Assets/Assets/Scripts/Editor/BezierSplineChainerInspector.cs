@@ -3,7 +3,7 @@ using UnityEngine;
 
 using Jail.Utility.Bezier;
 
-namespace Jail.Debug
+namespace Jail.Unity
 {
     [CustomEditor(typeof(BezierSplineChainer))]
     public class BezierSplineChainerInspector : Editor

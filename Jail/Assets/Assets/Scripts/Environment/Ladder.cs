@@ -7,9 +7,8 @@ using Jail.Utility;
 public class Ladder : MonoBehaviour
 {
 
-    [SerializeField, Range(1, 100)]
-    [InvokeMethod("Build Ladder", nameof(BuildLadder))]
-    int ladderLength = 1;
+    [SerializeField, Range( 1, 100 )]
+	int ladderLength = 1;
 
 
     [Header("Assignations")]
@@ -35,6 +34,7 @@ public class Ladder : MonoBehaviour
     [SerializeField]
     BoxCollider topDetection = default;
 
+	[MethodButton("Build Ladder")]
     public void BuildLadder()
     {
         List<Transform> children = ladderMeshParent.Cast<Transform>().ToList();
