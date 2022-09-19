@@ -69,13 +69,18 @@ namespace Jail
         Vector3 groundNormal, contactNormal, steepNormal, climbNormal, lastClimbNormal;
         Vector3 lastContactNormal, lastSteepNormal, lastConnectionVelocity;
 
-        int groundContactCount, steepContactCount, climbContactCount, realGroundContactCount;
+        int lastGroundContactCount, groundContactCount, steepContactCount, climbContactCount, realGroundContactCount;
         Ladder currentLadder;
 
         public Crate AttachedCrate { get; set; }
         CrateAction crateAction = CrateAction.None;
 
-        bool OnGround => groundContactCount > 0;
+        [SerializeField]
+        float coyoteTime = 0.1f;
+        bool coyoteGround;
+        Coroutine coroutineCoyoteTime;
+
+        bool OnGround => coyoteGround;
         bool OnSteep => steepContactCount > 0;
         bool Climbing => climbContactCount > 0 && stepsSinceLastJump > 2;
 
@@ -178,7 +183,7 @@ namespace Jail
             animator.SetFloat("Speed", Mathf.Abs(body.velocity.z));
             animator.SetBool("Pushing", crateAction == CrateAction.Pushing);
             animator.SetBool("Pulling", crateAction == CrateAction.Pulling);
-            animator.SetBool("Falling", !Climbing && !OnGround && body.velocity.y < -0.01f);
+            animator.SetBool("Falling", !Climbing && !OnGround && body.velocity.y < -0.1f);
             animator.SetBool("Climbing", Climbing);
 
 
@@ -370,11 +375,36 @@ namespace Jail
             lastSteepNormal = steepNormal;
             lastConnectionVelocity = connectionVelocity;
 
+            //  coyote time
+            if (lastGroundContactCount > 0)
+            {
+                coyoteGround = true;
+
+                if (coroutineCoyoteTime != null)
+                {
+                    StopCoroutine(coroutineCoyoteTime);
+                    coroutineCoyoteTime = null;
+                }
+            }
+            else if (coroutineCoyoteTime == null)
+            {
+                coroutineCoyoteTime = StartCoroutine(CoroutineCoyoteTime());
+            }
+            lastGroundContactCount = groundContactCount;
+
             groundContactCount = steepContactCount = climbContactCount = realGroundContactCount = 0;
             groundNormal = contactNormal = steepNormal = connectionVelocity = climbNormal = Vector3.zero;
 
             previousConnectedBody = connectedBody;
             connectedBody = null;
+        }
+
+        IEnumerator CoroutineCoyoteTime()
+        {
+            yield return new WaitForSeconds(coyoteTime);
+
+            coyoteGround = false;
+            coroutineCoyoteTime = null;
         }
 
         void UpdateState()
@@ -555,9 +585,19 @@ namespace Jail
                 jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0.0f);
             }
 
+            velocity = new Vector3(velocity.x, 0.0f, velocity.z);
             velocity += jump_direction * jumpSpeed;
 
             animator.SetTrigger("Jumping");
+
+            //  stop coyote time bro
+            if (coroutineCoyoteTime != null)
+            {
+                StopCoroutine(coroutineCoyoteTime);
+                coroutineCoyoteTime = null;
+
+                coyoteGround = false;
+            }
         }
 
         bool CheckSteepContact()
