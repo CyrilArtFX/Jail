@@ -1,0 +1,11 @@
+Beast asset contains 2 packages: 
+
+1) Built-in - package for built-in (default) render pipeline.
+2) Universal - package for Universal scriptable render pipeline (URP).
+
+Based on a project's render pipeline import one of the provided packages.
+
+
+Beast asset minimum requirements:
+• Unity version 2020.2.1
+• Universal RP 10.2.2
