@@ -61,4 +61,5 @@ MonoBehaviour:
   triggerMask:
     serializedVersion: 2
     m_Bits: 256
-  sceneName: SceneTest2D
+  sceneName: 
+  useBlackFade: 1
