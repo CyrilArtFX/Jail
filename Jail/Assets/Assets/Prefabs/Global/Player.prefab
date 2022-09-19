@@ -210,6 +210,66 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &3539564941314276248
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6926934312170139044}
+  - component: {fileID: 4249066222536257930}
+  - component: {fileID: 7545386763959315141}
+  m_Layer: 18
+  m_Name: StairTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6926934312170139044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3539564941314276248}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7946750689201620303}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4249066222536257930
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3539564941314276248}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7545386763959315141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3539564941314276248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ac024d343c1be49a1a81c0d491bcbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stairMask:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!111 &6320942496767529333
 Animation:
   m_ObjectHideFlags: 0
@@ -5145,6 +5205,7 @@ Transform:
   - {fileID: 2883546376665707033}
   - {fileID: 5002237398831701227}
   - {fileID: 76934090858623774}
+  - {fileID: 6926934312170139044}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5198,7 +5259,10 @@ MonoBehaviour:
   modelFlipSpeed: 1080
   maintainButtonForClimb: 0
   camFocus: {fileID: 5002237398831701227}
+  coyoteTime: 0.1
   gravityModifier: 4
+  noFrictionPM: {fileID: 13400000, guid: 7b5396db04d5bb741bcf3cdb834069c9, type: 2}
+  frictionPM: {fileID: 13400000, guid: 9c9f4e992da06db43831ef781af2ae3d, type: 2}
   inCheckpoint: {fileID: 0}
   disableCommands: 0
   spiritReturningAverageSpeed: 15
@@ -5250,7 +5314,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7946750689201620291}
-  m_Material: {fileID: 13400000, guid: 65d5bda80a4ebe34895b9133d536e856, type: 2}
+  m_Material: {fileID: 13400000, guid: 7b5396db04d5bb741bcf3cdb834069c9, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -5284,7 +5348,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8587793193187989228}
   m_LocalRotation: {x: 0.0605435, y: 0.7166025, z: -0.06269463, w: 0.69201505}
-  m_LocalPosition: {x: -3, y: 64.5, z: 90.75}
+  m_LocalPosition: {x: -3, y: 67.5, z: 56.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5002237398831701227}

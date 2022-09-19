@@ -61,6 +61,7 @@ namespace Jail
 
         Rigidbody body, connectedBody, previousConnectedBody;
         Animator animator;
+        CapsuleCollider bodyCollider;
 
         Vector2 playerInput;
         bool desiredJump, desiresClimbing, requestClimbing, desireSpirit, desireNormal;
@@ -68,6 +69,8 @@ namespace Jail
         Vector3 velocity, connectionVelocity;
         Vector3 groundNormal, contactNormal, steepNormal, climbNormal, lastClimbNormal;
         Vector3 lastContactNormal, lastSteepNormal, lastConnectionVelocity;
+
+        public bool StairContact { get; set; }
 
         int lastGroundContactCount, groundContactCount, steepContactCount, climbContactCount, realGroundContactCount;
         Ladder currentLadder;
@@ -95,6 +98,8 @@ namespace Jail
 
         [SerializeField]
         float gravityModifier = 2.0f;
+        [SerializeField]
+        PhysicMaterial noFrictionPM, frictionPM;
 
         public static Player instance;
 
@@ -136,6 +141,8 @@ namespace Jail
             body = GetComponent<Rigidbody>();
             animator = GetComponentInChildren<Animator>();
             body.useGravity = false;
+
+            bodyCollider = GetComponent<CapsuleCollider>();
 
             spiritBody = spiritObject.GetComponent<Rigidbody>();
             spiritCollider = spiritObject.GetComponent<CapsuleCollider>();
@@ -340,11 +347,11 @@ namespace Jail
             }
             else if (OnGround && velocity.sqrMagnitude < 0.01f)
             {
-                body_velocity += contactNormal * (Vector3.Dot(Physics.gravity, contactNormal) * Time.deltaTime);
+                body_velocity += contactNormal * (Vector3.Dot(Physics.gravity * gravityModifier, contactNormal) * Time.deltaTime);
             }
             else if (desiresClimbing && OnGround)
             {
-                body_velocity += (Physics.gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
+                body_velocity += (Physics.gravity * gravityModifier - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
             }
             else if (!spirit)
             {
@@ -392,8 +399,12 @@ namespace Jail
             }
             lastGroundContactCount = groundContactCount;
 
+            //  change physic material
+            bodyCollider.material = StairContact ? frictionPM : noFrictionPM;
+
             groundContactCount = steepContactCount = climbContactCount = realGroundContactCount = 0;
             groundNormal = contactNormal = steepNormal = connectionVelocity = climbNormal = Vector3.zero;
+            StairContact = false;
 
             previousConnectedBody = connectedBody;
             connectedBody = null;
