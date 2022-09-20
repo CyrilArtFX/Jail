@@ -16,10 +16,13 @@ namespace Jail.Puzzler.Inputs
         {
             if (!isPlayerInFront) return;
             if (Player.instance.IsSpirit) return;
+            if (Player.instance.AttachedCrate != null) return;
+            if (Player.instance.disableCommands) return;
 
             if (Input.GetButtonDown("Interact"))
             {
-                IsTriggered = !IsTriggered;
+                IsRawTriggered = !IsRawTriggered;
+                Player.instance.AnimTriggerLever();
             }
         }
 

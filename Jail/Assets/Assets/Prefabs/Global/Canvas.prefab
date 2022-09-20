@@ -331,6 +331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuObject: {fileID: 6422776424132745966}
+  eventSystemPlus: {fileID: 3837590372592666932}
 --- !u!1 &848943656068888975
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,6 +447,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  fadeInAwake: 1
+  blackFadeType: 1
   eventEndOfFadeIn:
     m_PersistentCalls:
       m_Calls: []

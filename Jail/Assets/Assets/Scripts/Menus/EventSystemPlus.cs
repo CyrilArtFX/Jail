@@ -52,4 +52,20 @@ public class EventSystemPlus : MonoBehaviour
 
         previousMousePos = Input.mousePosition;
     }
+
+    public void ForceControllerMode()
+    {
+        eventSystem.SetSelectedGameObject(selectedButton);
+        isControllerMode = true;
+    }
+
+    public void ForceNoControllerMode()
+    {
+        if (eventSystem.currentSelectedGameObject != null)
+        {
+            selectedButton = eventSystem.currentSelectedGameObject;
+        }
+        eventSystem.SetSelectedGameObject(null);
+        isControllerMode = false;
+    }
 }

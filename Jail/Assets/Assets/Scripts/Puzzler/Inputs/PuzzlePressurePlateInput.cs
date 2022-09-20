@@ -25,7 +25,7 @@ namespace Jail.Puzzler.Inputs
             //  trigger if it is the first collider
             if ((activeCollidersCount++) == 0)
             {
-                IsTriggered = true;
+                IsRawTriggered = true;
             }
 
             //  remove old coroutine (prevent disabling itself when going out-&-in of the plate)
@@ -57,7 +57,7 @@ namespace Jail.Puzzler.Inputs
         {
             yield return new WaitForSeconds(exitTriggerTime);
 
-            IsTriggered = false;
+            IsRawTriggered = false;
         }
     }
 }

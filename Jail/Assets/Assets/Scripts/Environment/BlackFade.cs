@@ -31,8 +31,13 @@ namespace Jail
         AnimationCurve blackFadeCurve = default;
 
         float timeSinceBlackFadeStarted = 0.0f;
+
+        [SerializeField]
+        bool fadeInAwake = true;
         FadeStates blackFadeState = FadeStates.Off;
-        FadeType blackFadeType = FadeType.OnlyFadeIn;
+        [SerializeField]
+        FadeType blackFadeType = FadeType.OnlyFadeOut;
+
 
         [HideInInspector]
         public UnityEvent eventEndOfFadeIn = default;
@@ -42,6 +47,15 @@ namespace Jail
         void Awake()
         {
             instance = this;
+        }
+
+        void Start()
+        {
+            //  start scene-defined fade
+            if (fadeInAwake)
+            {
+                StartFade(blackFadeType);
+            }
         }
 
         void Update()

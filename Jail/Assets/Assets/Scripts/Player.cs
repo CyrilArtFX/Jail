@@ -9,6 +9,13 @@ namespace Jail
 {
     public class Player : MonoBehaviour, ICheckpointSaver
     {
+        enum CrateAction
+        {
+            Pushing,
+            Pulling,
+            None
+        }
+
         public GameObject Spirit => spiritObject;
         public bool IsSpiritReturning => spiritReturning || spiritDissolving;
 
@@ -24,7 +31,7 @@ namespace Jail
         [SerializeField]
         DissolveObject spiritDissolve = default;
         [SerializeField]
-        GameObject spiritParticles = default;
+        ParticleSystem spiritParticles = default;
 
         [Header("Parameters")]
         [SerializeField, Range(0.0f, 100.0f)]
@@ -54,6 +61,7 @@ namespace Jail
 
         Rigidbody body, connectedBody, previousConnectedBody;
         Animator animator;
+        CapsuleCollider bodyCollider;
 
         Vector2 playerInput;
         bool desiredJump, desiresClimbing, requestClimbing, desireSpirit, desireNormal;
@@ -62,12 +70,20 @@ namespace Jail
         Vector3 groundNormal, contactNormal, steepNormal, climbNormal, lastClimbNormal;
         Vector3 lastContactNormal, lastSteepNormal, lastConnectionVelocity;
 
-        int groundContactCount, steepContactCount, climbContactCount, realGroundContactCount;
+        public bool StairContact { get; set; }
+
+        int lastGroundContactCount, groundContactCount, steepContactCount, climbContactCount, realGroundContactCount;
         Ladder currentLadder;
 
         public Crate AttachedCrate { get; set; }
+        CrateAction crateAction = CrateAction.None;
 
-        bool OnGround => groundContactCount > 0;
+        [SerializeField]
+        float coyoteTime = 0.1f;
+        bool coyoteGround;
+        Coroutine coroutineCoyoteTime;
+
+        bool OnGround => coyoteGround;
         bool OnSteep => steepContactCount > 0;
         bool Climbing => climbContactCount > 0 && stepsSinceLastJump > 2;
 
@@ -82,6 +98,8 @@ namespace Jail
 
         [SerializeField]
         float gravityModifier = 2.0f;
+        [SerializeField]
+        PhysicMaterial noFrictionPM, frictionPM;
 
         public static Player instance;
 
@@ -121,8 +139,10 @@ namespace Jail
             instance = this;
 
             body = GetComponent<Rigidbody>();
-            animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>();
             body.useGravity = false;
+
+            bodyCollider = GetComponent<CapsuleCollider>();
 
             spiritBody = spiritObject.GetComponent<Rigidbody>();
             spiritCollider = spiritObject.GetComponent<CapsuleCollider>();
@@ -166,7 +186,12 @@ namespace Jail
 
             UpdateRotations();
 
-            animator.SetBool("Climb", Climbing);
+
+            animator.SetFloat("Speed", Mathf.Abs(body.velocity.z));
+            animator.SetBool("Pushing", crateAction == CrateAction.Pushing);
+            animator.SetBool("Pulling", crateAction == CrateAction.Pulling);
+            animator.SetBool("Falling", !Climbing && !OnGround && body.velocity.y < -0.1f);
+            animator.SetBool("Climbing", Climbing);
 
 
             if (spiritReturning)
@@ -230,12 +255,12 @@ namespace Jail
 
 
             //  make the spirit or the player face toward where he goes
-            Quaternion flip_rotation = modelFlip.localRotation;
-            if (playerInput.x != 0 && !Climbing)
+            Quaternion flip_rotation = spirit ? spiritModelFlip.localRotation : modelFlip.localRotation;
+            if (playerInput.x != 0 && !Climbing && crateAction != CrateAction.Pulling)
             {
                 float second_rotation_y = flip_rotation.eulerAngles.y;
-                second_rotation_y = Mathf.Clamp(second_rotation_y - playerInput.x * modelFlipSpeed * Time.deltaTime, 0, 180);
-                flip_rotation = Quaternion.Euler(0, second_rotation_y, 0);
+                second_rotation_y = Mathf.Clamp(second_rotation_y - playerInput.x * modelFlipSpeed * Time.deltaTime, 0.0f, 180.0f);
+                flip_rotation = Quaternion.Euler(0.0f, second_rotation_y, 0.0f);
             }
             else
             {
@@ -243,11 +268,11 @@ namespace Jail
                 {
                     if (currentLadder != null)
                     {
-                        flip_rotation = Quaternion.Euler(0, 270, 0);
+                        flip_rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
                     }
                 }
             }
-            if (Time.timeScale != 0)
+            if (Time.timeScale != 0.0f)
             {
                 if (spirit)
                 {
@@ -322,11 +347,11 @@ namespace Jail
             }
             else if (OnGround && velocity.sqrMagnitude < 0.01f)
             {
-                body_velocity += contactNormal * (Vector3.Dot(Physics.gravity, contactNormal) * Time.deltaTime);
+                body_velocity += contactNormal * (Vector3.Dot(Physics.gravity * gravityModifier, contactNormal) * Time.deltaTime);
             }
             else if (desiresClimbing && OnGround)
             {
-                body_velocity += (Physics.gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
+                body_velocity += (Physics.gravity * gravityModifier - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
             }
             else if (!spirit)
             {
@@ -357,11 +382,40 @@ namespace Jail
             lastSteepNormal = steepNormal;
             lastConnectionVelocity = connectionVelocity;
 
+            //  coyote time
+            if (lastGroundContactCount > 0)
+            {
+                coyoteGround = true;
+
+                if (coroutineCoyoteTime != null)
+                {
+                    StopCoroutine(coroutineCoyoteTime);
+                    coroutineCoyoteTime = null;
+                }
+            }
+            else if (coroutineCoyoteTime == null)
+            {
+                coroutineCoyoteTime = StartCoroutine(CoroutineCoyoteTime());
+            }
+            lastGroundContactCount = groundContactCount;
+
+            //  change physic material
+            bodyCollider.material = StairContact ? frictionPM : noFrictionPM;
+
             groundContactCount = steepContactCount = climbContactCount = realGroundContactCount = 0;
             groundNormal = contactNormal = steepNormal = connectionVelocity = climbNormal = Vector3.zero;
+            StairContact = false;
 
             previousConnectedBody = connectedBody;
             connectedBody = null;
+        }
+
+        IEnumerator CoroutineCoyoteTime()
+        {
+            yield return new WaitForSeconds(coyoteTime);
+
+            coyoteGround = false;
+            coroutineCoyoteTime = null;
         }
 
         void UpdateState()
@@ -401,6 +455,44 @@ namespace Jail
                     inCheckpoint.UseCheckpoint();
                     inCheckpoint = null;
                 }
+            }
+
+            //  set the crateAction value
+            if (AttachedCrate != null)
+            {
+                if (Mathf.Abs(body.velocity.z) < 0.01f)
+                {
+                    crateAction = CrateAction.None;
+                }
+                else
+                {
+                    if (AttachedCrate.transform.position.z < transform.position.z)
+                    {
+                        if (body.velocity.z > 0.0f)
+                        {
+                            crateAction = CrateAction.Pulling;
+                        }
+                        else
+                        {
+                            crateAction = CrateAction.Pushing;
+                        }
+                    }
+                    else
+                    {
+                        if (body.velocity.z > 0.0f)
+                        {
+                            crateAction = CrateAction.Pushing;
+                        }
+                        else
+                        {
+                            crateAction = CrateAction.Pulling;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                crateAction = CrateAction.None;
             }
         }
 
@@ -484,7 +576,7 @@ namespace Jail
             Vector3 jump_direction;
             if (OnGround)
             {
-                jump_direction = contactNormal;
+                jump_direction = Vector3.up;
                 if (Climbing && currentLadder != null)
                 {
                     jump_direction = Vector3.zero;
@@ -504,7 +596,19 @@ namespace Jail
                 jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0.0f);
             }
 
+            velocity = new Vector3(velocity.x, 0.0f, velocity.z);
             velocity += jump_direction * jumpSpeed;
+
+            animator.SetTrigger("Jumping");
+
+            //  stop coyote time bro
+            if (coroutineCoyoteTime != null)
+            {
+                StopCoroutine(coroutineCoyoteTime);
+                coroutineCoyoteTime = null;
+
+                coyoteGround = false;
+            }
         }
 
         bool CheckSteepContact()
@@ -636,16 +740,12 @@ namespace Jail
         public void TransformToSpirit()
         {
             if (PlayerTrigger.instance.ObstacleDetected) return;
-            spirit = true;
-            spiritObject.SetActive(true);
-            spiritObject.transform.localPosition = Vector3.zero;
-            spiritObject.transform.localRotation = transform.rotation;
-            spiritParticles.SetActive(true);
+            StartCoroutine(AnimTurnToSpirit());
         }
 
         public void GoBackToNormalForm(bool spiritDead)
         {
-            spiritParticles.SetActive(false);
+            spiritParticles.Stop();
 
             if (spiritDead)
             {
@@ -698,6 +798,22 @@ namespace Jail
             spiritDisabled = false;
         }
 
+        IEnumerator AnimTurnToSpirit()
+        {
+            disableCommands = true;
+            animator.SetTrigger("ActivateSpirit");
+            yield return new WaitForSeconds(0.1f);
+            int activate_spirit_anim_id = animator.GetCurrentAnimatorClipInfo(0)[0].clip.GetInstanceID();
+            yield return new WaitUntil(() => animator.GetCurrentAnimatorClipInfo(0)[0].clip.GetInstanceID() != activate_spirit_anim_id);
+            disableCommands = false;
+
+            spirit = true;
+            spiritObject.SetActive(true);
+            spiritObject.transform.localPosition = Vector3.zero;
+            spiritObject.transform.localRotation = transform.rotation;
+            spiritParticles.Play();
+        }
+
         public Transform FocusPoint()
         {
             return spirit ? spiritObject.transform : transform;
@@ -714,6 +830,11 @@ namespace Jail
             body.velocity = Vector3.zero;
             transform.position = savedPosition;
             modelFlip.localRotation = savedRotationModelFlip;
+        }
+
+        public void AnimTriggerLever()
+        {
+            animator.SetTrigger("TriggerLever");
         }
     }
 }
