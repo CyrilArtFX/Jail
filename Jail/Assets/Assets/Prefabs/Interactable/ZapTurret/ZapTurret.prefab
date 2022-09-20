@@ -865,7 +865,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1518380062341689029}
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 2.76, z: 0}
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 3944993351354280772}
@@ -936,7 +936,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4317046112418858175}
   m_Layer: 0
-  m_Name: StoredChainer
+  m_Name: MoveTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -950,7 +950,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2979754592242115151}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8501612674060864606}
@@ -1005,9 +1005,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 20
-  obstacleMask:
+  playerObstacleMask:
     serializedVersion: 2
-    m_Bits: 377089
+    m_Bits: 99585
+  spiritObstacleMask:
+    serializedVersion: 2
+    m_Bits: 115713
   projectileSpawnPoint: {fileID: 141279186448080309}
   currentProjectile: {fileID: 150999195891096799}
 --- !u!65 &4162891766734622259
@@ -1059,7 +1062,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2081628892797673246, guid: 6a6b54126a2380741a25b83e39f9eb66, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0000032242333
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2081628892797673246, guid: 6a6b54126a2380741a25b83e39f9eb66, type: 3}
       propertyPath: m_LocalPosition.y
