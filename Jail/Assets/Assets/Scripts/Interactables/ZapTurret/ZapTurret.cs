@@ -34,16 +34,10 @@ namespace Jail.Interactables.ZapTurret
             //  detect target
             bool wasTargetDetected = hasDetectedTarget;
 
-            if (Player.instance.IsSpirit && IsDetectingTarget(Player.instance.Spirit, spiritObstacleMask))
+            if (Player.instance.IsSpirit && !Player.instance.IsSpiritReturning && IsDetectingTarget(Player.instance.Spirit, spiritObstacleMask))
             {
                 //  priority on targeting spirit
-                hasDetectedTarget = !Player.instance.IsSpiritReturning;
-
-                //  reset target if spirit is returning
-                if (!hasDetectedTarget)
-                {
-                    currentProjectile.Target = null;
-                }
+                hasDetectedTarget = true;
             }
             else if (IsDetectingTarget(Player.instance.gameObject, playerObstacleMask))
             {

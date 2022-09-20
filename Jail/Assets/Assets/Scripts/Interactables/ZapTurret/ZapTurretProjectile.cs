@@ -102,13 +102,8 @@ namespace Jail.Interactables.ZapTurret
             //  move to target
             transform.position = target;
 
-            //  auto-pause
-            /*if (chainer.SplineChainer.Ratio == 0.0f)
-            {
-                IsPulling = false;
-                //IsPaused = true;
-            }*/
-            if ((transform.position - waryPoint.position).magnitude <= 0.5f)
+			//  auto-pause
+			if (chainer.SplineChainer.Ratio == 0.0f || (transform.position - waryPoint.position).magnitude <= 0.5f)
 			{
                 IsPulling = false;
                 chainer.SplineChainer.Ratio = 1.0f;
@@ -153,7 +148,9 @@ namespace Jail.Interactables.ZapTurret
                 UpdatePullingMovement();
                 return;
             }
-            else if (Target != null)
+            
+            //  chase
+            if (Target != null)
             {
                 if (IsChasing)
                 {
