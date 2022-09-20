@@ -32,9 +32,9 @@ namespace Jail.Interactables.ZapTurret
 
         [Header("References"), SerializeField]
         Transform model;
-		[SerializeField]
+        [SerializeField]
         ZapTurretChainer chainer;
-		[SerializeField]
+        [SerializeField]
         Transform waryPoint;
         
         float currentAccelerationTime = 0.0f;
@@ -43,9 +43,9 @@ namespace Jail.Interactables.ZapTurret
         Coroutine returnCoroutine;
         
         void Awake()
-		{
+        {
             chainer.Projectile = this;
-		}
+        }
 
         public void PullToTarget()
         {
@@ -102,12 +102,12 @@ namespace Jail.Interactables.ZapTurret
             //  move to target
             transform.position = target;
 
-			//  auto-pause
-			if (chainer.SplineChainer.Ratio == 0.0f || (transform.position - waryPoint.position).magnitude <= 0.5f)
-			{
+            //  auto-pause
+            if (chainer.SplineChainer.Ratio == 0.0f || (transform.position - waryPoint.position).magnitude <= 0.5f)
+            {
                 IsPulling = false;
                 chainer.SplineChainer.Ratio = 1.0f;
-			}
+            }
         }
 
         void UpdateChase()
@@ -133,9 +133,9 @@ namespace Jail.Interactables.ZapTurret
             
             //  move to target
             if (!IsChasing)
-			{
+            {
                 transform.position = Vector3.Lerp(transform.position, target_pos, transformSmoothSpeed * Time.fixedDeltaTime);
-			}
+            }
         }
 
         void FixedUpdate()

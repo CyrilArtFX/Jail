@@ -37,10 +37,10 @@ namespace Jail.Interactables.ZapTurret
                 last_tangent_pos = Vector3.up;
             }
             else
-			{
+            {
                 direction = (Projectile.Target.position - Projectile.transform.position).normalized;
                 last_tangent_pos = last_point_pos + direction * tangent_force;
-			}
+            }
 
             //  update first tangent
             Vector3 first_tangent_pos = Vector3.Lerp(spline.GetControlPoint(1), spline.GetControlPoint(0) + Vector3.up * tangent_force, Time.fixedDeltaTime * smoothSpeed);

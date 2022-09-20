@@ -20,7 +20,7 @@ namespace Jail.Interactables.ZapTurret
         [SerializeField]
         Transform projectileSpawnPoint;
 
-		[SerializeField]
+        [SerializeField]
         ZapTurretProjectile currentProjectile;
 
         void Start()
