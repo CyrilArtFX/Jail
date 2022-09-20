@@ -12,31 +12,44 @@ namespace Jail.Interactables.ZapTurret
         [SerializeField]
         float smoothSpeed = 5.0f;
         [SerializeField]
-        float tangentForce = 7.0f;
+        float tangentForce = 7.0f, idleTangentForce = 2.0f;
         
         [SerializeField]
         BezierSplineChainer splineChainer;
 
         void FixedUpdate()
         {
-            if (Projectile == null || Projectile.Target == null || Projectile.IsPulling) return;
-            
+            if (Projectile.IsPulling) return;
+
+            float tangent_force = Projectile.IsChasing ? tangentForce : idleTangentForce;
             BezierSpline spline = splineChainer.Spline;
-            Vector3 smooth_point;
 
             //  update last point
-            Vector3 point = spline.transform.InverseTransformPoint(Projectile.transform.position);
-            spline.SetControlPoint(spline.ControlPointCount - 1, point);
+            Vector3 last_point_pos = spline.transform.InverseTransformPoint(Projectile.transform.position);
+            spline.SetControlPoint(spline.ControlPointCount - 1, last_point_pos);
             
-            //  update first tangent
-            Vector3 direction = (transform.position - Projectile.Target.position).normalized;
-            smooth_point = Vector3.Lerp(spline.GetControlPoint(1), spline.GetControlPoint(0) + direction * tangentForce, Time.fixedDeltaTime * smoothSpeed);
-            spline.SetControlPoint(1, smooth_point);
+            #region UpdateTangents
+            Vector3 first_tangent_pos, last_tangent_pos;
+            Vector3 direction;
+
+            if (Projectile.Target == null) 
+            {
+                last_tangent_pos = Vector3.up;
+            }
+            else
+			{
+                direction = (Projectile.Target.position - Projectile.transform.position).normalized;
+                last_tangent_pos = last_point_pos + direction * tangent_force;
+			}
 
             //  update last tangent
-            direction = (Projectile.Target.position - Projectile.transform.position).normalized;
-            smooth_point = Vector3.Lerp(spline.GetControlPoint(spline.ControlPointCount - 2), point + direction * tangentForce, Time.fixedDeltaTime * smoothSpeed);
-            spline.SetControlPoint(spline.ControlPointCount - 2, smooth_point);
+            spline.SetControlPoint(spline.ControlPointCount - 2, Vector3.Lerp(spline.GetControlPoint(spline.ControlPointCount - 2), last_tangent_pos, Time.fixedDeltaTime * smoothSpeed));
+            #endregion
+
+            //  update tangents
+            direction = Vector3.up /*(transform.position - Projectile.Target.position).normalized*/;
+            first_tangent_pos = Vector3.Lerp(spline.GetControlPoint(1), spline.GetControlPoint(0) + direction * tangent_force, Time.fixedDeltaTime * smoothSpeed);
+            spline.SetControlPoint(1, first_tangent_pos);
         }
     }
 }
