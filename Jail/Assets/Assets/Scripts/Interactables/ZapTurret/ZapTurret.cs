@@ -20,6 +20,8 @@ namespace Jail.Interactables.ZapTurret
         GameObject projectilePrefab;
         [SerializeField]
         Transform projectileSpawnPoint;
+        [SerializeField]
+        Transform projectileStoredPoint;
 
         ZapTurretProjectile currentProjectile;
 
@@ -36,7 +38,31 @@ namespace Jail.Interactables.ZapTurret
         {
             //  detect target
             bool wasTargetDetected = hasDetectedTarget;
-            hasDetectedTarget = IsDetectingSpirit();
+
+            if (Player.instance.IsSpirit && IsDetectingTarget(Player.instance.Spirit))
+            {
+                //  priority on targeting spirit
+                hasDetectedTarget = !Player.instance.IsSpiritReturning;
+                if (!hasDetectedTarget)
+                {
+                    currentProjectile.Target = null;
+                }
+            }
+            else if (IsDetectingTarget(Player.instance.gameObject))
+            {
+                //  target the body otherwise
+                hasDetectedTarget = false;
+                if (currentProjectile.IsChasing)
+                {
+                    currentProjectile.PullToTarget();
+                }
+                return;
+            }
+            else
+            {
+                hasDetectedTarget = false;
+                currentProjectile.Target = null;
+            }
 
             if (currentProjectile != null)
             {
@@ -78,16 +104,9 @@ namespace Jail.Interactables.ZapTurret
             distToSqr = distance * distance;
         }
 
-        bool IsDetectingSpirit()
+        bool IsDetectingTarget(GameObject target)
         {
             wasRaycastPerformed = false;
-
-            //  target only on spirit mode
-            if (!Player.instance.IsSpirit || Player.instance.IsSpiritReturning) 
-                return false;
-
-            //  get target transform
-            GameObject target = Player.instance.Spirit;
 
             //  get raycast start & direction
             raycastStart = projectileSpawnPoint.position;
@@ -104,6 +123,7 @@ namespace Jail.Interactables.ZapTurret
             if (!is_hit || hit_infos.collider.gameObject != target)
                 return false;
 
+            currentProjectile.Target = target.transform;
             return true;
         }
 
@@ -118,7 +138,7 @@ namespace Jail.Interactables.ZapTurret
 
             //  setup projectile script 
             currentProjectile = projectile.GetComponent<ZapTurretProjectile>();
-            currentProjectile.IsPaused = true;
+            //currentProjectile.IsPaused = true;
 
             //  link projectile & chainer together
             chainer.Projectile = currentProjectile;
