@@ -112,7 +112,7 @@ namespace Jail.Interactables.ZapTurret
                 return false;
 
             //  check for direct eye-contact w/ Spirit
-            bool is_hit = Physics.Raycast(raycastStart, direction, out RaycastHit hit_infos, distance, mask);
+            bool is_hit = Physics.Raycast(raycastStart, direction, out RaycastHit hit_infos, distance, mask, QueryTriggerInteraction.Ignore);
             raycastHit = hit_infos.point;
             wasRaycastPerformed = true;
             if (!is_hit || hit_infos.collider.gameObject != target)
