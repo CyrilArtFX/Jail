@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 3342062860072202237}
   - component: {fileID: 1859634680273182808}
   - component: {fileID: 4479472676431123602}
+  - component: {fileID: -7575069057120417768}
+  - component: {fileID: 6272107199561045630}
   m_Layer: 0
   m_Name: GroundHoleforGrid
   m_TagString: Untagged
@@ -83,3 +85,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &-7575069057120417768
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2678151778114041159}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 600.7829, y: 50, z: 120.830345}
+  m_Center: {x: 0.3921032, y: 25, z: 239.58464}
+--- !u!65 &6272107199561045630
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2678151778114041159}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 600.35834, y: 50, z: 121.78192}
+  m_Center: {x: -0.24344921, y: 25, z: -239.10904}
