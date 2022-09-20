@@ -68,10 +68,10 @@ public class Ladder : MonoBehaviour
         }
 
         //  update collider
-        triggerToDetect.center = new Vector3(0.0f, -((float) (ladderLength) / 2) + 0.5f + 0.05f, 0.0f);
-        triggerToDetect.size = new Vector3(1.0f, (float) (ladderLength) + 0.1f, 0.5f);
-        backCollider.center = new Vector3(0.75f, -((float) (ladderLength) / 2) + 0.5f, 0.0f);
-        backCollider.size = new Vector3(0.5f, (float) (ladderLength), 1.0f);
+        triggerToDetect.center = new Vector3(triggerToDetect.center.x, -((float) (ladderLength) / 2) + 0.5f + 0.05f, triggerToDetect.center.z);
+        triggerToDetect.size = new Vector3(triggerToDetect.size.x, ladderLength + 0.1f, triggerToDetect.size.z);
+        backCollider.center = new Vector3(backCollider.center.x, -((float) ladderLength / 2) + 0.5f, backCollider.center.z);
+        backCollider.size = new Vector3(backCollider.size.x, ladderLength, backCollider.size.z);
     }
 
     private void Awake()
