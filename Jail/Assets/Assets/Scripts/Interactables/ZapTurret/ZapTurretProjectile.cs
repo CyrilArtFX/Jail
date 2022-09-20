@@ -74,8 +74,8 @@ namespace Jail.Interactables.ZapTurret
             //  setup variables
             Target = target;
             IsPulling = false;
-            IsPaused = false;
             IsChasing = true;
+            IsPaused = false;
 
             //  reset acceleration
             currentAccelerationTime = 0.0f;

@@ -29,7 +29,7 @@ namespace Jail.Interactables.ZapTurret
             spline.SetControlPoint(spline.ControlPointCount - 1, last_point_pos);
             
             #region UpdateTangents
-            Vector3 first_tangent_pos, last_tangent_pos;
+            Vector3 last_tangent_pos;
             Vector3 direction;
 
             if (Projectile.Target == null) 
@@ -42,14 +42,14 @@ namespace Jail.Interactables.ZapTurret
                 last_tangent_pos = last_point_pos + direction * tangent_force;
 			}
 
+            //  update first tangent
+            Vector3 first_tangent_pos = Vector3.Lerp(spline.GetControlPoint(1), spline.GetControlPoint(0) + Vector3.up * tangent_force, Time.fixedDeltaTime * smoothSpeed);
+            spline.SetControlPoint(1, first_tangent_pos);
+
             //  update last tangent
             spline.SetControlPoint(spline.ControlPointCount - 2, Vector3.Lerp(spline.GetControlPoint(spline.ControlPointCount - 2), last_tangent_pos, Time.fixedDeltaTime * smoothSpeed));
             #endregion
 
-            //  update tangents
-            direction = Vector3.up /*(transform.position - Projectile.Target.position).normalized*/;
-            first_tangent_pos = Vector3.Lerp(spline.GetControlPoint(1), spline.GetControlPoint(0) + direction * tangent_force, Time.fixedDeltaTime * smoothSpeed);
-            spline.SetControlPoint(1, first_tangent_pos);
         }
     }
 }
