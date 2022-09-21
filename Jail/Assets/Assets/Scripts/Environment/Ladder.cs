@@ -7,7 +7,7 @@ using Jail.Utility;
 public class Ladder : MonoBehaviour
 {
 
-    [SerializeField, Range( 1, 100 )]
+    [SerializeField, Range(1, 100)]
     int ladderLength = 1;
 
 
@@ -25,14 +25,14 @@ public class Ladder : MonoBehaviour
     [SerializeField]
     LayerMask playerMask = 0;
 
-    private bool playerDetected = false;
+    bool playerDetected = false;
 
     [SerializeField]
     GameObject backCollision = default;
     [SerializeField]
     GameObject topCollision = default;
     [SerializeField]
-    BoxCollider topDetection = default;
+    BoxCollider topDetection = default, headDetection;
 
     [MethodButton("Build Ladder")]
     public void BuildLadder()
@@ -60,51 +60,42 @@ public class Ladder : MonoBehaviour
         for (int j = i; j < children.Count; j++)
         {
             Transform child = children[j];
-            #if UNITY_EDITOR
-                DestroyImmediate(child.gameObject);
-            #else
+#if UNITY_EDITOR
+            DestroyImmediate(child.gameObject);
+#else
                 Destroy(child.gameObject);
-            #endif
+#endif
         }
 
         //  update collider
-        triggerToDetect.center = new Vector3(triggerToDetect.center.x, -((float) (ladderLength) / 2) + 0.5f + 0.05f, triggerToDetect.center.z);
+        triggerToDetect.center = new Vector3(triggerToDetect.center.x, -((float)(ladderLength) / 2) + 0.5f + 0.05f, triggerToDetect.center.z);
         triggerToDetect.size = new Vector3(triggerToDetect.size.x, ladderLength + 0.1f, triggerToDetect.size.z);
-        backCollider.center = new Vector3(backCollider.center.x, -((float) ladderLength / 2) + 0.5f, backCollider.center.z);
+        backCollider.center = new Vector3(backCollider.center.x, -((float)ladderLength / 2) + 0.5f, backCollider.center.z);
         backCollider.size = new Vector3(backCollider.size.x, ladderLength, backCollider.size.z);
     }
 
-    private void Awake()
+    void Awake()
     {
         backCollision.SetActive(false);
         topCollision.SetActive(true);
         BuildLadder();
     }
 
-    private void Update()
+    void Update()
     {
-        if (playerDetected)
-        {
-            if (Mathf.Abs(Input.GetAxis("UpDown")) > 0.2f)
-            {
-                if (Input.GetAxis("UpDown") > 0.2f)
-                {
-                    if (IsPlayerOnTop()) return;
-                    ActiveClimbable();
-                }
-                else
-                {
-                    ActiveClimbable();
-                }
-            }
-        }
-        else
+        if (!playerDetected) return;
+
+        if (IsHeadPlayerDetected() && Input.GetAxis("UpDown") >= -0.2f)
         {
             DesactiveClimbable();
         }
+        else
+        {
+            ActiveClimbable();
+        }
     }
 
-    private void ActiveClimbable()
+    void ActiveClimbable()
     {
         backCollision.SetActive(true);
         topCollision.SetActive(false);
@@ -117,7 +108,7 @@ public class Ladder : MonoBehaviour
         topCollision.SetActive(true);
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (LayerMaskUtils.HasLayer(playerMask, other.gameObject.layer))
         {
@@ -125,20 +116,32 @@ public class Ladder : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if (LayerMaskUtils.HasLayer(playerMask, other.gameObject.layer))
         {
             playerDetected = false;
+            DesactiveClimbable();
         }
     }
 
-    private bool IsPlayerOnTop()
+    bool IsPlayerOnTop()
     {
         Collider[] cols = Physics.OverlapBox(
             topDetection.transform.position + topDetection.center,
             topDetection.size / 2,
             topDetection.transform.rotation,
+            playerMask
+        );
+        return cols.Length != 0;
+    }
+
+    bool IsHeadPlayerDetected()
+    {
+        Collider[] cols = Physics.OverlapBox(
+            headDetection.transform.position + headDetection.center,
+            headDetection.size / 2,
+            headDetection.transform.rotation,
             playerMask
         );
         return cols.Length != 0;
