@@ -25,7 +25,7 @@ namespace Jail.Interactables.ZapTurret
             BezierSpline spline = splineChainer.Spline;
 
             //  update last point
-            Vector3 last_point_pos = spline.transform.InverseTransformPoint(Projectile.transform.position);
+            Vector3 last_point_pos = spline.transform.InverseTransformPoint(Projectile.ChainerPoint.position);
             spline.SetControlPoint(spline.ControlPointCount - 1, last_point_pos);
             
             #region UpdateTangents
