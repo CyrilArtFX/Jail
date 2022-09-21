@@ -5,19 +5,22 @@ namespace Jail.Interactables.ZapTurret
 {
     public class ZapTurretProjectile : MonoBehaviour
     {
-        public ZapTurretChainer Chainer { get; set; }
         public Transform Target { get; set; }
         public bool IsPulling { get; protected set; }
         public bool IsPaused { get; set; }
+        public bool IsChasing { get; set; }
+        public ZapTurret Turret { get; set; }
+        public Transform WaryPoint => waryPoint;
+        public Transform ChainerPoint => chainerPoint;
 
         Vector3 target;
 
-        [Tooltip("How the pulling movement should looks like?"), SerializeField]
+        [Header("Curves"), Tooltip("How the pulling movement should looks like?"), SerializeField]
         AnimationCurve chaseAccelerationCurve;
         [Tooltip("How the pulling movement should looks like?"), SerializeField]
         AnimationCurve pullSpeedCurve;
 
-        [Tooltip("How fast the chase movement should be?"), SerializeField]
+        [Header("Stats"), Tooltip("How fast the chase movement should be?"), SerializeField]
         float chaseSpeed = 10.0f;
         [Tooltip("How much time should it takes to be at full speed?"), SerializeField]
         float accelerationTime = 1.0f;
@@ -25,14 +28,32 @@ namespace Jail.Interactables.ZapTurret
         float pullSpeed = 15.0f;
         [Tooltip("How much time should it wait before returning to its default position after chase?"), SerializeField]
         float timeBeforeReturn = 1.0f;
+
+        [SerializeField]
+        float transformSmoothSpeed = 4.0f;
+
+        [Header("References"), SerializeField]
+        Transform model;
+        [SerializeField]
+        ZapTurretChainer chainer;
+        [SerializeField]
+        Transform waryPoint;
+        [SerializeField]
+        Transform chainerPoint;
         
         float currentAccelerationTime = 0.0f;
         float t = 0.0f;
 
         Coroutine returnCoroutine;
         
+        void Awake()
+        {
+            chainer.Projectile = this;
+        }
+
         public void PullToTarget()
         {
+            IsChasing = false;
             IsPulling = true;
             returnCoroutine = StartCoroutine(CoroutinePauseForTime(timeBeforeReturn));
         }
@@ -57,34 +78,39 @@ namespace Jail.Interactables.ZapTurret
             //  setup variables
             Target = target;
             IsPulling = false;
+            IsChasing = true;
             IsPaused = false;
 
             //  reset acceleration
             currentAccelerationTime = 0.0f;
 
             //  reset pulling variables
-            Chainer.SplineChainer.Ratio = 1.0f;
             t = 0.0f;
         }
 
         void UpdatePullingMovement()
         {
             //  update chainer
-            Chainer.SplineChainer.Ratio = 1.0f - pullSpeedCurve.Evaluate(t);
-            Chainer.SplineChainer.DoUpdate();
+            chainer.SplineChainer.Ratio = 1.0f - pullSpeedCurve.Evaluate(t);
+            chainer.SplineChainer.DoUpdate();
 
             //  increase time
-            t += Time.fixedDeltaTime * pullSpeed / Chainer.SplineChainer.Spline.Length;
+            t += Time.fixedDeltaTime * pullSpeed / chainer.SplineChainer.Spline.Length;
 
-            //  move towards target
-            target = Chainer.SplineChainer.Spline.GetPoint(Chainer.SplineChainer.Ratio);
+            //  get next target point
+            target = chainer.SplineChainer.Spline.GetPoint(chainer.SplineChainer.Ratio);
+
+            //  look at target
+            model.LookAt(target + (transform.position - target).normalized * 2.0f);
+
+            //  move to target
             transform.position = target;
 
             //  auto-pause
-            if (Chainer.SplineChainer.Ratio == 0.0f)
+            if (chainer.SplineChainer.Ratio == 0.0f || (transform.position - waryPoint.position).magnitude <= 0.5f)
             {
                 IsPulling = false;
-                IsPaused = true;
+                chainer.SplineChainer.Ratio = 1.0f;
             }
         }
 
@@ -92,25 +118,71 @@ namespace Jail.Interactables.ZapTurret
         {
             //  acceleration
             currentAccelerationTime = Mathf.Min(accelerationTime, currentAccelerationTime + Time.fixedDeltaTime);
-            
+
             //  move towards target
-            float speed = chaseSpeed * chaseAccelerationCurve.Evaluate(currentAccelerationTime / accelerationTime);
+            float acceleration_ratio = currentAccelerationTime / accelerationTime;
+            float speed = chaseSpeed * chaseAccelerationCurve.Evaluate(acceleration_ratio);
             transform.position = Vector3.MoveTowards(transform.position, Target.position, Time.fixedDeltaTime * speed);
+        
+            //  wave a bit
+            WavePosition(acceleration_ratio);
+        }
+
+        void LookAtTarget()
+        {
+            //  look at target
+            Vector3 direction = transform.forward, target_pos = chainer.transform.position;
+            if (Target != null)
+            {
+                direction = Target.position - model.position;
+                target_pos = waryPoint.position;
+            }
+            model.rotation = Quaternion.Lerp(model.rotation, Quaternion.LookRotation(direction), transformSmoothSpeed * Time.fixedDeltaTime);
+            
+            //  move to target
+            if (!IsChasing)
+            {
+                transform.position = Vector3.Lerp(transform.position, target_pos, transformSmoothSpeed * Time.fixedDeltaTime);
+                
+                if (Target != null)
+                {
+                    WavePosition(1.0f - (direction.sqrMagnitude / Turret.DistToSqr));
+                }
+            }
+        }
+
+        void WavePosition(float wave_intensity)
+        {
+            int unique_id = GetInstanceID();
+            transform.position += Mathf.Sin(unique_id + Time.time * 1.0f) * 0.1f * wave_intensity * transform.up
+                                + Mathf.Cos(unique_id + Time.time * 2.0f) * 0.05f * wave_intensity * transform.forward;
         }
 
         void FixedUpdate()
         {
-            if (IsPaused) return;
+            if (IsPaused)
+            {
+                WavePosition(0.25f);
+                return;
+            }
 
             //  update movement
             if (IsPulling)
             {
                 UpdatePullingMovement();
+                return;
             }
-            else if (Target != null)
+            
+            //  chase
+            if (Target != null)
             {
-                UpdateChase();
+                if (IsChasing)
+                {
+                    UpdateChase();
+                }
             }
+
+            LookAtTarget();
         }
 
         void OnTriggerEnter(Collider other)
@@ -119,17 +191,10 @@ namespace Jail.Interactables.ZapTurret
             if (Player.instance.IsSpiritReturning) return;
 
             //  kill spirit
-            Player.instance.GoBackToNormalForm(true);
+            Player.instance.GoBackToNormalForm();
             
             //  pull back
             PullToTarget();
-        }
-
-        void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, target);
-            Gizmos.DrawWireSphere(target, .5f);
         }
     }
 }

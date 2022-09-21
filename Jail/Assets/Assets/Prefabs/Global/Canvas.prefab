@@ -331,6 +331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuObject: {fileID: 6422776424132745966}
+  eventSystemPlus: {fileID: 3837590372592666932}
 --- !u!1 &848943656068888975
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,7 +542,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5466570465143403267}
         m_TargetAssemblyTypeName: Jail.UI.PauseMenu, Assembly-CSharp
         m_MethodName: MainMenu
         m_Mode: 1
@@ -1024,7 +1025,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5466570465143403267}
         m_TargetAssemblyTypeName: Jail.UI.PauseMenu, Assembly-CSharp
         m_MethodName: ResumeGame
         m_Mode: 1

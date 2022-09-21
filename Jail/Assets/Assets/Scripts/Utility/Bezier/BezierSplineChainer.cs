@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace Jail.Utility.Bezier
 {
@@ -29,6 +30,10 @@ namespace Jail.Utility.Bezier
 
         public void RemoveItemsAtRange(int from_id, int to_id)
         {
+            #if UNITY_EDITOR
+                if (UnityEditor.PrefabUtility.IsPartOfAnyPrefab(gameObject)) return;
+            #endif
+
             //  destroy items
             for (int j = from_id; j <= to_id; j++)
             {
@@ -42,15 +47,15 @@ namespace Jail.Utility.Bezier
                     #endif
                 }
             }
-
-            //  remove registered items
-            items.RemoveRange(from_id, items.Count - from_id);
         }
 
+        [MethodButton("Update")]
         public void DoUpdate()
         {
             if (!spline || !prefab) return;
             if (scale <= 0.0f || stepSize <= 0.0f) return;
+
+            RetrieveChildren();
 
             //  place items
             int i = 0, created_items_count = 0;
@@ -102,6 +107,12 @@ namespace Jail.Utility.Bezier
             RemoveItemsAtRange(i, items.Count - 1);
         }
 
+        void RetrieveChildren()
+        {
+            //  get children as items
+            items = transform.Cast<Transform>().ToList();
+        }
+
         public void QueueUpdate()
         {
             toUpdate = true;
@@ -127,17 +138,24 @@ namespace Jail.Utility.Bezier
             }
         }
 
+        [MethodButton("Delete Generated Items")]
         public void Reset()
         {
             SetupSpline();
+            RetrieveChildren();
             RemoveItemsAtRange(0, Items.Count - 1);
+        }
+
+        [MethodButton("Re-Generate All")]
+        public void ReGenerateAll()
+        {
+            RetrieveChildren();
+            RemoveItemsAtRange(0, Items.Count - 1);
+            DoUpdate();
         }
 
         void OnValidate()
         {
-            //  get children as items
-            items = transform.Cast<Transform>().ToList();
-
             SetupSpline();
             QueueUpdate();
         }

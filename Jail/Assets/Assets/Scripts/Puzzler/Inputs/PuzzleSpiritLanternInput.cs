@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 using Jail.LightControl;
+using Jail.Utility;
 
 namespace Jail.Puzzler.Inputs
 {
@@ -25,6 +25,7 @@ namespace Jail.Puzzler.Inputs
 
         void OnTriggerEnter(Collider other)
         {
+            if (!LayerMaskUtils.HasLayer(detectionMask, other.gameObject.layer)) return;
             if (!Player.instance.IsSpirit || Player.instance.IsSpiritReturning) return;
 
             //  trigger
