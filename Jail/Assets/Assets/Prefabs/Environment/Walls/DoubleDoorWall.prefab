@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3939534946072899338}
   - component: {fileID: 73132626346942639}
   - component: {fileID: 2803252129403655269}
+  - component: {fileID: 3220351335378990706}
   m_Layer: 0
   m_Name: DoubleDoorWall
   m_TagString: Untagged
@@ -82,3 +83,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3220351335378990706
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4460774223557293488}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 600, y: 305.16815, z: 48.219997}
+  m_Center: {x: 300, y: 447.41592, z: 24.109993}

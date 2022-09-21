@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5995322515508553352}
   - component: {fileID: 7249794318163437869}
   - component: {fileID: 4861784011142733287}
+  - component: {fileID: 8882996980468084788}
   m_Layer: 0
   m_Name: ArchRight
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8882996980468084788
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6374980223241927730}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 51.981747, y: 86.40871, z: 600}
+  m_Center: {x: 25.990385, y: 556.7946, z: -300}
