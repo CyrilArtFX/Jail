@@ -6332,10 +6332,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 248992983}
     m_Modifications:
-    - target: {fileID: 6267715215230088110, guid: 0993cf97368289049a1f88102675e6a6, type: 3}
-      propertyPath: m_Center.x
-      value: 1.1
-      objectReference: {fileID: 0}
     - target: {fileID: 6267715215844913472, guid: 0993cf97368289049a1f88102675e6a6, type: 3}
       propertyPath: m_Name
       value: Ladder
