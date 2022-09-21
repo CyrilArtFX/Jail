@@ -123,7 +123,7 @@ namespace Jail.Interactables.ZapTurret
         void LookAtTarget()
         {
             //  look at target
-            Vector3 direction = Vector3.down, target_pos = chainer.transform.position;
+            Vector3 direction = transform.forward, target_pos = chainer.transform.position;
             if (Target != null)
             {
                 direction = Target.position - model.position;
