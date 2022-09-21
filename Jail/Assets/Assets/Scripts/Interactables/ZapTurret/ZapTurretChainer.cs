@@ -19,7 +19,7 @@ namespace Jail.Interactables.ZapTurret
 
         void FixedUpdate()
         {
-            if (Projectile.IsPulling) return;
+            if (Projectile.IsPulling && !Projectile.IsPaused) return;
 
             float tangent_force = Projectile.IsChasing ? tangentForce : idleTangentForce;
             BezierSpline spline = splineChainer.Spline;
@@ -30,20 +30,19 @@ namespace Jail.Interactables.ZapTurret
             
             #region UpdateTangents
             Vector3 last_tangent_pos;
-            Vector3 direction;
 
             if (Projectile.Target == null) 
             {
-                last_tangent_pos = Vector3.up;
+                last_tangent_pos = Projectile.transform.right;
             }
             else
             {
-                direction = (Projectile.Target.position - Projectile.transform.position).normalized;
-                last_tangent_pos = last_point_pos + direction * tangent_force;
+                Vector3 direction = (Projectile.Target.position - Projectile.transform.position).normalized;
+                last_tangent_pos = last_point_pos - spline.transform.InverseTransformDirection(direction) * tangent_force;
             }
 
             //  update first tangent
-            Vector3 first_tangent_pos = Vector3.Lerp(spline.GetControlPoint(1), spline.GetControlPoint(0) + Vector3.up * tangent_force, Time.fixedDeltaTime * smoothSpeed);
+            Vector3 first_tangent_pos = Vector3.Lerp(spline.GetControlPoint(1), spline.GetControlPoint(0) + spline.transform.InverseTransformDirection(Projectile.transform.forward) * tangent_force, Time.fixedDeltaTime * smoothSpeed);
             spline.SetControlPoint(1, first_tangent_pos);
 
             //  update last tangent

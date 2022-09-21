@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Jail/Assets/Assets/Models/Interactables/DoubleDoor.meta
 guid: 056097ee6efd9774081e7778550097c7
 folderAsset: yes
+========
+guid: f7a8568bfaff45747817e384664f9ad4
+>>>>>>>> level-environment:Jail/Assets/Assets/Scenes/ScenesEnviro/Level1EnviroACopier.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

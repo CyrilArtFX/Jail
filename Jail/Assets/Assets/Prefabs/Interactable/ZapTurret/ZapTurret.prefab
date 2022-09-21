@@ -4364,10 +4364,10 @@ MonoBehaviour:
   distance: 20
   playerObstacleMask:
     serializedVersion: 2
-    m_Bits: 99585
+    m_Bits: 101633
   spiritObstacleMask:
     serializedVersion: 2
-    m_Bits: 115713
+    m_Bits: 117761
   projectileSpawnPoint: {fileID: 141279186448080309}
   currentProjectile: {fileID: 150999195891096799}
 --- !u!65 &4162891766734622259

@@ -9,6 +9,7 @@ namespace Jail.Interactables.ZapTurret
         public bool IsPulling { get; protected set; }
         public bool IsPaused { get; set; }
         public bool IsChasing { get; set; }
+        public ZapTurret Turret { get; set; }
         public Transform WaryPoint => waryPoint;
 
         Vector3 target;
@@ -114,16 +115,20 @@ namespace Jail.Interactables.ZapTurret
         {
             //  acceleration
             currentAccelerationTime = Mathf.Min(accelerationTime, currentAccelerationTime + Time.fixedDeltaTime);
-            
+
             //  move towards target
-            float speed = chaseSpeed * chaseAccelerationCurve.Evaluate(currentAccelerationTime / accelerationTime);
+            float acceleration_ratio = currentAccelerationTime / accelerationTime;
+            float speed = chaseSpeed * chaseAccelerationCurve.Evaluate(acceleration_ratio);
             transform.position = Vector3.MoveTowards(transform.position, Target.position, Time.fixedDeltaTime * speed);
+        
+            //  wave a bit
+            WavePosition(acceleration_ratio);
         }
 
         void LookAtTarget()
         {
             //  look at target
-            Vector3 direction = Vector3.down, target_pos = chainer.transform.position;
+            Vector3 direction = transform.forward, target_pos = chainer.transform.position;
             if (Target != null)
             {
                 direction = Target.position - model.position;
@@ -135,12 +140,28 @@ namespace Jail.Interactables.ZapTurret
             if (!IsChasing)
             {
                 transform.position = Vector3.Lerp(transform.position, target_pos, transformSmoothSpeed * Time.fixedDeltaTime);
+                
+                if (Target != null)
+                {
+                    WavePosition(1.0f - (direction.sqrMagnitude / Turret.DistToSqr));
+                }
             }
+        }
+
+        void WavePosition(float wave_intensity)
+        {
+            int unique_id = GetInstanceID();
+            transform.position += Mathf.Sin(unique_id + Time.time * 1.0f) * 0.1f * wave_intensity * transform.up
+                                + Mathf.Cos(unique_id + Time.time * 2.0f) * 0.05f * wave_intensity * transform.forward;
         }
 
         void FixedUpdate()
         {
-            if (IsPaused) return;
+            if (IsPaused)
+            {
+                WavePosition(0.25f);
+                return;
+            }
 
             //  update movement
             if (IsPulling)
