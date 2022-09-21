@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4007474542189235165}
   - component: {fileID: 14270872056710264}
   - component: {fileID: 2870556586693341362}
+  - component: {fileID: 6135260453933909852}
   m_Layer: 0
   m_Name: Arch2
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6135260453933909852
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4383894085164601703}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 52.98165, y: 87.06941, z: 601.2246}
+  m_Center: {x: 24.109476, y: 556.465, z: 299.9946}
