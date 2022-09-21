@@ -11,6 +11,7 @@ namespace Jail.Interactables.ZapTurret
         public bool IsChasing { get; set; }
         public ZapTurret Turret { get; set; }
         public Transform WaryPoint => waryPoint;
+        public Transform ChainerPoint => chainerPoint;
 
         Vector3 target;
 
@@ -37,6 +38,8 @@ namespace Jail.Interactables.ZapTurret
         ZapTurretChainer chainer;
         [SerializeField]
         Transform waryPoint;
+        [SerializeField]
+        Transform chainerPoint;
         
         float currentAccelerationTime = 0.0f;
         float t = 0.0f;
