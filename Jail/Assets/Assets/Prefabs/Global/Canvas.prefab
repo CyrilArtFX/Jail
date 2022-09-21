@@ -331,6 +331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuObject: {fileID: 6422776424132745966}
+  eventSystemPlus: {fileID: 3837590372592666932}
 --- !u!1 &848943656068888975
 GameObject:
   m_ObjectHideFlags: 0

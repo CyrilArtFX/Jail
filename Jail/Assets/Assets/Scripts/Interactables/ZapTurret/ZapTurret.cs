@@ -9,25 +9,22 @@ namespace Jail.Interactables.ZapTurret
         [Header("Detection"), SerializeField]
         float distance = 16.0f;
         [SerializeField]
-        LayerMask obstacleMask;
+        LayerMask playerObstacleMask, spiritObstacleMask;
 
         bool hasDetectedTarget = false;
         bool wasRaycastPerformed = false;
         Vector3 raycastStart, raycastHit;
         float distToSqr;
 
-        [Header("Projectile"), SerializeField]
-        GameObject projectilePrefab;
+        [Header("Projectile")]
         [SerializeField]
         Transform projectileSpawnPoint;
 
+        [SerializeField]
         ZapTurretProjectile currentProjectile;
 
         void Start()
         {
-            //  spawn a paused projectile
-            SpawnProjectile();
-
             //  compute square of distance
             distToSqr = distance * distance;
         }
@@ -36,7 +33,31 @@ namespace Jail.Interactables.ZapTurret
         {
             //  detect target
             bool wasTargetDetected = hasDetectedTarget;
-            hasDetectedTarget = IsDetectingSpirit();
+
+            if (Player.instance.IsSpirit && !Player.instance.IsSpiritReturning && IsDetectingTarget(Player.instance.Spirit, spiritObstacleMask))
+            {
+                //  priority on targeting spirit
+                hasDetectedTarget = true;
+            }
+            else if (IsDetectingTarget(Player.instance.gameObject, playerObstacleMask))
+            {
+                //  target the body otherwise
+                hasDetectedTarget = false;
+
+                //  turn back if was chasing the spirit
+                if (currentProjectile.IsChasing)
+                {
+                    currentProjectile.PullToTarget();
+                }
+
+                //  don't target the body
+                return;
+            }
+            else
+            {
+                hasDetectedTarget = false;
+                currentProjectile.Target = null;
+            }
 
             if (currentProjectile != null)
             {
@@ -78,19 +99,12 @@ namespace Jail.Interactables.ZapTurret
             distToSqr = distance * distance;
         }
 
-        bool IsDetectingSpirit()
+        bool IsDetectingTarget(GameObject target, LayerMask mask)
         {
             wasRaycastPerformed = false;
 
-            //  target only on spirit mode
-            if (!Player.instance.IsSpirit || Player.instance.IsSpiritReturning) 
-                return false;
-
-            //  get target transform
-            GameObject target = Player.instance.Spirit;
-
             //  get raycast start & direction
-            raycastStart = projectileSpawnPoint.position;
+            raycastStart = currentProjectile.Target != null ? currentProjectile.WaryPoint.position : projectileSpawnPoint.transform.position;
             Vector3 direction = target.transform.position - raycastStart;
 
             //  check for distance
@@ -98,31 +112,14 @@ namespace Jail.Interactables.ZapTurret
                 return false;
 
             //  check for direct eye-contact w/ Spirit
-            bool is_hit = Physics.Raycast(raycastStart, direction, out RaycastHit hit_infos, distance, obstacleMask, QueryTriggerInteraction.Ignore);
+            bool is_hit = Physics.Raycast(raycastStart, direction, out RaycastHit hit_infos, distance, mask, QueryTriggerInteraction.Ignore);
             raycastHit = hit_infos.point;
             wasRaycastPerformed = true;
             if (!is_hit || hit_infos.collider.gameObject != target)
                 return false;
 
+            currentProjectile.Target = target.transform;
             return true;
-        }
-
-        void SpawnProjectile()
-        {
-            //  spawn projectile
-            GameObject projectile = Instantiate(projectilePrefab);
-            projectile.transform.position = projectileSpawnPoint.position;
-
-            //  get chainer
-            ZapTurretChainer chainer = projectileSpawnPoint.GetComponent<ZapTurretChainer>();
-
-            //  setup projectile script 
-            currentProjectile = projectile.GetComponent<ZapTurretProjectile>();
-            currentProjectile.IsPaused = true;
-
-            //  link projectile & chainer together
-            chainer.Projectile = currentProjectile;
-            currentProjectile.Chainer = chainer; 
         }
     }
 }
