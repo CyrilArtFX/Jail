@@ -193,12 +193,5 @@ namespace Jail.Interactables.ZapTurret
             //  pull back
             PullToTarget();
         }
-
-        void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, target);
-            Gizmos.DrawWireSphere(target, .5f);
-        }
     }
 }
