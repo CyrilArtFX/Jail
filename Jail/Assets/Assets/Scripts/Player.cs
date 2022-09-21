@@ -803,8 +803,6 @@ namespace Jail
             disableCommands = true;
             animator.SetTrigger("ActivateSpirit");
             yield return new WaitForSeconds(0.1f);
-            int activate_spirit_anim_id = animator.GetCurrentAnimatorClipInfo(0)[0].clip.GetInstanceID();
-            yield return new WaitUntil(() => animator.GetCurrentAnimatorClipInfo(0)[0].clip.GetInstanceID() != activate_spirit_anim_id);
             disableCommands = false;
 
             spirit = true;
