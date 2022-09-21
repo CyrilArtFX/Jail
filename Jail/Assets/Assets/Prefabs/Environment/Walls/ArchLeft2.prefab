@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 874717468095907877}
   - component: {fileID: 4290880902426298240}
   - component: {fileID: 2047082000077058890}
+  - component: {fileID: 7637939291615143758}
   m_Layer: 0
   m_Name: ArchLeft2
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7637939291615143758
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533762642123149983}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 52.307724, y: 88.736534, z: 600.7009}
+  m_Center: {x: 23.771894, y: 555.6308, z: 299.68176}
