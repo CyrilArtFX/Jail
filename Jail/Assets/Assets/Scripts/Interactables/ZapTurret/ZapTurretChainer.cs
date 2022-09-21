@@ -19,7 +19,7 @@ namespace Jail.Interactables.ZapTurret
 
         void FixedUpdate()
         {
-            if (Projectile.IsPulling) return;
+            if (Projectile.IsPulling && !Projectile.IsPaused) return;
 
             float tangent_force = Projectile.IsChasing ? tangentForce : idleTangentForce;
             BezierSpline spline = splineChainer.Spline;

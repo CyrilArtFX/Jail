@@ -4,6 +4,7 @@ namespace Jail.Interactables.ZapTurret
 {
     public class ZapTurret : MonoBehaviour
     {
+        public float DistToSqr => distToSqr;
         public bool HasDetectedTarget => hasDetectedTarget;
 
         [Header("Detection"), SerializeField]
@@ -25,6 +26,8 @@ namespace Jail.Interactables.ZapTurret
 
         void Start()
         {
+            currentProjectile.Turret = this;
+
             //  compute square of distance
             distToSqr = distance * distance;
         }
