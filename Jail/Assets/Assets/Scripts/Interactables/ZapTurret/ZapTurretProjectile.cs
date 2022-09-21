@@ -167,7 +167,7 @@ namespace Jail.Interactables.ZapTurret
             if (Player.instance.IsSpiritReturning) return;
 
             //  kill spirit
-            Player.instance.GoBackToNormalForm(true);
+            Player.instance.GoBackToNormalForm();
             
             //  pull back
             PullToTarget();

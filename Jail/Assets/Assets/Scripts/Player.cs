@@ -18,7 +18,7 @@ namespace Jail
         }
 
         public GameObject Spirit => spiritObject;
-        public bool IsSpiritReturning => spiritReturning || spiritDissolving;
+        public bool IsSpiritReturning => spiritReturning;
 
         [Header("Solid Body")]
         [SerializeField]
@@ -29,10 +29,6 @@ namespace Jail
         GameObject spiritObject = default;
         [SerializeField]
         Transform spiritModelFlip = default;
-        [SerializeField]
-        DissolveObject spiritDissolve = default;
-        [SerializeField]
-        ParticleSystem spiritParticles = default;
 
         [Header("Parameters")]
         [SerializeField, Range(0.0f, 100.0f)]
@@ -92,7 +88,7 @@ namespace Jail
 
         public bool IsSpirit => spirit;
 
-        bool spirit = false, spiritReturning = false, spiritDissolving = false, spiritDisabled = false;
+        bool spirit = false, spiritReturning = false, spiritDisabled = false;
         float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
         int stepsSinceLastGrounded, stepsSinceLastJump, stepsSinceLastClimbRequest;
         Vector3 connectionWorldPosition, connectionLocalPosition;
@@ -214,9 +210,6 @@ namespace Jail
                 {
                     spiritCollider.isTrigger = false;
                     spiritReturning = false;
-
-                    spiritDissolve.ForceNoDissolve();
-
                     spiritObject.SetActive(false);
                     spirit = false;
 
@@ -348,7 +341,7 @@ namespace Jail
                 if (desireNormal)
                 {
                     desireNormal = false;
-                    GoBackToNormalForm(false);
+                    GoBackToNormalForm();
                 }
             }
 
@@ -755,19 +748,9 @@ namespace Jail
             StartCoroutine(AnimTurnToSpirit());
         }
 
-        public void GoBackToNormalForm(bool spiritDead)
+        public void GoBackToNormalForm()
         {
-            spiritParticles.Stop();
-
-            if (spiritDead)
-            {
-                spiritDissolving = true;
-                spiritDissolve.Dissolve();
-            }
-            else
-            {
-                ReturnToBody(false);
-            }
+            ReturnToBody(false);
         }
 
         public void ReturnToBody(bool instant)
@@ -781,13 +764,10 @@ namespace Jail
                 timeForSpiritToReturn = distanceSpiritBody / spiritReturningAverageSpeed;
                 timeSinceSpiritReturningStart = 0.0f;
 
-                spiritDissolving = false;
                 spiritReturning = true;
             }
             else
             {
-                spiritDissolve.ForceNoDissolve();
-
                 spiritObject.SetActive(false);
                 spirit = false;
 
@@ -821,7 +801,6 @@ namespace Jail
             spiritObject.SetActive(true);
             spiritObject.transform.localPosition = Vector3.zero;
             spiritObject.transform.localRotation = transform.rotation;
-            spiritParticles.Play();
         }
 
         public Transform FocusPoint()
