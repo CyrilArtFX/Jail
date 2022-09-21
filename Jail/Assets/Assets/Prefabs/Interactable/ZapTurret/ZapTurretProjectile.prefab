@@ -127,8 +127,10 @@ MonoBehaviour:
   accelerationTime: 1
   pullSpeed: 15
   timeBeforeReturn: 1
-  rotationSpeed: 4
+  transformSmoothSpeed: 4
   model: {fileID: 1556778308567054854}
+  chainer: {fileID: 0}
+  waryPoint: {fileID: 0}
 --- !u!1 &1309835911496413791
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,10 +225,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -264430861247414160, guid: b8b6e5aebb9b5384080c65f9819f5a59, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f2c270c6e6f3c20419c0ad3b5bfecadb, type: 2}
     - target: {fileID: 919132149155446097, guid: b8b6e5aebb9b5384080c65f9819f5a59, type: 3}
       propertyPath: m_Name
       value: ZapProjectile
       objectReference: {fileID: 0}
+    - target: {fileID: 4899486392329470165, guid: b8b6e5aebb9b5384080c65f9819f5a59, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f2c270c6e6f3c20419c0ad3b5bfecadb, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8b6e5aebb9b5384080c65f9819f5a59, type: 3}
 --- !u!4 &7237121887338778265 stripped
