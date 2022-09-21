@@ -11,6 +11,7 @@ namespace Jail
     {
         enum CrateAction
         {
+            Grab,
             Pushing,
             Pulling,
             None
@@ -188,10 +189,21 @@ namespace Jail
 
 
             animator.SetFloat("Speed", Mathf.Abs(body.velocity.z));
-            animator.SetBool("Pushing", crateAction == CrateAction.Pushing);
+            animator.SetBool("Pushing", crateAction == CrateAction.Pushing || crateAction == CrateAction.Grab);
             animator.SetBool("Pulling", crateAction == CrateAction.Pulling);
             animator.SetBool("Falling", !Climbing && !OnGround && body.velocity.y < -0.1f);
             animator.SetBool("Climbing", Climbing);
+
+            float anim_speed = 1.0f;
+            if (Climbing)
+            {
+                anim_speed = Mathf.Abs(body.velocity.y) / 4.0f;
+            }
+            else if (crateAction != CrateAction.None)
+            {
+                anim_speed = Mathf.Abs(body.velocity.z) / 6.0f;
+            }
+            animator.speed = anim_speed;
 
 
             if (spiritReturning)
@@ -462,7 +474,7 @@ namespace Jail
             {
                 if (Mathf.Abs(body.velocity.z) < 0.01f)
                 {
-                    crateAction = CrateAction.None;
+                    crateAction = CrateAction.Grab;
                 }
                 else
                 {
