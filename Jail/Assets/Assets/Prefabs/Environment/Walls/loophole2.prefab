@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 5010652004232136683}
   - component: {fileID: 8225458470406850638}
   - component: {fileID: 6179578260540947588}
+  - component: {fileID: 4685251223466719201}
   m_Layer: 0
-  m_Name: Loophole2
+  m_Name: loophole2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4685251223466719201
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5675302851625835857}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 49.639084, y: 600, z: 600.20715}
+  m_Center: {x: 24.819542, y: 300, z: 299.9999}
