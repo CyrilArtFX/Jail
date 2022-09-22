@@ -7,6 +7,7 @@ namespace Jail.Interactables.ZapTurret
     public class ZapTurretChainer : MonoBehaviour
     {
         public ZapTurretProjectile Projectile { get; set; }
+        public Vector3 Target { get; set; }
         public BezierSplineChainer SplineChainer => splineChainer;
 
         [SerializeField]
@@ -37,7 +38,7 @@ namespace Jail.Interactables.ZapTurret
             }
             else
             {
-                Vector3 direction = (Projectile.Target.position - Projectile.transform.position).normalized;
+                Vector3 direction = (Target - Projectile.transform.position).normalized;
                 last_tangent_pos = last_point_pos - spline.transform.InverseTransformDirection(direction) * tangent_force;
             }
 
