@@ -132,7 +132,7 @@ namespace Jail.Interactables.ZapTurret
             }
 
             //  get raycast start & direction
-            raycastStart = currentProjectile.Target != null ? currentProjectile.WaryPoint.position : projectileSpawnPoint.transform.position;
+            raycastStart = currentProjectile.WaryPoint.position;
             Vector3 direction = target_point.position - raycastStart;
 
             //  check for distance
