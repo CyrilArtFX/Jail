@@ -73,6 +73,7 @@ namespace Jail.Interactables.ZapTurret
         void Awake()
         {
             chainer.Projectile = this;
+            light.TurnLightOff();
         }
 
         public void PullToTarget()

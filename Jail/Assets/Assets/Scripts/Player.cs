@@ -17,6 +17,7 @@ namespace Jail
             None
         }
 
+        public Transform HeadPoint => headPoint;
         public GameObject Spirit => spiritObject;
         public bool IsSpiritReturning => spiritReturning;
 
@@ -55,6 +56,8 @@ namespace Jail
         bool maintainButtonForClimb = false;
         [SerializeField]
         Transform camFocus = default;
+        [SerializeField]
+        Transform headPoint;
 
         Rigidbody body, connectedBody, previousConnectedBody;
         Animator animator;
