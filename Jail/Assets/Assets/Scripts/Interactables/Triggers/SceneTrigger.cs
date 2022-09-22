@@ -9,8 +9,6 @@ namespace Jail.Interactables.Triggers
     {
         [Header("Scene"), Scene, SerializeField]
         string sceneName;
-        [SerializeField]
-        bool useBlackFade = true;
 
         protected override void Awake()
         {
@@ -23,21 +21,8 @@ namespace Jail.Interactables.Triggers
         {
             if (is_enter)
             {
-                if (useBlackFade)
-                {
-                    BlackFade.instance.eventEndOfFadeIn.AddListener(Switch);
-                    BlackFade.instance.StartFade(FadeType.BothFadesWithRestore);
-                }
-                else
-                {
-                    Switch();
-                }
+                SceneSwitcher.SwitchScene(sceneName);
             }
-        }
-
-        void Switch()
-        {
-            SceneSwitcher.SwitchScene(sceneName);
         }
     }
 }
