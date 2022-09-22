@@ -12,6 +12,9 @@ namespace Jail.Puzzler.Inputs
         [SerializeField]
         TwoStatesAnim statesAnim;
 
+        public AudioSource source;
+        public AudioClip clip;
+
         void Update()
         {
             if (!isPlayerInFront) return;
@@ -23,6 +26,7 @@ namespace Jail.Puzzler.Inputs
             {
                 IsRawTriggered = !IsRawTriggered;
                 Player.instance.AnimTriggerLever();
+                source.PlayOneShot(clip);
             }
         }
 
@@ -46,6 +50,7 @@ namespace Jail.Puzzler.Inputs
                 return;
 
             isPlayerInFront = false;
+            
         }
     }
 }
