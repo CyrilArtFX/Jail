@@ -69,7 +69,7 @@ namespace Jail
 
                 case FadeStates.FadeIn:
 
-                    timeSinceBlackFadeStarted += Time.deltaTime;
+                    timeSinceBlackFadeStarted += Time.unscaledDeltaTime;
                     if (timeSinceBlackFadeStarted >= blackFadeHalfTime)
                     {
                         timeSinceBlackFadeStarted = 0.0f; 
@@ -97,7 +97,7 @@ namespace Jail
 
                 case FadeStates.StayBlack:
 
-                    timeSinceBlackFadeStarted += Time.deltaTime;
+                    timeSinceBlackFadeStarted += Time.unscaledDeltaTime;
                     if (timeSinceBlackFadeStarted >= fullBlackTime)
                     {
                         timeSinceBlackFadeStarted = 0.0f;
@@ -108,7 +108,7 @@ namespace Jail
 
                 case FadeStates.FadeOut:
 
-                    timeSinceBlackFadeStarted += Time.deltaTime;
+                    timeSinceBlackFadeStarted += Time.unscaledDeltaTime;
                     if (timeSinceBlackFadeStarted >= blackFadeHalfTime)
                     {
                         timeSinceBlackFadeStarted = 0.0f;

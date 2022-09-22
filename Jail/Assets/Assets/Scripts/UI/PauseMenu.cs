@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Jail.Utility;
+using UnityEngine.Rendering;
 
 namespace Jail.UI
 {
@@ -10,10 +11,13 @@ namespace Jail.UI
         GameObject pauseMenuObject;
         [SerializeField]
         EventSystemPlus eventSystemPlus;
+		[SerializeField]
+        Volume volume;
 
         bool pause;
+        bool isInputDisabled = false;
 
-        private void Awake()
+        void Awake()
         {
             pauseMenuObject.SetActive(false);
             pause = false;
@@ -22,6 +26,8 @@ namespace Jail.UI
 
         void Update()
         {
+            volume.weight = Mathf.Lerp(volume.weight, pause ? 1.0f : 0.0f, Time.unscaledDeltaTime * 3.0f);
+
             //  get input
             bool is_pausing = false, is_controller = false;
             if (Input.GetButtonDown("PauseKeyboard"))
@@ -64,22 +70,30 @@ namespace Jail.UI
 
         public void ResumeGame()
         {
+            if (isInputDisabled) return;
+
             StartCoroutine(TimedResumeGame());
+            isInputDisabled = true;
         }
 
         IEnumerator TimedResumeGame()
         {
             yield return new WaitForSecondsRealtime(0.0f);
             pauseMenuObject.SetActive(false);
-            pause = false;
             eventSystemPlus.ForceNoControllerMode();
             Player.instance.disableCommands = false;
             Time.timeScale = 1.0f;
+
+            pause = false;
+            isInputDisabled = false;
         }
 
         public void MainMenu()
         {
+            if (isInputDisabled) return;
+
             SceneSwitcher.SwitchScene("MainMenu");
+            isInputDisabled = true;
         }
     }
 }
