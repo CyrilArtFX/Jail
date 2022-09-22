@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Jail/Assets/Assets/Scenes/ScenesEnviro/Level1LDReadyWithCameras.unity.meta
 guid: c3b61ad00ac2dcd45b5a4d128e836e0e
+========
+guid: f230bc3372deac34da56bea61879378a
+>>>>>>>> level-environment:Jail/Assets/Assets/Scenes/ScenesEnviro/Level2Merge Maxime.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
