@@ -5205,8 +5205,6 @@ MonoBehaviour:
   modelFlip: {fileID: 2883546376665707033}
   spiritObject: {fileID: 2336433481901585766}
   spiritModelFlip: {fileID: 76176138646387934}
-  spiritDissolve: {fileID: 1719727978493690196}
-  spiritParticles: {fileID: 2981363657628824347}
   maxSpeed: 7
   maxClimbSpeed: 4
   maxSpiritSpeed: 8
@@ -5240,6 +5238,7 @@ MonoBehaviour:
   modelFlipSpeed: 1080
   maintainButtonForClimb: 0
   camFocus: {fileID: 5002237398831701227}
+  headPoint: {fileID: 0}
   coyoteTime: 0.1
   gravityModifier: 4
   noFrictionPM: {fileID: 13400000, guid: 7b5396db04d5bb741bcf3cdb834069c9, type: 2}
@@ -5333,6 +5332,7 @@ GameObject:
   - component: {fileID: 8967777679023702173}
   - component: {fileID: 5473445483860539836}
   - component: {fileID: 9024151206034432315}
+  - component: {fileID: 1096368225230139347}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5347,8 +5347,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8587793193187989228}
-  m_LocalRotation: {x: 0.0605435, y: 0.7166025, z: -0.06269463, w: 0.69201505}
-  m_LocalPosition: {x: -3, y: 64.5, z: 106.75}
+  m_LocalRotation: {x: 0.060543492, y: 0.7166025, z: -0.06269463, w: 0.692015}
+  m_LocalPosition: {x: -6.499963, y: -49.751125, z: -352.01813}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5002237398831701227}
@@ -5439,6 +5439,38 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1096368225230139347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8587793193187989228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &8742648992558764197
 GameObject:
   m_ObjectHideFlags: 0
