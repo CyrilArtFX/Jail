@@ -29,7 +29,6 @@ namespace Jail.UI
             }
 
             currentButtonID = id;
-            print("button " + id + " " + CurrentButton);
             CurrentButton.IsHovered = true;
         }
     }

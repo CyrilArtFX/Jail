@@ -143,7 +143,6 @@ namespace Jail.UI
                 if (axis != 0.0f)
                 {
                     isMouseControlled = false;
-                    print("controller! " + axis);
                 }
             }
             else
@@ -155,7 +154,6 @@ namespace Jail.UI
                 if (lastMousePos != Vector3.zero && mouse_delta.sqrMagnitude > 0)
                 {
                     isMouseControlled = true;
-                    print("mouse! " + mouse_delta.sqrMagnitude);
                 }
                 
                 lastMousePos = mouse_pos;
