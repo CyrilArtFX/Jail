@@ -17,6 +17,10 @@ namespace Jail.Puzzler.Inputs
         int activeCollidersCount = 0;
         Coroutine oldExitCoroutine;
 
+        public AudioSource source;
+        public AudioClip clipOn;
+        public AudioClip clipOff;
+
         void OnTriggerEnter(Collider other)
         {
             
@@ -34,7 +38,7 @@ namespace Jail.Puzzler.Inputs
             {
                 StopCoroutine(oldExitCoroutine);
 
-                //Play Sound IN
+                source.PlayOneShot(clipOn);
             }
         }
 
@@ -53,8 +57,8 @@ namespace Jail.Puzzler.Inputs
             if ((--activeCollidersCount) == 0)
             {
                 oldExitCoroutine = StartCoroutine(CoroutineExitTrigger());
-                
-                //Play Sound OUT
+
+                source.PlayOneShot(clipOff);
             }
         }
 
