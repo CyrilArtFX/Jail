@@ -12,7 +12,7 @@ namespace Jail.Environment.Glyphs
             renderer = GetComponent<MeshRenderer>();
         }
 
-        public override void ApplyColor(Color color)
+        public override void ApplyColor(Color color, int priority = -1)
         {
             renderer.material.color = color;
         }

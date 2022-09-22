@@ -86,9 +86,9 @@ namespace Jail.Environment.Glyphs
             }
 
             //  apply color
-            ApplyColor(smoothPriorityColor);
+            ApplyColor(smoothPriorityColor, priority_id);
         }
 
-        public virtual void ApplyColor(Color color) {}
+        public virtual void ApplyColor(Color color, int priority = -1) {}
     }
 }

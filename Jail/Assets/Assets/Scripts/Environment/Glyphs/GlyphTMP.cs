@@ -13,7 +13,7 @@ namespace Jail.Environment.Glyphs
             textMesh = GetComponent<TMPro.TextMeshPro>();    
         }
 
-        public override void ApplyColor(Color color)
+        public override void ApplyColor(Color color, int priority = -1)
         {
             textMesh.color = color;
         }
