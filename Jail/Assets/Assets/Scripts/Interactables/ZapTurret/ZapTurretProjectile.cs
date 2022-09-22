@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿using Jail.LightControl;
+using System.Collections;
 using UnityEngine;
 
 namespace Jail.Interactables.ZapTurret
 {
     public class ZapTurretProjectile : MonoBehaviour
     {
-        public Transform Target { get; set; }
         public bool IsPulling { get; protected set; }
         public bool IsPaused { get; set; }
         public bool IsChasing { get; set; }
@@ -13,7 +13,25 @@ namespace Jail.Interactables.ZapTurret
         public Transform WaryPoint => waryPoint;
         public Transform ChainerPoint => chainerPoint;
 
-        Vector3 target;
+        public Transform Target { 
+            get => target; 
+            set {
+                if (target == value) return;
+
+                target = value;
+                
+                //  fade light
+                if (target == null)
+                {
+                    light.FadeOut();
+                }
+                else
+                {
+                    light.FadeIn();
+                }
+            }
+        }
+        Transform target;
 
         [Header("Curves"), Tooltip("How the pulling movement should looks like?"), SerializeField]
         AnimationCurve chaseAccelerationCurve;
@@ -40,7 +58,9 @@ namespace Jail.Interactables.ZapTurret
         Transform waryPoint;
         [SerializeField]
         Transform chainerPoint;
-        
+        [SerializeField]
+        new LightController light;
+
         float currentAccelerationTime = 0.0f;
         float t = 0.0f;
 
@@ -98,13 +118,13 @@ namespace Jail.Interactables.ZapTurret
             t += Time.fixedDeltaTime * pullSpeed / chainer.SplineChainer.Spline.Length;
 
             //  get next target point
-            target = chainer.SplineChainer.Spline.GetPoint(chainer.SplineChainer.Ratio);
+            Vector3 target_pos = chainer.SplineChainer.Spline.GetPoint(chainer.SplineChainer.Ratio);
 
             //  look at target
-            model.LookAt(target + (transform.position - target).normalized * 2.0f);
+            model.LookAt(target_pos + (transform.position - target_pos).normalized * 2.0f);
 
             //  move to target
-            transform.position = target;
+            transform.position = target_pos;
 
             //  auto-pause
             if (chainer.SplineChainer.Ratio == 0.0f || (transform.position - waryPoint.position).magnitude <= 0.5f)
