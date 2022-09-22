@@ -92,6 +92,7 @@ namespace Jail.UI
         {
             if (isInputDisabled) return;
 
+            Time.timeScale = 1.0f;
             SceneSwitcher.SwitchScene("MainMenu");
             isInputDisabled = true;
         }
