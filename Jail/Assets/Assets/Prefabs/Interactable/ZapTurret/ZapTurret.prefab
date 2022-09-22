@@ -168,7 +168,7 @@ MonoBehaviour:
   distance: 20
   playerObstacleMask:
     serializedVersion: 2
-    m_Bits: 101633
+    m_Bits: 68865
   spiritObstacleMask:
     serializedVersion: 2
     m_Bits: 117761
