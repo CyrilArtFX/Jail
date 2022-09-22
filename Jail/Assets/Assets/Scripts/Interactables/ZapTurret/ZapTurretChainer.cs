@@ -21,7 +21,7 @@ namespace Jail.Interactables.ZapTurret
         {
             if (Projectile.IsPulling && !Projectile.IsPaused) return;
 
-            float tangent_force = Projectile.IsChasing ? tangentForce : idleTangentForce;
+            float tangent_force = Projectile.Target != null ? (Projectile.IsChasing ? tangentForce : idleTangentForce) : 0;
             BezierSpline spline = splineChainer.Spline;
 
             //  update last point
@@ -33,7 +33,7 @@ namespace Jail.Interactables.ZapTurret
 
             if (Projectile.Target == null) 
             {
-                last_tangent_pos = Projectile.transform.right;
+                last_tangent_pos = Vector3.zero;
             }
             else
             {
