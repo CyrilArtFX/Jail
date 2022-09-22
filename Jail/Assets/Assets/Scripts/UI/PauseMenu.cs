@@ -26,7 +26,7 @@ namespace Jail.UI
 
         void Update()
         {
-            volume.weight = Mathf.Lerp(volume.weight, pause ? 1.0f : 0.0f, Time.unscaledDeltaTime * 3.0f);
+            volume.weight = Mathf.Lerp(volume.weight, pause ? 1.0f : 0.0f, Time.unscaledDeltaTime * 7.0f);
 
             //  get input
             bool is_pausing = false, is_controller = false;
