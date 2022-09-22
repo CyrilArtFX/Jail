@@ -20,6 +20,8 @@ namespace Jail.Interactables.ZapTurret
         [Header("Projectile")]
         [SerializeField]
         Transform projectileSpawnPoint;
+        [SerializeField]
+        Animator animator;
 
         [SerializeField]
         ZapTurretProjectile currentProjectile;
@@ -37,6 +39,8 @@ namespace Jail.Interactables.ZapTurret
             //  detect target
             bool wasTargetDetected = hasDetectedTarget;
 
+            //  detect targets
+            bool can_act = true;
             if (Player.instance.IsSpirit && !Player.instance.IsSpiritReturning && IsDetectingTarget(Player.instance.Spirit, spiritObstacleMask))
             {
                 //  priority on targeting spirit
@@ -54,7 +58,7 @@ namespace Jail.Interactables.ZapTurret
                 }
 
                 //  don't target the body
-                return;
+                can_act = false;
             }
             else
             {
@@ -62,7 +66,22 @@ namespace Jail.Interactables.ZapTurret
                 currentProjectile.Target = null;
             }
 
-            if (currentProjectile != null)
+            //  get anim target speed
+            float anim_target_speed = .33f;
+            if (currentProjectile.Target == Player.instance.Spirit.transform)
+            {
+                anim_target_speed = 2.22f;
+            }
+            else if (currentProjectile.Target != null)
+            {
+                anim_target_speed = 1.0f;
+            }
+
+            //  animation speed
+            float anim_speed = Mathf.Lerp(animator.GetFloat("IdleSpeed"), anim_target_speed, Time.fixedDeltaTime * 10.0f);
+            animator.SetFloat("IdleSpeed", anim_speed);
+
+            if (can_act)
             {
                 //  chase spirit if not pulling
                 if (!wasTargetDetected && hasDetectedTarget)
