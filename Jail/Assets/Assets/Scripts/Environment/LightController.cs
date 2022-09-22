@@ -50,7 +50,7 @@ namespace Jail.LightControl
                     }
                     else
                     {
-                        lightToControl.intensity = timeSinceFadeStarted / fadeTime;
+                        lightToControl.intensity = timeSinceFadeStarted / fadeTime * maxIntensity;
                     }
 
                     break;
@@ -66,7 +66,7 @@ namespace Jail.LightControl
                     }
                     else
                     {
-                        lightToControl.intensity = 1.0f - timeSinceFadeStarted / fadeTime;
+                        lightToControl.intensity = (1.0f - timeSinceFadeStarted / fadeTime) * maxIntensity;
                     }
 
                     break;

@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Assets/Scenes/ProjectScenes/OptionsMenu.unity
     guid: 98935ca47e2bbea4e8001485c3f722e0
+  - enabled: 1
+    path: Assets/Assets/Scenes/ScenesEnviro/Level1LDReady.unity
+    guid: ee13b6997a1190542a575008a224c6cf
+  - enabled: 1
+    path: Assets/Assets/Scenes/ScenesEnviro/OLD Level 2 Scenes/Level2LDReady.unity
+    guid: 9e393a84dcf3b11488afe0ddbc17f75c
   m_configObjects: {}

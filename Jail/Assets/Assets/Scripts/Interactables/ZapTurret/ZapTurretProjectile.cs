@@ -1,23 +1,44 @@
-﻿using System.Collections;
+﻿using Jail.LightControl;
+using System.Collections;
 using UnityEngine;
 
 namespace Jail.Interactables.ZapTurret
 {
     public class ZapTurretProjectile : MonoBehaviour
     {
-        public Transform Target { get; set; }
         public bool IsPulling { get; protected set; }
         public bool IsPaused { get; set; }
         public bool IsChasing { get; set; }
         public ZapTurret Turret { get; set; }
         public Transform WaryPoint => waryPoint;
+        public Transform ChainerPoint => chainerPoint;
 
-        Vector3 target;
+        public Transform Target { 
+            get => target; 
+            set {
+                if (target == value) return;
+
+                target = value;
+                
+                //  fade light
+                if (target == null)
+                {
+                    light.FadeOut();
+                }
+                else
+                {
+                    light.FadeIn();
+                }
+            }
+        }
+        Transform target;
 
         [Header("Curves"), Tooltip("How the pulling movement should looks like?"), SerializeField]
         AnimationCurve chaseAccelerationCurve;
         [Tooltip("How the pulling movement should looks like?"), SerializeField]
         AnimationCurve pullSpeedCurve;
+        [Tooltip("How intense the wave animation should perform over distance on the target?"), SerializeField]
+        AnimationCurve waveIntensityCurve;
 
         [Header("Stats"), Tooltip("How fast the chase movement should be?"), SerializeField]
         float chaseSpeed = 10.0f;
@@ -37,7 +58,13 @@ namespace Jail.Interactables.ZapTurret
         ZapTurretChainer chainer;
         [SerializeField]
         Transform waryPoint;
-        
+        [SerializeField]
+        Transform chainerPoint;
+        [SerializeField]
+        new LightController light;
+
+        Vector3 pausePos;
+
         float currentAccelerationTime = 0.0f;
         float t = 0.0f;
 
@@ -46,6 +73,7 @@ namespace Jail.Interactables.ZapTurret
         void Awake()
         {
             chainer.Projectile = this;
+            light.TurnLightOff();
         }
 
         public void PullToTarget()
@@ -57,6 +85,7 @@ namespace Jail.Interactables.ZapTurret
 
         IEnumerator CoroutinePauseForTime(float time)
         {
+            pausePos = transform.position;
             IsPaused = true;
 
             yield return new WaitForSeconds(time);
@@ -82,7 +111,7 @@ namespace Jail.Interactables.ZapTurret
             currentAccelerationTime = 0.0f;
 
             //  reset pulling variables
-            t = 0.0f;
+            t = 0.35f;
         }
 
         void UpdatePullingMovement()
@@ -95,13 +124,13 @@ namespace Jail.Interactables.ZapTurret
             t += Time.fixedDeltaTime * pullSpeed / chainer.SplineChainer.Spline.Length;
 
             //  get next target point
-            target = chainer.SplineChainer.Spline.GetPoint(chainer.SplineChainer.Ratio);
+            Vector3 target_pos = chainer.SplineChainer.Spline.GetPoint(chainer.SplineChainer.Ratio);
 
             //  look at target
-            model.LookAt(target + (transform.position - target).normalized * 2.0f);
+            model.LookAt(target_pos + (transform.position - target_pos).normalized * 2.0f);
 
             //  move to target
-            transform.position = target;
+            transform.position = target_pos;
 
             //  auto-pause
             if (chainer.SplineChainer.Ratio == 0.0f || (transform.position - waryPoint.position).magnitude <= 0.5f)
@@ -120,9 +149,6 @@ namespace Jail.Interactables.ZapTurret
             float acceleration_ratio = currentAccelerationTime / accelerationTime;
             float speed = chaseSpeed * chaseAccelerationCurve.Evaluate(acceleration_ratio);
             transform.position = Vector3.MoveTowards(transform.position, Target.position, Time.fixedDeltaTime * speed);
-        
-            //  wave a bit
-            WavePosition(acceleration_ratio);
         }
 
         void LookAtTarget()
@@ -143,23 +169,24 @@ namespace Jail.Interactables.ZapTurret
                 
                 if (Target != null)
                 {
-                    WavePosition(1.0f - (direction.sqrMagnitude / Turret.DistToSqr));
+                    WavePosition(waveIntensityCurve.Evaluate(1.0f - direction.sqrMagnitude / Turret.DistToSqr));
                 }
             }
         }
 
-        void WavePosition(float wave_intensity)
+        void WavePosition(float intensity)
         {
             int unique_id = GetInstanceID();
-            transform.position += Mathf.Sin(unique_id + Time.time * 1.0f) * 0.1f * wave_intensity * transform.up
-                                + Mathf.Cos(unique_id + Time.time * 2.0f) * 0.05f * wave_intensity * transform.forward;
+            transform.position += Mathf.Sin(unique_id + Time.time * 1.27f + Time.time * 0.22f * intensity) * 0.1f * transform.up
+                                + Mathf.Cos(unique_id + Time.time * 2.22f) * 0.05f * intensity * transform.forward;
         }
 
         void FixedUpdate()
         {
             if (IsPaused)
             {
-                WavePosition(0.25f);
+                transform.position = Vector3.Lerp(transform.position, pausePos, transformSmoothSpeed * Time.fixedDeltaTime);
+                WavePosition(0.0022f);
                 return;
             }
 
@@ -173,6 +200,8 @@ namespace Jail.Interactables.ZapTurret
             //  chase
             if (Target != null)
             {
+                chainer.Target = Target.position;
+
                 if (IsChasing)
                 {
                     UpdateChase();
@@ -188,17 +217,10 @@ namespace Jail.Interactables.ZapTurret
             if (Player.instance.IsSpiritReturning) return;
 
             //  kill spirit
-            Player.instance.GoBackToNormalForm(true);
+            Player.instance.GoBackToNormalForm();
             
             //  pull back
             PullToTarget();
-        }
-
-        void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, target);
-            Gizmos.DrawWireSphere(target, .5f);
         }
     }
 }

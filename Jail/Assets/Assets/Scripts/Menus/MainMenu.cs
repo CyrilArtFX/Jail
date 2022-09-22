@@ -5,6 +5,14 @@ namespace Jail.UI
 {
     public class MainMenu : MonoBehaviour
     {
+        [Header("Scene")]
+        [Scene, SerializeField]
+        string playScene;
+        [Scene, SerializeField]
+        string optionScene;
+        [Scene, SerializeField]
+        string menuScene;
+
         public void QuitGame()
         {
             #if UNITY_EDITOR
@@ -16,17 +24,17 @@ namespace Jail.UI
 
         public void Play()
         {
-            SceneSwitcher.SwitchScene("SceneTest2D");
+            SceneSwitcher.SwitchScene(playScene);
         }
 
         public void ShowOptions()
         {
-            SceneSwitcher.SwitchScene("OptionsMenu");
+            SceneSwitcher.SwitchScene(optionScene);
         }
 
         public void HideOptions()
         {
-            SceneSwitcher.SwitchScene("MainMenu");
+            SceneSwitcher.SwitchScene(menuScene);
         }
     }
 }
