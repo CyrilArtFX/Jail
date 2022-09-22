@@ -11,20 +11,23 @@ namespace Jail.Puzzler.Outputs
         [SerializeField]
         private AudioSource audioSource;
         [SerializeField]
-        private AudioClip clip;
+        private AudioClip clipOn;
+        [SerializeField]
+        private AudioClip clipOff;
+
 
         public override void OnInputsTriggered()
         {
             print("Opening door!");
             statesAnim.ChangeBool(true);
-            audioSource.PlayOneShot(clip);
+            audioSource.PlayOneShot(clipOn);
         }
 
         public override void OnInputsUnTriggered()
         {
             print("Closing door!");
             statesAnim.ChangeBool(false);
-            audioSource.PlayOneShot(clip);
+            audioSource.PlayOneShot(clipOff);
         }
     }
 }

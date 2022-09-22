@@ -63,7 +63,8 @@ MonoBehaviour:
     anim: {fileID: 4400794715636456097}
     boolName: Open
   audioSource: {fileID: 3450776558898893657}
-  clip: {fileID: 0}
+  clipOn: {fileID: 8300000, guid: 553555c46a1360e4a96646caec023b16, type: 3}
+  clipOff: {fileID: 8300000, guid: 8e0d0f1235cceb4418ac83a9577baf61, type: 3}
 --- !u!82 &3450776558898893657
 AudioSource:
   m_ObjectHideFlags: 0
@@ -120,7 +121,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
