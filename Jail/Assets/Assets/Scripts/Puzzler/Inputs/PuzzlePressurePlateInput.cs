@@ -17,11 +17,6 @@ namespace Jail.Puzzler.Inputs
         int activeCollidersCount = 0;
         Coroutine oldExitCoroutine;
 
-        
-
-        public AudioSource source1;
-        public AudioClip clip1;
-
         void OnTriggerEnter(Collider other)
         {
             

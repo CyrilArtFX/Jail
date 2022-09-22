@@ -15,11 +15,11 @@ namespace Jail.Puzzler.Inputs
         [SerializeField]
         LightController fireLight;
 
-        private AudioSource audioSrc;
+        public AudioSource source;
+        public AudioClip clip;
 
         public override void Start()
         {
-            audioSrc = GetComponent<AudioSource>();
             base.Start();
             if (!IsRawTriggered)
             {
@@ -43,7 +43,8 @@ namespace Jail.Puzzler.Inputs
             if (state)
             {
                 fireParticles.Play(true);
-                audioSrc.Play();
+                source.PlayOneShot(clip);
+
                 if (!fireLight.lightOn)
                 {
                     fireLight.FadeIn();
@@ -51,9 +52,7 @@ namespace Jail.Puzzler.Inputs
             }
             else
             {
-
                 fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-                audioSrc.Stop();
                 if (fireLight.lightOn)
                 {
                     fireLight.FadeOut();
@@ -64,7 +63,7 @@ namespace Jail.Puzzler.Inputs
         public override void DisableInput(bool disable)
         {
             base.DisableInput(disable);
-            audioSrc.Stop();
+
             fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
             if (fireLight.lightOn)
             {
