@@ -108,7 +108,6 @@ namespace Jail
 
         [HideInInspector]
         public Checkpoint inCheckpoint = null;
-        [HideInInspector]
         public bool disableCommands = false;
 
         Vector3 savedPosition;
