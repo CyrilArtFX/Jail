@@ -523,9 +523,16 @@ namespace Jail
                 speed = (AttachedCrate != null && OnRealGround) ? maxCrateSpeed : maxSpeed;
                 x_axis = Vector3.back;
             }
-            x_axis = ProjectDirectionOnPlane(x_axis, contactNormal);
+            if (!spirit)
+            {
+                x_axis = ProjectDirectionOnPlane(x_axis, contactNormal);
+            }
 
-            Vector3 relative_velocity = velocity - connectionVelocity;
+            Vector3 relative_velocity = velocity;
+            if (!spirit)
+            {
+                relative_velocity -= connectionVelocity;
+            }
 
             Vector2 adjustment;
             adjustment.x = playerInput.x * speed - Vector3.Dot(relative_velocity, x_axis);
