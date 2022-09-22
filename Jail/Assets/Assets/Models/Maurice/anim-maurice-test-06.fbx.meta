@@ -297,14 +297,14 @@ ModelImporter:
       curves: []
       events:
       - time: 0.007352815
-        functionName: LadderWood
+        functionName: Ladder
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.46361077
-        functionName: LadderWood
+        functionName: Ladder
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
