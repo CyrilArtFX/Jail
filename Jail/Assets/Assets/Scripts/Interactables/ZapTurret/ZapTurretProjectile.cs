@@ -13,6 +13,8 @@ namespace Jail.Interactables.ZapTurret
         public Transform WaryPoint => waryPoint;
         public Transform ChainerPoint => chainerPoint;
 
+        AudioSource audioSrc;
+
         public Transform Target { 
             get => target; 
             set {
@@ -73,6 +75,8 @@ namespace Jail.Interactables.ZapTurret
         void Awake()
         {
             chainer.Projectile = this;
+            audioSrc = GetComponent<AudioSource>();
+            print(audioSrc);
         }
 
         void Start()
@@ -82,6 +86,7 @@ namespace Jail.Interactables.ZapTurret
 
         public void PullToTarget()
         {
+            audioSrc.Stop();
             IsChasing = false;
             IsPulling = true;
             returnCoroutine = StartCoroutine(CoroutinePauseForTime(timeBeforeReturn));
@@ -99,6 +104,8 @@ namespace Jail.Interactables.ZapTurret
 
         public void Chase(Transform target)
         {
+            audioSrc.Play();
+            
             //  stop previous coroutine
             if (returnCoroutine != null)
             {
