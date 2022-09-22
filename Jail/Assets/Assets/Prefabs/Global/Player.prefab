@@ -440,7 +440,7 @@ MonoBehaviour:
   maxAirAcceleration: 28
   maxClimbAcceleration: 20
   maxSpiritAcceleration: 25
-  jumpHeight: 2.86
+  jumpHeight: 3.1
   maxGroundAngle: 25
   maxStairsAngle: 69.9
   maxSnapSpeed: 100
