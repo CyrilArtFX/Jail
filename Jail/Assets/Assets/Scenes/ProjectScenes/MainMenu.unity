@@ -552,6 +552,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4ee23c91d13b5944889af22447e291c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playScene: Level1LDReady
+  optionScene: OptionsMenu
+  menuScene: MainMenu
 --- !u!1 &852470223
 GameObject:
   m_ObjectHideFlags: 0

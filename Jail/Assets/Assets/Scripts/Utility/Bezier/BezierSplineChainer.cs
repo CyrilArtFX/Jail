@@ -30,7 +30,9 @@ namespace Jail.Utility.Bezier
 
         public void RemoveItemsAtRange(int from_id, int to_id)
         {
-            if (UnityEditor.PrefabUtility.IsPartOfAnyPrefab(gameObject)) return;
+            #if UNITY_EDITOR
+                if (UnityEditor.PrefabUtility.IsPartOfAnyPrefab(gameObject)) return;
+            #endif
 
             //  destroy items
             for (int j = from_id; j <= to_id; j++)
