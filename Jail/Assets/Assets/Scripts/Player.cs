@@ -11,13 +11,15 @@ namespace Jail
     {
         enum CrateAction
         {
+            Grab,
             Pushing,
             Pulling,
             None
         }
 
+        public Transform HeadPoint => headPoint;
         public GameObject Spirit => spiritObject;
-        public bool IsSpiritReturning => spiritReturning || spiritDissolving;
+        public bool IsSpiritReturning => spiritReturning;
 
         [Header("Solid Body")]
         [SerializeField]
@@ -28,10 +30,6 @@ namespace Jail
         GameObject spiritObject = default;
         [SerializeField]
         Transform spiritModelFlip = default;
-        [SerializeField]
-        DissolveObject spiritDissolve = default;
-        [SerializeField]
-        ParticleSystem spiritParticles = default;
 
         [Header("Parameters")]
         [SerializeField, Range(0.0f, 100.0f)]
@@ -58,6 +56,8 @@ namespace Jail
         bool maintainButtonForClimb = false;
         [SerializeField]
         Transform camFocus = default;
+        [SerializeField]
+        Transform headPoint;
 
         Rigidbody body, connectedBody, previousConnectedBody;
         Animator animator;
@@ -91,7 +91,7 @@ namespace Jail
 
         public bool IsSpirit => spirit;
 
-        bool spirit = false, spiritReturning = false, spiritDissolving = false, spiritDisabled = false;
+        bool spirit = false, spiritReturning = false, spiritDisabled = false;
         float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
         int stepsSinceLastGrounded, stepsSinceLastJump, stepsSinceLastClimbRequest;
         Vector3 connectionWorldPosition, connectionLocalPosition;
@@ -188,10 +188,21 @@ namespace Jail
 
 
             animator.SetFloat("Speed", Mathf.Abs(body.velocity.z));
-            animator.SetBool("Pushing", crateAction == CrateAction.Pushing);
+            animator.SetBool("Pushing", crateAction == CrateAction.Pushing || crateAction == CrateAction.Grab);
             animator.SetBool("Pulling", crateAction == CrateAction.Pulling);
             animator.SetBool("Falling", !Climbing && !OnGround && body.velocity.y < -0.1f);
             animator.SetBool("Climbing", Climbing);
+
+            float anim_speed = 1.0f;
+            if (Climbing)
+            {
+                anim_speed = Mathf.Abs(body.velocity.y) / 4.0f;
+            }
+            else if (crateAction != CrateAction.None)
+            {
+                anim_speed = Mathf.Abs(body.velocity.z) / 6.0f;
+            }
+            animator.speed = anim_speed;
 
 
             if (spiritReturning)
@@ -202,9 +213,6 @@ namespace Jail
                 {
                     spiritCollider.isTrigger = false;
                     spiritReturning = false;
-
-                    spiritDissolve.ForceNoDissolve();
-
                     spiritObject.SetActive(false);
                     spirit = false;
 
@@ -336,7 +344,7 @@ namespace Jail
                 if (desireNormal)
                 {
                     desireNormal = false;
-                    GoBackToNormalForm(false);
+                    GoBackToNormalForm();
                 }
             }
 
@@ -462,7 +470,7 @@ namespace Jail
             {
                 if (Mathf.Abs(body.velocity.z) < 0.01f)
                 {
-                    crateAction = CrateAction.None;
+                    crateAction = CrateAction.Grab;
                 }
                 else
                 {
@@ -518,9 +526,16 @@ namespace Jail
                 speed = (AttachedCrate != null && OnRealGround) ? maxCrateSpeed : maxSpeed;
                 x_axis = Vector3.back;
             }
-            x_axis = ProjectDirectionOnPlane(x_axis, contactNormal);
+            if (!spirit)
+            {
+                x_axis = ProjectDirectionOnPlane(x_axis, contactNormal);
+            }
 
-            Vector3 relative_velocity = velocity - connectionVelocity;
+            Vector3 relative_velocity = velocity;
+            if (!spirit)
+            {
+                relative_velocity -= connectionVelocity;
+            }
 
             Vector2 adjustment;
             adjustment.x = playerInput.x * speed - Vector3.Dot(relative_velocity, x_axis);
@@ -743,19 +758,9 @@ namespace Jail
             StartCoroutine(AnimTurnToSpirit());
         }
 
-        public void GoBackToNormalForm(bool spiritDead)
+        public void GoBackToNormalForm()
         {
-            spiritParticles.Stop();
-
-            if (spiritDead)
-            {
-                spiritDissolving = true;
-                spiritDissolve.Dissolve();
-            }
-            else
-            {
-                ReturnToBody(false);
-            }
+            ReturnToBody(false);
         }
 
         public void ReturnToBody(bool instant)
@@ -769,13 +774,10 @@ namespace Jail
                 timeForSpiritToReturn = distanceSpiritBody / spiritReturningAverageSpeed;
                 timeSinceSpiritReturningStart = 0.0f;
 
-                spiritDissolving = false;
                 spiritReturning = true;
             }
             else
             {
-                spiritDissolve.ForceNoDissolve();
-
                 spiritObject.SetActive(false);
                 spirit = false;
 
@@ -809,7 +811,6 @@ namespace Jail
             spiritObject.SetActive(true);
             spiritObject.transform.localPosition = Vector3.zero;
             spiritObject.transform.localRotation = transform.rotation;
-            spiritParticles.Play();
         }
 
         public Transform FocusPoint()
