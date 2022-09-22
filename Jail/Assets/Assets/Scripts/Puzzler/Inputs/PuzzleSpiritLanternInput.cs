@@ -16,7 +16,8 @@ namespace Jail.Puzzler.Inputs
         LightController fireLight;
 
         public AudioSource source;
-        public AudioClip clip;
+        public AudioClip clipOn;
+        public AudioClip clipOff;
 
         public override void Start()
         {
@@ -43,7 +44,7 @@ namespace Jail.Puzzler.Inputs
             if (state)
             {
                 fireParticles.Play(true);
-                source.PlayOneShot(clip);
+                source.PlayOneShot(clipOn);
 
                 if (!fireLight.lightOn)
                 {
@@ -56,6 +57,7 @@ namespace Jail.Puzzler.Inputs
                 if (fireLight.lightOn)
                 {
                     fireLight.FadeOut();
+                    source.PlayOneShot(clipOff);
                 }
             }
         }
