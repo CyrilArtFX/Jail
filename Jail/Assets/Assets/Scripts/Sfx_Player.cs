@@ -6,7 +6,8 @@ using Unity.Audio;
 public class Sfx_Player : MonoBehaviour
 {
     [SerializeField]
-    private AudioClip[] clips;
+    private AudioClip[] stepsClips;
+    
 
     private AudioSource audioSource;
 
@@ -17,20 +18,14 @@ public class Sfx_Player : MonoBehaviour
 
     private void Step()
     {
-        AudioClip clip = GetRandomClip();
-        audioSource.PlayOneShot(clip);
+        AudioClip stepsClip = GetRandomClip();
+        audioSource.PlayOneShot(stepsClip);
     }
+
 
     private AudioClip GetRandomClip()
     {
-        return clips[UnityEngine.Random.Range(0, clips.Length)];
-    }
+        return stepsClips[UnityEngine.Random.Range(0, stepsClips.Length)];
 
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
