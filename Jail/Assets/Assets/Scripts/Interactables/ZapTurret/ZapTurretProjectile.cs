@@ -181,7 +181,7 @@ namespace Jail.Interactables.ZapTurret
         void WavePosition(float intensity)
         {
             int unique_id = GetInstanceID();
-            transform.position += Mathf.Sin(unique_id + Time.time * 1.27f + Time.time * 0.22f * intensity) * 0.1f * transform.up
+            transform.position += Mathf.Sin(unique_id + Time.time * 1.27f + Time.time * 0.22f) * 0.1f * intensity * transform.up
                                 + Mathf.Cos(unique_id + Time.time * 2.22f) * 0.05f * intensity * transform.forward;
         }
 
