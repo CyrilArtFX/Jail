@@ -2154,6 +2154,8 @@ MonoBehaviour:
   uiMask:
     serializedVersion: 2
     m_Bits: 4096
+  mainMenu: {fileID: 1476456880}
+  optionsMenu: {fileID: 1495834334}
 --- !u!1001 &699941320
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5699,6 +5701,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1476456879}
+  - component: {fileID: 1476456880}
   m_Layer: 0
   m_Name: Main
   m_TagString: Untagged
@@ -5725,6 +5728,22 @@ Transform:
   m_Father: {fileID: 672779865}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1476456880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476456878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c23dbd2c69959da4fb90c20222a0197b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 1941632708}
+  - {fileID: 1272127181}
+  - {fileID: 560264287}
 --- !u!1 &1492239834
 GameObject:
   m_ObjectHideFlags: 0
@@ -5816,6 +5835,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1495834333}
+  - component: {fileID: 1495834334}
   m_Layer: 0
   m_Name: Options
   m_TagString: Untagged
@@ -5841,6 +5861,20 @@ Transform:
   m_Father: {fileID: 672779865}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1495834334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495834332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c23dbd2c69959da4fb90c20222a0197b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 870011116}
 --- !u!4 &1515819144 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1613318047256469713, guid: f158e7823b3c6034796776b2be6f19ea, type: 3}

@@ -15,16 +15,28 @@ namespace Jail.UI
         CinemachineVirtualCamera mainVC, optionsVC;
 
         [SerializeField]
-        float timeToggleInput = 1.0f;
+        float timeToggleInput = 1.0f, timeForControllerPress = 0.2f;
 
         [SerializeField]
         LayerMask uiMask;
 
-        bool isController = false;
+        [SerializeField]
+        MenuController mainMenu, optionsMenu;
+
+        MenuController currentMenu;
+
+        bool isMouseControlled = false;
         bool isInputDisabled = false;
         GlyphTMPButton hoveredButton;
 
         Vector3 farWorldPos, nearWorldPos, hitPos;
+
+        Vector3 lastMousePos = Vector3.zero;
+
+        void Start()
+        {
+            currentMenu = mainMenu;    
+        }
 
         public void QuitGame()
         {
@@ -96,21 +108,65 @@ namespace Jail.UI
 
         void ControllerUpdate()
         {
+            float axis = Input.GetAxis("UpDown");
 
+            //  move buttons
+            if (axis < 0.0f)
+            {
+                currentMenu.NextButton();
+                DisableInputFor(timeForControllerPress);
+            }
+            else if (axis > 0.0f)
+            {
+                currentMenu.PreviousButton();
+                DisableInputFor(timeForControllerPress);
+            }
+
+            //  enter
+            if (Input.GetButtonDown("Submit"))
+            {
+                if (currentMenu.CurrentButton != null)
+                {
+                    currentMenu.CurrentButton.DoClick();
+                }
+            }
         }
 
         void Update()
         {
             if (isInputDisabled) return;
 
-            if (isController)
+            if (isMouseControlled)
             {
-                ControllerUpdate();
+                //  check for controller input
+                float axis = Input.GetAxis("UpDown");
+                if (axis != 0.0f)
+                {
+                    isMouseControlled = false;
+                    print("controller! " + axis);
+                }
             }
             else
             {
-                MouseUpdate();
+                //  check for mouse movement
+                Vector3 mouse_pos = Input.mousePosition;
+                
+                Vector3 mouse_delta = lastMousePos - mouse_pos;
+                if (lastMousePos != Vector3.zero && mouse_delta.sqrMagnitude > 0)
+                {
+                    isMouseControlled = true;
+                    print("mouse! " + mouse_delta.sqrMagnitude);
+                }
+                
+                lastMousePos = mouse_pos;
             }
+
+            if (!isMouseControlled)
+            {
+                ControllerUpdate();
+            }
+        
+            MouseUpdate();
         }
 
         void OnDrawGizmos()
@@ -129,16 +185,18 @@ namespace Jail.UI
         {
             mainVC.Priority = 10;
             optionsVC.Priority = 11;
+            currentMenu = optionsMenu;
 
-            StartCoroutine(CoroutineDisableInputFor(timeToggleInput));
+            DisableInputFor(timeToggleInput);
         }
 
         public void ShowMenu()
         {
             mainVC.Priority = 11;
             optionsVC.Priority = 10;
+            currentMenu = mainMenu;
 
-            StartCoroutine(CoroutineDisableInputFor(timeToggleInput));
+            DisableInputFor(timeToggleInput);
         }
 
         IEnumerator CoroutineDisableInputFor(float time)
@@ -148,6 +206,11 @@ namespace Jail.UI
             yield return new WaitForSeconds(time);
 
             isInputDisabled = false;
+        }
+
+        void DisableInputFor(float time)
+        {
+            StartCoroutine(CoroutineDisableInputFor(time));
         }
     }
 }
