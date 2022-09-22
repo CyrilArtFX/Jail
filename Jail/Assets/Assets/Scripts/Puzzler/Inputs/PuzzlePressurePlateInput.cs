@@ -19,6 +19,7 @@ namespace Jail.Puzzler.Inputs
 
         void OnTriggerEnter(Collider other)
         {
+            
             if (!LayerMaskUtils.HasLayer(detectionMask, other.gameObject.layer))
                 return;
 
@@ -32,6 +33,8 @@ namespace Jail.Puzzler.Inputs
             if (oldExitCoroutine != null)
             {
                 StopCoroutine(oldExitCoroutine);
+
+                //Play Sound IN
             }
         }
 
@@ -50,6 +53,8 @@ namespace Jail.Puzzler.Inputs
             if ((--activeCollidersCount) == 0)
             {
                 oldExitCoroutine = StartCoroutine(CoroutineExitTrigger());
+                
+                //Play Sound OUT
             }
         }
 
