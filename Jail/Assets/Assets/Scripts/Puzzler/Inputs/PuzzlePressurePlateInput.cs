@@ -17,8 +17,13 @@ namespace Jail.Puzzler.Inputs
         int activeCollidersCount = 0;
         Coroutine oldExitCoroutine;
 
+        public AudioSource source;
+        public AudioClip clipOn;
+        public AudioClip clipOff;
+
         void OnTriggerEnter(Collider other)
         {
+            
             if (!LayerMaskUtils.HasLayer(detectionMask, other.gameObject.layer))
                 return;
 
@@ -32,6 +37,8 @@ namespace Jail.Puzzler.Inputs
             if (oldExitCoroutine != null)
             {
                 StopCoroutine(oldExitCoroutine);
+
+                source.PlayOneShot(clipOn);
             }
         }
 
@@ -50,6 +57,8 @@ namespace Jail.Puzzler.Inputs
             if ((--activeCollidersCount) == 0)
             {
                 oldExitCoroutine = StartCoroutine(CoroutineExitTrigger());
+
+                source.PlayOneShot(clipOff);
             }
         }
 

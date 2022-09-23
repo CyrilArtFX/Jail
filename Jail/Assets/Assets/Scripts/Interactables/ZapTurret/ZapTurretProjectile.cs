@@ -13,6 +13,9 @@ namespace Jail.Interactables.ZapTurret
         public Transform WaryPoint => waryPoint;
         public Transform ChainerPoint => chainerPoint;
 
+        public AudioSource source;
+        public AudioClip clip;
+
         public Transform Target { 
             get => target; 
             set {
@@ -63,6 +66,8 @@ namespace Jail.Interactables.ZapTurret
         [SerializeField]
         new LightController light;
 
+
+
         Vector3 pausePos;
 
         float currentAccelerationTime = 0.0f;
@@ -82,6 +87,7 @@ namespace Jail.Interactables.ZapTurret
 
         public void PullToTarget()
         {
+            
             IsChasing = false;
             IsPulling = true;
             returnCoroutine = StartCoroutine(CoroutinePauseForTime(timeBeforeReturn));
@@ -99,9 +105,12 @@ namespace Jail.Interactables.ZapTurret
 
         public void Chase(Transform target)
         {
+            source.Play();
+
             //  stop previous coroutine
             if (returnCoroutine != null)
             {
+                
                 StopCoroutine(returnCoroutine);
             }
 
