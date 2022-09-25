@@ -462,7 +462,7 @@ namespace Jail
             }
 
             //  set the crateAction value
-            if (AttachedCrate != null)
+            if (AttachedCrate != null && OnRealGround)
             {
                 if (Mathf.Abs(body.velocity.z) < 0.01f)
                 {
