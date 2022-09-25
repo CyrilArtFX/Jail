@@ -1,13 +1,14 @@
-﻿using Jail.Environment.Glyphs;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+
+using Jail.UI.Glyphs;
 
 namespace Jail.UI
 {
     public class MenuController : MonoBehaviour
     {
-        public GlyphTMPButton CurrentButton => (currentButtonID >= 0 && currentButtonID < buttons.Count) ? buttons[currentButtonID] : null;
-        public List<GlyphTMPButton> buttons;
+        public GlyphBaseUI CurrentButton => (currentButtonID >= 0 && currentButtonID < buttons.Count) ? buttons[currentButtonID] : null;
+        public List<GlyphBaseUI> buttons;
 
         int currentButtonID = 0;
 

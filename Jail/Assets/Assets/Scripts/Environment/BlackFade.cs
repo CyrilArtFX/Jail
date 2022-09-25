@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
+using Jail.Speedrun;
+
 namespace Jail
 {
     enum FadeStates
@@ -118,6 +120,19 @@ namespace Jail
                         if (shouldToggleCommands)
                         {
                             Player.instance.disableCommands = false;
+
+                            //  resume speedrun
+                            if (Speedrunner.instance != null)
+							{
+                                if (!Speedrunner.instance.HasStarted)
+					            {
+                                    Speedrunner.instance.StartRun();
+					            }
+                                else
+								{
+                                    Speedrunner.instance.SetPause(false);
+								}
+							}
                         }
                     }
                     else
@@ -135,6 +150,12 @@ namespace Jail
             shouldToggleCommands = toggle_commands;
             if (shouldToggleCommands)
             {
+                //  pause speedrun
+                if (Speedrunner.instance != null)
+				{
+                    Speedrunner.instance.SetPause(true);
+				} 
+
                 Player.instance.disableCommands = true;
             }
 

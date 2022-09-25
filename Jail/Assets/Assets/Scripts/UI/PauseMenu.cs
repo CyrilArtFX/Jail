@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using Jail.Utility;
 using UnityEngine.Rendering;
+using Jail.Speedrun;
 
 namespace Jail.UI
 {
@@ -95,6 +96,12 @@ namespace Jail.UI
             Time.timeScale = 1.0f;
             SceneSwitcher.SwitchScene("MainMenu");
             isInputDisabled = true;
+
+            //  speedrun: end run
+            if (Speedrunner.instance != null)
+			{
+                Speedrunner.instance.EndRun(true);
+			}
         }
     }
 }

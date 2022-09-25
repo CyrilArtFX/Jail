@@ -15,6 +15,12 @@ namespace Jail.Environment.Glyphs
 
         void Start()
         {
+            if (data == null)
+			{
+                enabled = false;
+                return;
+			}
+
             smoothPriorityColor = data.gradient.Evaluate(0.0f);
             targetPriorityColor = smoothPriorityColor;
         }
