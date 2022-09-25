@@ -100,7 +100,7 @@ namespace Jail.UI
             //  speedrun: end run
             if (Speedrunner.instance != null)
 			{
-                Speedrunner.instance.EndRun(true);
+                Speedrunner.instance.EndRun(false);
 			}
         }
     }
