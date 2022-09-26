@@ -53,6 +53,12 @@ namespace Jail.Speedrun
             if (isRunning)
             {
                 VariousUtility.SetTMPTime(totalTimeTMP, TotalTime);
+
+                if (Input.GetButtonDown("RetryRun"))
+                {
+                    EndRun(false);
+                    SceneSwitcher.SwitchScene(1);
+                }
             }
         }
 
