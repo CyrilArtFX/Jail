@@ -1,8 +1,10 @@
 using UnityEngine;
 using Jail.Utility;
-using Jail.Environment.Glyphs;
 using Cinemachine;
 using System.Collections;
+
+using Jail.UI.Glyphs;
+using Jail.Speedrun;
 
 namespace Jail.UI
 {
@@ -23,18 +25,35 @@ namespace Jail.UI
         [SerializeField]
         MenuController mainMenu, optionsMenu;
 
+        [SerializeField]
+        GlyphCheckBoxUI speedrunnerCheckBox;
+
         MenuController currentMenu;
 
         bool isMouseControlled = false;
         bool isInputDisabled = false;
-        GlyphTMPButton hoveredButton;
+        GlyphBaseUI hoveredUI;
 
         Vector3 farWorldPos, nearWorldPos, hitPos;
+        bool hitWasUI = false;
 
         Vector3 lastMousePos = Vector3.zero;
 
         void Start()
         {
+            //  speedrunner
+            if (Speedrunner.instance != null)
+            {
+                //  start disable
+                if (!Speedrunner.instance.IsPersistent)
+                {
+                    Speedrunner.instance.gameObject.SetActive(false);
+                }
+
+                //  link state
+                speedrunnerCheckBox.SetPressed(Speedrunner.instance.gameObject.activeSelf, true);
+            }
+
             currentMenu = mainMenu;    
         }
 
@@ -71,26 +90,27 @@ namespace Jail.UI
             {
                 GameObject hit_object = hit.collider.gameObject;
 
-                if (hit_object.TryGetComponent(out GlyphTMPButton button))
+                if (hit_object.TryGetComponent(out GlyphBaseUI ui))
                 {
                     //  click button
                     if (Input.GetMouseButtonUp(0))
                     {
-                        button.DoClick();
-                        isInputDisabled = true;
+                        ui.DoClick();
                     }
                     else
                     {
                         //  unhover last button
-                        if (hoveredButton != null)
+                        if (hoveredUI != null)
                         {
-                            hoveredButton.IsHovered = false;
+                            hoveredUI.IsHovered = false;
                         }
 
                         //  set hovered
-                        hoveredButton = button;
-                        button.IsHovered = true;
+                        hoveredUI = ui;
+                        ui.IsHovered = true;
                     }
+
+                    hitWasUI = true;
                 }
 
                 hitPos = hit.point;
@@ -98,11 +118,13 @@ namespace Jail.UI
             else
             {
                 //  unselect hovered button
-                if (hoveredButton != null)
+                if (hoveredUI != null)
                 {
-                    hoveredButton.IsHovered = false;
-                    hoveredButton = null;
+                    hoveredUI.IsHovered = false;
+                    hoveredUI = null;
                 }
+
+                hitWasUI = false;
             }
         }
 
@@ -169,14 +191,27 @@ namespace Jail.UI
 
         void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = hitWasUI ? Color.green : Color.red;
             Gizmos.DrawLine(nearWorldPos, hitPos);
             Gizmos.DrawSphere(hitPos, 0.1f);
         }
 
         public void Play()
         {
+            //  active speedrunner
+            if (Speedrunner.instance.gameObject.activeSelf)
+            {
+                Speedrunner.instance.MakePersistent();
+            }
+            else
+            {
+                Speedrunner.instance.UndoPersistent();
+            }
+
+            //  switch scene
             SceneSwitcher.SwitchScene(playScene);
+
+            DisableInputFor(timeToggleInput);
         }
 
         public void ShowOptions()
@@ -195,6 +230,11 @@ namespace Jail.UI
             currentMenu = mainMenu;
 
             DisableInputFor(timeToggleInput);
+        }
+
+        public void ToggleSpeedrunner(bool active)
+        {
+            Speedrunner.instance.gameObject.SetActive(active);
         }
 
         IEnumerator CoroutineDisableInputFor(float time)

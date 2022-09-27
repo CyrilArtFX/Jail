@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using Jail.SavedObjects;
 
+using Jail.Speedrun;
+
 namespace Jail
 {
     public class GlobalCheckpointAndRespawn : MonoBehaviour
@@ -44,6 +46,12 @@ namespace Jail
             {
                 saved_object.SaveState();
             }
+
+            //  speedrun: split zone time
+            if (Speedrunner.instance != null)
+			{
+                Speedrunner.instance.SplitZoneTime();
+			}
         }
 
         public void RestoreCheckpoint()
@@ -65,6 +73,13 @@ namespace Jail
         {
             BlackFade.instance.StartFade(FadeType.BothFadesWithRestore);
             BlackFade.instance.eventEndOfFadeIn.AddListener(RestoreCheckpoint);
+
+            //  speedrun: cancel zone time
+            if (Speedrunner.instance != null)
+			{
+                Speedrunner.instance.RevertZoneTime();
+                SpeedrunMessager.instance.SetMessage("Checkpoint Used!", false);
+			}
         }
 
 
