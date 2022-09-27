@@ -11,9 +11,9 @@ namespace Jail.UI.Glyphs
         TMPro.TextMeshPro textMesh;
 
         void Awake()
-		{
+        {
             textMesh = GetComponent<TMPro.TextMeshPro>();
-		}
+        }
 
         public override void DoClick()
         {

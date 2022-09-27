@@ -43,16 +43,16 @@ namespace Jail.UI
         {
             //  speedrunner
             if (Speedrunner.instance != null)
-			{
+            {
                 //  start disable
                 if (!Speedrunner.instance.IsPersistent)
-				{
+                {
                     Speedrunner.instance.gameObject.SetActive(false);
-				}
+                }
 
                 //  link state
                 speedrunnerCheckBox.SetPressed(Speedrunner.instance.gameObject.activeSelf, true);
-			}
+            }
 
             currentMenu = mainMenu;    
         }

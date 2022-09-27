@@ -12,7 +12,7 @@ namespace Jail.UI
         GameObject pauseMenuObject;
         [SerializeField]
         EventSystemPlus eventSystemPlus;
-		[SerializeField]
+        [SerializeField]
         Volume volume;
 
         bool pause;
@@ -99,9 +99,9 @@ namespace Jail.UI
 
             //  speedrun: end run
             if (Speedrunner.instance != null)
-			{
+            {
                 Speedrunner.instance.EndRun(false);
-			}
+            }
         }
     }
 }

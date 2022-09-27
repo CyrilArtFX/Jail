@@ -22,9 +22,9 @@ namespace Jail.Utility
         }
 
         public static void SetTMPTime(TMP_Text tmp, double time)
-		{
-			TimeSpan span = TimeSpan.FromSeconds(time);
-			tmp.text = string.Format("{0:00}:{1:00}:{2:000}", span.Minutes, span.Seconds, span.Milliseconds);
-		}
+        {
+            TimeSpan span = TimeSpan.FromSeconds(time);
+            tmp.text = string.Format("{0:00}:{1:00}:{2:000}", span.Minutes, span.Seconds, span.Milliseconds);
+        }
     }
 }

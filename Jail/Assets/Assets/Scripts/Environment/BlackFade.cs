@@ -123,16 +123,16 @@ namespace Jail
 
                             //  resume speedrun
                             if (Speedrunner.instance != null)
-							{
+                            {
                                 if (!Speedrunner.instance.HasStarted)
-					            {
+                                {
                                     Speedrunner.instance.StartRun();
-					            }
+                                }
                                 else
-								{
+                                {
                                     Speedrunner.instance.SetPause(false);
-								}
-							}
+                                }
+                            }
                         }
                     }
                     else
@@ -152,9 +152,9 @@ namespace Jail
             {
                 //  pause speedrun
                 if (Speedrunner.instance != null)
-				{
+                {
                     Speedrunner.instance.SetPause(true);
-				} 
+                } 
 
                 Player.instance.disableCommands = true;
             }

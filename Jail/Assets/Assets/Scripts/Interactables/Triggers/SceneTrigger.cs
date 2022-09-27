@@ -12,7 +12,7 @@ namespace Jail.Interactables.Triggers
         [Header("Scene"), Scene, SerializeField]
         string sceneName;
 
-		[SerializeField]
+        [SerializeField]
         bool shouldEndSpeedrun = false;
 
         protected override void Awake()
@@ -28,18 +28,18 @@ namespace Jail.Interactables.Triggers
             {
                 //  end speedrun
                 if (Speedrunner.instance != null)
-				{
+                {
                     if (shouldEndSpeedrun)
-					{
+                    {
                         //  end run
                         Speedrunner.instance.EndRun();
-					}
+                    }
                     else
-					{
+                    {
                         //  split level time
                         Speedrunner.instance.SplitLevelTime();
-					}
-				}
+                    }
+                }
 
                 //  switch scene
                 SceneSwitcher.SwitchScene(sceneName);
