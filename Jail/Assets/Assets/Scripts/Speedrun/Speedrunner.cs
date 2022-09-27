@@ -97,7 +97,7 @@ namespace Jail.Speedrun
         public void EndRun(bool is_valid = true)
         {
             if (is_valid)
-			{
+            {
                 //  comment the run
                 if (!SpeedrunMessager.instance.IsVisible)
                 {
@@ -113,11 +113,11 @@ namespace Jail.Speedrun
 
                     SpeedrunMessager.instance.SetMessage(text, true);
                 }
-			}
+            }
             else
-			{
+            {
                 SpeedrunMessager.instance.SetMessage("Invalid!", false);
-			}
+            }
 
             hasStarted = false;
             SetPause(true);
