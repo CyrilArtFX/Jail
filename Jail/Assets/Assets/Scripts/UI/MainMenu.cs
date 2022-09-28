@@ -150,6 +150,11 @@ namespace Jail.UI
                     currentMenu.CurrentButton.DoClick();
                 }
             }
+            //  back shortcut
+            else if (Input.GetButtonDown("Cancel"))
+			{
+                currentMenu.Back();
+			}
         }
 
         void Update()
