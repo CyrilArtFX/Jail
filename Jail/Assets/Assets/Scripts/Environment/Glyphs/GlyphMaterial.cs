@@ -7,8 +7,10 @@ namespace Jail.Environment.Glyphs
     {
         new MeshRenderer renderer;
 
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             renderer = GetComponent<MeshRenderer>();
         }
 

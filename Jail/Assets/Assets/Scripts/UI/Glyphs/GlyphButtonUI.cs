@@ -10,8 +10,10 @@ namespace Jail.UI.Glyphs
 
         TMPro.TextMeshPro textMesh;
 
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             textMesh = GetComponent<TMPro.TextMeshPro>();
         }
 

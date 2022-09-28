@@ -14,16 +14,13 @@ namespace Jail.UI
         string playScene;
 
         [SerializeField]
-        CinemachineVirtualCamera mainVC, optionsVC;
-
-        [SerializeField]
         float timeToggleInput = 1.0f, timeForControllerPress = 0.2f;
 
         [SerializeField]
         LayerMask uiMask;
 
         [SerializeField]
-        MenuController mainMenu, optionsMenu;
+        MenuController mainMenu;
 
         [SerializeField]
         GlyphCheckBoxUI speedrunnerCheckBox;
@@ -54,6 +51,7 @@ namespace Jail.UI
                 speedrunnerCheckBox.SetPressed(Speedrunner.instance.gameObject.activeSelf, true);
             }
 
+            //  set current menu
             currentMenu = mainMenu;    
         }
 
@@ -214,23 +212,14 @@ namespace Jail.UI
             DisableInputFor(timeToggleInput);
         }
 
-        public void ShowOptions()
-        {
-            mainVC.Priority = 10;
-            optionsVC.Priority = 11;
-            currentMenu = optionsMenu;
+        public void ShowMenu(MenuController menu)
+		{
+            currentMenu.UnSelect();
+            menu.Select();
+            currentMenu = menu;
 
             DisableInputFor(timeToggleInput);
-        }
-
-        public void ShowMenu()
-        {
-            mainVC.Priority = 11;
-            optionsVC.Priority = 10;
-            currentMenu = mainMenu;
-
-            DisableInputFor(timeToggleInput);
-        }
+		}
 
         public void ToggleSpeedrunner(bool active)
         {

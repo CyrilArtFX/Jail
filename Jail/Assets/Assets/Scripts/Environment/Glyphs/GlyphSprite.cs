@@ -7,8 +7,10 @@ namespace Jail.Environment.Glyphs
     {
         new SpriteRenderer renderer;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             renderer = GetComponent<SpriteRenderer>();          
         }
 
