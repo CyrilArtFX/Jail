@@ -17,9 +17,9 @@ namespace Jail.Environment.Glyphs
         Color targetPriorityColor;
 
         protected virtual void Awake()
-		{
+        {
             AlphaMultiplier = 1.0f;
-		}
+        }
 
         void Start()
         {

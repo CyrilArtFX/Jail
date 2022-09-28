@@ -213,13 +213,13 @@ namespace Jail.UI
         }
 
         public void ShowMenu(MenuController menu)
-		{
+        {
             currentMenu.UnSelect();
             menu.Select();
             currentMenu = menu;
 
             DisableInputFor(timeToggleInput);
-		}
+        }
 
         public void ToggleSpeedrunner(bool active)
         {

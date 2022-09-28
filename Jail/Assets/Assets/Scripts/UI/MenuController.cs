@@ -13,7 +13,7 @@ namespace Jail.UI
         public GlyphBaseUI CurrentButton => (currentButtonID >= 0 && currentButtonID < buttons.Count) ? buttons[currentButtonID] : null;
         public List<GlyphBaseUI> buttons;
 
-		[SerializeField]
+        [SerializeField]
         CinemachineVirtualCamera camera;
 
         int currentButtonID = 0;
@@ -29,14 +29,14 @@ namespace Jail.UI
         }
 
         public virtual void Select()
-		{
+        {
             camera.Priority = 11;
-		}
+        }
 
         public virtual void UnSelect()
-		{
+        {
             camera.Priority = 10;
-		}
+        }
 
         public void SelectButtonByID(int id)
         {

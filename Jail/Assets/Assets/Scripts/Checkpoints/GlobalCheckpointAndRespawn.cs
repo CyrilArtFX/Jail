@@ -49,9 +49,9 @@ namespace Jail
 
             //  speedrun: split zone time
             if (Speedrunner.instance != null)
-			{
+            {
                 Speedrunner.instance.SplitZoneTime();
-			}
+            }
         }
 
         public void RestoreCheckpoint()
@@ -76,10 +76,10 @@ namespace Jail
 
             //  speedrun: cancel zone time
             if (Speedrunner.instance != null)
-			{
+            {
                 Speedrunner.instance.RevertZoneTime();
                 SpeedrunMessager.instance.SetMessage("Checkpoint Used!", false);
-			}
+            }
         }
 
 

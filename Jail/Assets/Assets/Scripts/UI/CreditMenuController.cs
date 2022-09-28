@@ -6,35 +6,35 @@ using System.Collections.Generic;
 
 namespace Jail.UI
 {
-	public class CreditMenuController : MenuController
-	{
-		GlyphBase[] glyphs;
+    public class CreditMenuController : MenuController
+    {
+        GlyphBase[] glyphs;
 
-		void Start()
-		{
-			glyphs = GetComponentsInChildren<GlyphBase>();
+        void Start()
+        {
+            glyphs = GetComponentsInChildren<GlyphBase>();
 
-			UnSelect();
-		}
+            UnSelect();
+        }
 
-		public override void Select()
-		{
-			base.Select();
+        public override void Select()
+        {
+            base.Select();
 
-			foreach (GlyphBase glyph in glyphs)
-			{
-				glyph.AlphaMultiplier = 1.0f;
-			}
-		}
+            foreach (GlyphBase glyph in glyphs)
+            {
+                glyph.AlphaMultiplier = 1.0f;
+            }
+        }
 
-		public override void UnSelect()
-		{
-			base.UnSelect();
+        public override void UnSelect()
+        {
+            base.UnSelect();
 
-			foreach (GlyphBase glyph in glyphs)
-			{
-				glyph.AlphaMultiplier = 0.0f;
-			}
-		}
-	}
+            foreach (GlyphBase glyph in glyphs)
+            {
+                glyph.AlphaMultiplier = 0.0f;
+            }
+        }
+    }
 }
