@@ -247,7 +247,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1936
+  m_VersionIndex: 1945
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -589,7 +589,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1857
+  m_VersionIndex: 1866
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -997,7 +997,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2698
+  m_VersionIndex: 2710
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1339,7 +1339,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2079
+  m_VersionIndex: 2088
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1714,7 +1714,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2076
+  m_VersionIndex: 2088
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1994,19 +1994,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4003833074049213412, guid: 4f636e46ef293b540a0086ae9bc9f05a, type: 3}
       propertyPath: m_Lens.m_SensorSize.x
-      value: 1.5387714
+      value: 1.3333334
       objectReference: {fileID: 0}
     - target: {fileID: 4003833074049213413, guid: 4f636e46ef293b540a0086ae9bc9f05a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.999999
+      value: 145.00002
       objectReference: {fileID: 0}
     - target: {fileID: 4003833074049213413, guid: 4f636e46ef293b540a0086ae9bc9f05a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 4003833074049213413, guid: 4f636e46ef293b540a0086ae9bc9f05a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15.09995
+      value: -15.09993
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4003833073516811068, guid: 4f636e46ef293b540a0086ae9bc9f05a, type: 3}

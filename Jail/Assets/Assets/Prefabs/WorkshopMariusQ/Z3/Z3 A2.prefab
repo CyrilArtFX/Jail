@@ -247,7 +247,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3598
+  m_VersionIndex: 3607
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -589,7 +589,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 4254
+  m_VersionIndex: 4263
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -931,7 +931,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3683
+  m_VersionIndex: 3692
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1459,7 +1459,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3366
+  m_VersionIndex: 3375
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1833,7 +1833,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3546
+  m_VersionIndex: 3555
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2257,7 +2257,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3779
+  m_VersionIndex: 3788
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2992,7 +2992,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3544
+  m_VersionIndex: 3553
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3660,7 +3660,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3375
+  m_VersionIndex: 3384
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -4228,7 +4228,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3670
+  m_VersionIndex: 3679
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -4570,7 +4570,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3655
+  m_VersionIndex: 3667
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5158,7 +5158,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3599
+  m_VersionIndex: 3608
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5545,7 +5545,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3724
+  m_VersionIndex: 3733
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5949,7 +5949,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3252
+  m_VersionIndex: 3264
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -6322,7 +6322,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3776
+  m_VersionIndex: 3785
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -6664,7 +6664,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3606
+  m_VersionIndex: 3615
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -7533,19 +7533,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4003833074049213412, guid: 4f636e46ef293b540a0086ae9bc9f05a, type: 3}
       propertyPath: m_Lens.m_SensorSize.x
-      value: 1.5387714
+      value: 1.3333334
       objectReference: {fileID: 0}
     - target: {fileID: 4003833074049213413, guid: 4f636e46ef293b540a0086ae9bc9f05a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.000003
+      value: 164.00002
       objectReference: {fileID: 0}
     - target: {fileID: 4003833074049213413, guid: 4f636e46ef293b540a0086ae9bc9f05a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4003833074049213413, guid: 4f636e46ef293b540a0086ae9bc9f05a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15.099948
+      value: -15.09993
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4003833073516811068, guid: 4f636e46ef293b540a0086ae9bc9f05a, type: 3}
