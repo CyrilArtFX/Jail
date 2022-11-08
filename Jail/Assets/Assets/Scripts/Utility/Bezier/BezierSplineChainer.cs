@@ -156,6 +156,15 @@ namespace Jail.Utility.Bezier
 
         void OnValidate()
         {
+            if (spline == null)
+            {
+                SetupSpline();
+            }
+            QueueUpdate();
+        }
+
+        void Awake()
+        {
             SetupSpline();
             QueueUpdate();
         }

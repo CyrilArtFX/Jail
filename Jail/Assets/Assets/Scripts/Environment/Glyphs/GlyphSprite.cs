@@ -7,12 +7,14 @@ namespace Jail.Environment.Glyphs
     {
         new SpriteRenderer renderer;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             renderer = GetComponent<SpriteRenderer>();          
         }
 
-        public override void ApplyColor(Color color)
+        public override void ApplyColor(Color color, int priority = -1)
         {
             renderer.color = color;
         }

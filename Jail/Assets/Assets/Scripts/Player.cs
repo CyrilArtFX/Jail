@@ -17,6 +17,7 @@ namespace Jail
             None
         }
 
+        public Transform HeadPoint => headPoint;
         public GameObject Spirit => spiritObject;
         public bool IsSpiritReturning => spiritReturning;
 
@@ -55,8 +56,11 @@ namespace Jail
         bool maintainButtonForClimb = false;
         [SerializeField]
         Transform camFocus = default;
+        [SerializeField]
+        Transform headPoint;
 
         Rigidbody body, connectedBody, previousConnectedBody;
+        [SerializeField]
         Animator animator;
         CapsuleCollider bodyCollider;
 
@@ -105,7 +109,6 @@ namespace Jail
 
         [HideInInspector]
         public Checkpoint inCheckpoint = null;
-        [HideInInspector]
         public bool disableCommands = false;
 
         Vector3 savedPosition;
@@ -136,7 +139,6 @@ namespace Jail
             instance = this;
 
             body = GetComponent<Rigidbody>();
-            animator = GetComponentInChildren<Animator>();
             body.useGravity = false;
 
             bodyCollider = GetComponent<CapsuleCollider>();
@@ -185,19 +187,16 @@ namespace Jail
 
 
             animator.SetFloat("Speed", Mathf.Abs(body.velocity.z));
-            animator.SetBool("Pushing", crateAction == CrateAction.Pushing || crateAction == CrateAction.Grab);
+            animator.SetBool("Pushing", crateAction == CrateAction.Pushing);
             animator.SetBool("Pulling", crateAction == CrateAction.Pulling);
+            animator.SetBool("IdlePush", crateAction == CrateAction.Grab);
             animator.SetBool("Falling", !Climbing && !OnGround && body.velocity.y < -0.1f);
             animator.SetBool("Climbing", Climbing);
 
             float anim_speed = 1.0f;
             if (Climbing)
             {
-                anim_speed = Mathf.Abs(body.velocity.y) / 4.0f;
-            }
-            else if (crateAction != CrateAction.None)
-            {
-                anim_speed = Mathf.Abs(body.velocity.z) / 6.0f;
+                anim_speed = Mathf.Abs(body.velocity.y) / maxClimbSpeed;
             }
             animator.speed = anim_speed;
 
@@ -463,7 +462,7 @@ namespace Jail
             }
 
             //  set the crateAction value
-            if (AttachedCrate != null)
+            if (AttachedCrate != null && OnRealGround)
             {
                 if (Mathf.Abs(body.velocity.z) < 0.01f)
                 {
@@ -523,9 +522,16 @@ namespace Jail
                 speed = (AttachedCrate != null && OnRealGround) ? maxCrateSpeed : maxSpeed;
                 x_axis = Vector3.back;
             }
-            x_axis = ProjectDirectionOnPlane(x_axis, contactNormal);
+            if (!spirit)
+            {
+                x_axis = ProjectDirectionOnPlane(x_axis, contactNormal);
+            }
 
-            Vector3 relative_velocity = velocity - connectionVelocity;
+            Vector3 relative_velocity = velocity;
+            if (!spirit)
+            {
+                relative_velocity -= connectionVelocity;
+            }
 
             Vector2 adjustment;
             adjustment.x = playerInput.x * speed - Vector3.Dot(relative_velocity, x_axis);
@@ -745,7 +751,11 @@ namespace Jail
         public void TransformToSpirit()
         {
             if (PlayerTrigger.instance.ObstacleDetected) return;
-            StartCoroutine(AnimTurnToSpirit());
+
+            spirit = true;
+            spiritObject.SetActive(true);
+            spiritObject.transform.localPosition = Vector3.zero;
+            spiritObject.transform.localRotation = transform.rotation;
         }
 
         public void GoBackToNormalForm()
@@ -790,19 +800,6 @@ namespace Jail
             spiritDisabled = false;
         }
 
-        IEnumerator AnimTurnToSpirit()
-        {
-            disableCommands = true;
-            animator.SetTrigger("ActivateSpirit");
-            yield return new WaitForSeconds(0.1f);
-            disableCommands = false;
-
-            spirit = true;
-            spiritObject.SetActive(true);
-            spiritObject.transform.localPosition = Vector3.zero;
-            spiritObject.transform.localRotation = transform.rotation;
-        }
-
         public Transform FocusPoint()
         {
             return spirit ? spiritObject.transform : transform;
@@ -819,11 +816,6 @@ namespace Jail
             body.velocity = Vector3.zero;
             transform.position = savedPosition;
             modelFlip.localRotation = savedRotationModelFlip;
-        }
-
-        public void AnimTriggerLever()
-        {
-            animator.SetTrigger("TriggerLever");
         }
     }
 }

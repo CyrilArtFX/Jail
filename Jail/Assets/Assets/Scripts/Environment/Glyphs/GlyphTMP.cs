@@ -8,12 +8,14 @@ namespace Jail.Environment.Glyphs
     {
         TMPro.TextMeshPro textMesh;
 
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             textMesh = GetComponent<TMPro.TextMeshPro>();    
         }
 
-        public override void ApplyColor(Color color)
+        public override void ApplyColor(Color color, int priority = -1)
         {
             textMesh.color = color;
         }

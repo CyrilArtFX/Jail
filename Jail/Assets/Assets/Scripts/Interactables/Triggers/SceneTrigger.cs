@@ -3,14 +3,17 @@
 using Jail.Utility;
 using UnityEngine.SceneManagement;
 
+using Jail.Speedrun;
+
 namespace Jail.Interactables.Triggers
 {
     public class SceneTrigger : BaseTrigger
     {
         [Header("Scene"), Scene, SerializeField]
         string sceneName;
+
         [SerializeField]
-        bool useBlackFade = true;
+        bool shouldEndSpeedrun = false;
 
         protected override void Awake()
         {
@@ -23,21 +26,24 @@ namespace Jail.Interactables.Triggers
         {
             if (is_enter)
             {
-                if (useBlackFade)
+                //  end speedrun
+                if (Speedrunner.instance != null)
                 {
-                    BlackFade.instance.eventEndOfFadeIn.AddListener(Switch);
-                    BlackFade.instance.StartFade(FadeType.BothFadesWithRestore);
+                    if (shouldEndSpeedrun)
+                    {
+                        //  end run
+                        Speedrunner.instance.EndRun();
+                    }
+                    else
+                    {
+                        //  split level time
+                        Speedrunner.instance.SplitLevelTime();
+                    }
                 }
-                else
-                {
-                    Switch();
-                }
-            }
-        }
 
-        void Switch()
-        {
-            SceneSwitcher.SwitchScene(sceneName);
+                //  switch scene
+                SceneSwitcher.SwitchScene(sceneName);
+            }
         }
     }
 }

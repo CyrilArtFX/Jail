@@ -5,16 +5,30 @@ namespace Jail.Environment.Glyphs
 {
     public abstract class GlyphBase : MonoBehaviour
     {
+        public float AlphaMultiplier { get; set; }
+
         [SerializeField]
         GlyphData data;
 
+        float currentAlphaMultiplier = 0.0f;
         int lastPriorityID;
         float t = 0.0f;
         Color smoothPriorityColor;
         Color targetPriorityColor;
 
+        protected virtual void Awake()
+        {
+            AlphaMultiplier = 1.0f;
+        }
+
         void Start()
         {
+            if (data == null)
+            {
+                enabled = false;
+                return;
+            }
+
             smoothPriorityColor = data.gradient.Evaluate(0.0f);
             targetPriorityColor = smoothPriorityColor;
         }
@@ -85,10 +99,16 @@ namespace Jail.Environment.Glyphs
                 smoothPriorityColor = Color.Lerp(smoothPriorityColor, targetPriorityColor, t);
             }
 
+
+            //  apply alpha multiplier
+            Color color = smoothPriorityColor;
+            currentAlphaMultiplier = Mathf.Lerp(currentAlphaMultiplier, AlphaMultiplier, Time.deltaTime * 3.0f);
+            color.a *= currentAlphaMultiplier;
+
             //  apply color
-            ApplyColor(smoothPriorityColor);
+            ApplyColor(color, priority_id);
         }
 
-        public virtual void ApplyColor(Color color) {}
+        public virtual void ApplyColor(Color color, int priority = -1) {}
     }
 }

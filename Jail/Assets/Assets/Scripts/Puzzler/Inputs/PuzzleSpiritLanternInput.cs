@@ -3,6 +3,7 @@ using UnityEngine;
 using Jail.LightControl;
 using Jail.Utility;
 
+
 namespace Jail.Puzzler.Inputs
 {
     public class PuzzleSpiritLanternInput : PuzzleBaseInput
@@ -13,6 +14,10 @@ namespace Jail.Puzzler.Inputs
         ParticleSystem fireParticles;
         [SerializeField]
         LightController fireLight;
+
+        public AudioSource source;
+        public AudioClip clipOn;
+        public AudioClip clipOff;
 
         public override void Start()
         {
@@ -39,6 +44,8 @@ namespace Jail.Puzzler.Inputs
             if (state)
             {
                 fireParticles.Play(true);
+                source.PlayOneShot(clipOn);
+
                 if (!fireLight.lightOn)
                 {
                     fireLight.FadeIn();
@@ -50,6 +57,7 @@ namespace Jail.Puzzler.Inputs
                 if (fireLight.lightOn)
                 {
                     fireLight.FadeOut();
+                    source.PlayOneShot(clipOff);
                 }
             }
         }

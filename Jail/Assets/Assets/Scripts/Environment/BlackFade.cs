@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
+using Jail.Speedrun;
+
 namespace Jail
 {
     enum FadeStates
@@ -38,6 +40,8 @@ namespace Jail
         [SerializeField]
         FadeType blackFadeType = FadeType.OnlyFadeOut;
 
+        [SerializeField]
+        bool shouldToggleCommands = true;
 
         [HideInInspector]
         public UnityEvent eventEndOfFadeIn = default;
@@ -54,7 +58,7 @@ namespace Jail
             //  start scene-defined fade
             if (fadeInAwake)
             {
-                StartFade(blackFadeType);
+                StartFade(blackFadeType, shouldToggleCommands);
             }
         }
 
@@ -67,7 +71,7 @@ namespace Jail
 
                 case FadeStates.FadeIn:
 
-                    timeSinceBlackFadeStarted += Time.deltaTime;
+                    timeSinceBlackFadeStarted += Time.unscaledDeltaTime;
                     if (timeSinceBlackFadeStarted >= blackFadeHalfTime)
                     {
                         timeSinceBlackFadeStarted = 0.0f; 
@@ -95,7 +99,7 @@ namespace Jail
 
                 case FadeStates.StayBlack:
 
-                    timeSinceBlackFadeStarted += Time.deltaTime;
+                    timeSinceBlackFadeStarted += Time.unscaledDeltaTime;
                     if (timeSinceBlackFadeStarted >= fullBlackTime)
                     {
                         timeSinceBlackFadeStarted = 0.0f;
@@ -106,13 +110,30 @@ namespace Jail
 
                 case FadeStates.FadeOut:
 
-                    timeSinceBlackFadeStarted += Time.deltaTime;
+                    timeSinceBlackFadeStarted += Time.unscaledDeltaTime;
                     if (timeSinceBlackFadeStarted >= blackFadeHalfTime)
                     {
                         timeSinceBlackFadeStarted = 0.0f;
                         blackFadeState = FadeStates.Off;
                         blackFadeImage.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
-                        Player.instance.disableCommands = false; 
+
+                        if (shouldToggleCommands)
+                        {
+                            Player.instance.disableCommands = false;
+
+                            //  resume speedrun
+                            if (Speedrunner.instance != null)
+                            {
+                                if (!Speedrunner.instance.HasStarted)
+                                {
+                                    Speedrunner.instance.StartRun();
+                                }
+                                else
+                                {
+                                    Speedrunner.instance.SetPause(false);
+                                }
+                            }
+                        }
                     }
                     else
                     {
@@ -124,9 +145,20 @@ namespace Jail
             }
         }
 
-        public void StartFade(FadeType fadeType)
+        public void StartFade(FadeType fadeType, bool toggle_commands = true)
         {
-            Player.instance.disableCommands = true;
+            shouldToggleCommands = toggle_commands;
+            if (shouldToggleCommands)
+            {
+                //  pause speedrun
+                if (Speedrunner.instance != null)
+                {
+                    Speedrunner.instance.SetPause(true);
+                } 
+
+                Player.instance.disableCommands = true;
+            }
+
             timeSinceBlackFadeStarted = 0.0f;
             blackFadeType = fadeType;
             if (fadeType == FadeType.OnlyFadeOut)

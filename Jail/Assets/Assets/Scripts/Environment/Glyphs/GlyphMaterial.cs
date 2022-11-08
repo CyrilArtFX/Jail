@@ -7,12 +7,14 @@ namespace Jail.Environment.Glyphs
     {
         new MeshRenderer renderer;
 
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             renderer = GetComponent<MeshRenderer>();
         }
 
-        public override void ApplyColor(Color color)
+        public override void ApplyColor(Color color, int priority = -1)
         {
             renderer.material.color = color;
         }

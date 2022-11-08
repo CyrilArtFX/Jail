@@ -20,6 +20,8 @@ namespace Jail.Interactables.ZapTurret
         [Header("Projectile")]
         [SerializeField]
         Transform projectileSpawnPoint;
+        [SerializeField]
+        Animator animator;
 
         [SerializeField]
         ZapTurretProjectile currentProjectile;
@@ -37,12 +39,14 @@ namespace Jail.Interactables.ZapTurret
             //  detect target
             bool wasTargetDetected = hasDetectedTarget;
 
+            //  detect targets
+            bool can_act = true;
             if (Player.instance.IsSpirit && !Player.instance.IsSpiritReturning && IsDetectingTarget(Player.instance.Spirit, spiritObstacleMask))
             {
                 //  priority on targeting spirit
                 hasDetectedTarget = true;
             }
-            else if (IsDetectingTarget(Player.instance.gameObject, playerObstacleMask))
+            else if (IsDetectingTarget(Player.instance.gameObject, playerObstacleMask, Player.instance.HeadPoint))
             {
                 //  target the body otherwise
                 hasDetectedTarget = false;
@@ -54,7 +58,7 @@ namespace Jail.Interactables.ZapTurret
                 }
 
                 //  don't target the body
-                return;
+                can_act = false;
             }
             else
             {
@@ -62,7 +66,22 @@ namespace Jail.Interactables.ZapTurret
                 currentProjectile.Target = null;
             }
 
-            if (currentProjectile != null)
+            //  get anim target speed
+            float anim_target_speed = .33f;
+            if (currentProjectile.Target == Player.instance.Spirit.transform)
+            {
+                anim_target_speed = 2.22f;
+            }
+            else if (currentProjectile.Target != null)
+            {
+                anim_target_speed = 1.0f;
+            }
+
+            //  animation speed
+            float anim_speed = Mathf.Lerp(animator.GetFloat("IdleSpeed"), anim_target_speed, Time.fixedDeltaTime * 10.0f);
+            animator.SetFloat("IdleSpeed", anim_speed);
+
+            if (can_act)
             {
                 //  chase spirit if not pulling
                 if (!wasTargetDetected && hasDetectedTarget)
@@ -102,13 +121,19 @@ namespace Jail.Interactables.ZapTurret
             distToSqr = distance * distance;
         }
 
-        bool IsDetectingTarget(GameObject target, LayerMask mask)
+        bool IsDetectingTarget(GameObject target, LayerMask mask, Transform target_point = null)
         {
             wasRaycastPerformed = false;
 
+            //  retrieve default transform
+            if (target_point == null)
+            {
+                target_point = target.transform;
+            }
+
             //  get raycast start & direction
-            raycastStart = currentProjectile.Target != null ? currentProjectile.WaryPoint.position : projectileSpawnPoint.transform.position;
-            Vector3 direction = target.transform.position - raycastStart;
+            raycastStart = currentProjectile.WaryPoint.position;
+            Vector3 direction = target_point.position - raycastStart;
 
             //  check for distance
             if (direction.sqrMagnitude > distToSqr)
@@ -121,7 +146,7 @@ namespace Jail.Interactables.ZapTurret
             if (!is_hit || hit_infos.collider.gameObject != target)
                 return false;
 
-            currentProjectile.Target = target.transform;
+            currentProjectile.Target = target_point;
             return true;
         }
     }

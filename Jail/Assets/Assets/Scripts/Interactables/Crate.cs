@@ -29,7 +29,7 @@ namespace Jail
 
         void Update()
         {
-            if (Mathf.Abs(Body.velocity.y) <= 0.01f && playerInTrigger)
+            if (Mathf.Abs(Body.velocity.y) <= 10.0f * Time.deltaTime && playerInTrigger)
             {
                 if (Input.GetButton("Interact"))
                 {
